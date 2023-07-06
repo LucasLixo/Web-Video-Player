@@ -31,7 +31,7 @@ And it lets you display and control videos on your webpage. It uses the `<video>
 2. Add the following HTML code to your web page where you want the video player to appear:
 
     ```html
-    <video id="JsMedia" aspect-ratio="16:9" controls autoplay>
+    <video id="Web-Video-Player" aspect-ratio="16:9" controls autoplay>
         <source src="video.mp4" type="video/mp4">
     </video>
 
@@ -47,11 +47,11 @@ And it lets you display and control videos on your webpage. It uses the `<video>
     |`5:4`      | `1350:1080`     | `HD`          |
     |`7:5`      | `2100:1200`     | `QHD`         |
 
-- Note: If there is no `aspect-ratio`, the width and height will be set to `100%` and you will need a `div containing` the video with the desired theme.
+- Note: If there is no `aspect-ratio`, the width and height will be set to `100%` and you will need a `div` containing the video with the desired theme.
 
     ```html
     <div style="width: 100%; height: 480px;">
-        <video id="JsMedia" aspect-ratio="16:9" controls autoplay>
+        <video id="Web-Video-Player" aspect-ratio="16:9" controls autoplay>
             <source src="video.mp4" type="video/mp4">
         </video>
     </div>
