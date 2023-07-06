@@ -1,10 +1,27 @@
 # Web-Video-Player
 
-This is a web video player application that allows you to display and control videos on your web page. It utilizes the `<video>` tag and requires the jQuery JavaScript Library v3.7.0 to function properly.
+Web Video Player is a lightweight, customizable application that allows you to easily display and control videos on your webpage. With its intuitive interface and seamless integration, you can easily enhance your website with video content.
+And it lets you display and control videos on your webpage. It uses the `<video>` tag and requires the ´jQuery JavaScript v3.7.0´ library to work correctly.
+
+## Features
+
+- ´Responsive Video Display´: The player provides a responsive video display area that adapts to different screen sizes, ensuring optimal viewing experience on various devices.
+
+- ´Playback Controls´: Easily control video playback with built-in controls, including play, pause, volume adjustment, seeking, and fullscreen mode.
+
+- ´Autoplay´: Configure videos to automatically start playing when the page loads, capturing visitors' attention and providing a seamless viewing experience.
+
+- ´Aspect Ratio Selection´: Choose from a range of predefined aspect ratios or set a custom aspect ratio to ensure videos are displayed correctly without distortion.
+
+- ´Customizable Appearance´: Customize the player's appearance by modifying CSS styles to match your website's design and branding.
 
 ## Usage
 
-To use the web video player in your web application, follow these steps:
+- To use the Web Video Player in your web application, simply include the provided HTML code and ensure that the jQuery JavaScript Library v3.7.0 is properly linked. Then, adjust the configuration options to meet your specific requirements.
+
+- The Web Video Player simplifies the process of integrating videos into your website, allowing you to engage your audience and deliver compelling visual content effortlessly.
+
+- To use the web video player in your web application, follow these steps:
 
 1. Include the jQuery library in your HTML file. You can download the jQuery library from the official website or use a CDN. Here's an example using the CDN:
 
