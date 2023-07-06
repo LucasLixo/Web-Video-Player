@@ -45,7 +45,7 @@ In the above example, the aspect ratio is set to 16:9, and both the controls and
 
 ## Dependencies
 
-jQuery JavaScript Library v3.7.0[https://jquery.com/download/]
+[jQuery JavaScript Library v3.7.0](https://jquery.com/download/)
 Please make sure to include the jQuery library before using the web video player.
 
 ## License
