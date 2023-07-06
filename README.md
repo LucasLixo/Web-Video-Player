@@ -36,7 +36,7 @@ And it lets you display and control videos on your webpage. It uses the `<video>
       </video>
 
 - In the above example, the aspect ratio is set to 16:9, and both the controls and autoplay options are enabled.
-### Being: 
+- Being: 
 | Aspect    | Size (Pixels)   | Quality       |
 | --------- | --------------- | ------------- |
 |`0:0`      | `100%`          | `Undefined`   |
@@ -46,7 +46,7 @@ And it lets you display and control videos on your webpage. It uses the `<video>
 |`5:4`      | `1350:1080`     | `HD`          |
 |`7:5`      | `2100:1200`     | `QHD`         |
 
-### Note: If there is no `aspect-ratio`, the width and height will be set to `100%` and you will need a `div containing` the video with the desired theme.
+- Note: If there is no `aspect-ratio`, the width and height will be set to `100%` and you will need a `div containing` the video with the desired theme.
 
       ```html
       <div style="width: 100%; height: 480px;">
