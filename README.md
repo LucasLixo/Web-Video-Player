@@ -39,11 +39,11 @@ And it lets you display and control videos on your webpage. It uses the `<video>
 
 In the above example, the aspect ratio is set to 16:9, and both the controls and autoplay options are enabled.
 ### Being: 
-- '4:3' -> '1024:768' -> 'SD'];
-- '16:9' -> '1280:720' -> 'HD'];
-- '3:2' -> '1080:720' -> 'HD'];
-- '5:4' -> '1350:1080' -> 'HD'];
-- '7:5' -> '2100:1200' -> 'QHD'];
+- `4:3` | `1024:768` | `SD`
+- `16:9` | `1280:720` | `HD`
+- `3:2` | `1080:720` | `HD`
+- `5:4` | `1350:1080` | `HD`
+- `7:5` | `2100:1200` | `QHD`
 
 3. Include the necessary JavaScript code to initialize the video player. You can place this code in a separate JavaScript file or directly in your HTML file:
 
