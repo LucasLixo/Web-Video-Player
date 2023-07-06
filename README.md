@@ -25,41 +25,40 @@ And it lets you display and control videos on your webpage. It uses the `<video>
 
 1. Include the jQuery library in your HTML file. You can download the jQuery library from the official website or use a CDN. Here's an example using the CDN:
 
-      ```html
-      <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    ```html
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 2. Add the following HTML code to your web page where you want the video player to appear:
 
-      ```html
-      <video id="JsMedia" aspect-ratio="16:9" controls autoplay>
-         <source src="video.mp4" type="video/mp4">
-      </video>
+    ```html
+    <video id="JsMedia" aspect-ratio="16:9" controls autoplay>
+        <source src="video.mp4" type="video/mp4">
+    </video>
 
 - In the above example, the aspect ratio is set to 16:9, and both the controls and autoplay options are enabled.
 - Being:
   
-      | Aspect    | Size (Pixels)   | Quality       |
-      | --------- | --------------- | ------------- |
-      |`0:0`      | `100%`          | `Undefined`   |
-      |`4:3`      | `1024:768`      | `SD`          |
-      |`16:9`     | `1280:720`      | `HD`          |
-      |`3:2`      | `1080:720`      | `HD`          |
-      |`5:4`      | `1350:1080`     | `HD`          |
-      |`7:5`      | `2100:1200`     | `QHD`         |
+    | Aspect    | Size (Pixels)   | Quality       |
+    | --------- | --------------- | ------------- |
+    |`0:0`      | `100%`          | `Undefined`   |
+    |`4:3`      | `1024:768`      | `SD`          |
+    |`16:9`     | `1280:720`      | `HD`          |
+    |`3:2`      | `1080:720`      | `HD`          |
+    |`5:4`      | `1350:1080`     | `HD`          |
+    |`7:5`      | `2100:1200`     | `QHD`         |
 
 - Note: If there is no `aspect-ratio`, the width and height will be set to `100%` and you will need a `div containing` the video with the desired theme.
 
-      ```html
-      <div style="width: 100%; height: 480px;">
-         <video id="JsMedia" aspect-ratio="16:9" controls autoplay>
+    ```html
+    <div style="width: 100%; height: 480px;">
+        <video id="JsMedia" aspect-ratio="16:9" controls autoplay>
             <source src="video.mp4" type="video/mp4">
-         </video>
-      </div>
+        </video>
+    </div>
 
 3. Include the necessary JavaScript code to initialize the video player. You can place this code in a separate JavaScript file or directly in your HTML file:
 
-   ```js
-
+    ```js
     $(document).ready(function() {
         // Initialize the video player
         $('#JsMedia').jsVideoPlayer();
