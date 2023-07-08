@@ -451,4 +451,22 @@ $(document).ready(function () {
     ProgressBarContent.mouseleave(function () {
         SpanTimeBar.hide();
     });
+    var TimeOpacity = 3;
+    function InitTimeOpacity() {
+        timeout = setTimeout(function () {
+            $(VideoContent).css({
+                'opacity': '0',
+                'cursor': 'none',
+            });
+        }, TimeOpacity * 1000);
+    }
+    InitTimeOpacity();
+    $(VideoContent).on('mousemove', function () {
+        $(VideoContent).css({
+            'opacity': '1',
+            'cursor': 'default',
+        });
+        clearTimeout(timeout);
+        InitTimeOpacity();
+    });
 });
