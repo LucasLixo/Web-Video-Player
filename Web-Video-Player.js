@@ -1,5 +1,4 @@
 // Web-Video-Player.js
-// Licence MIT
 const AspectRatio01 = ['4:3', '1024:768', 'SD'];
 const AspectRatio02 = ['16:9', '1280:720', 'HD'];
 const AspectRatio03 = ['3:2', '1080:720', 'HD'];
