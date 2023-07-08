@@ -1,4 +1,4 @@
-# [Web-Video-Player](Web-Video-Player.js) `Beta (Em Desenvolvimento)`
+# [Web-Video-Player](Web-Video-Player.js) `(Em Desenvolvimento)`
 
 ![Image01](https://github.com/LucasLixo/Web-Video-Player/assets/104840846/bcdfcdc2-a807-42f6-8974-deb15d24b01e)
 
