@@ -1,4 +1,3 @@
-// Web-Video-Player.js
 const AspectRatio01 = ['4:3', '1024:768', 'SD'];
 const AspectRatio02 = ['16:9', '1280:720', 'HD'];
 const AspectRatio03 = ['3:2', '1080:720', 'HD'];
@@ -61,13 +60,11 @@ const IconButton = {
     'Volume-Off': '<svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48" style="height: 100%; width: 100%;"><path fill="white" d="M813-56 681-188q-28 20-60.5 34.5T553-131v-62q23-7 44.5-15.5T638-231L473-397v237L273-360H113v-240h156L49-820l43-43 764 763-43 44Zm-36-232-43-43q20-34 29.5-71.923T773-481q0-103.322-60-184.661T553-769v-62q124 28 202 125.5T833-481q0 51-14 100t-42 93ZM643-422l-90-90v-130q47 22 73.5 66t26.5 96q0 15-2.5 29.5T643-422ZM473-592 369-696l104-104v208Zm-60 286v-150l-84-84H173v120h126l114 114Zm-42-192Z"/></svg>',
 }
 let Aspect, Ratio, quality;
-
 $(document).ready(function () {
     $(TagVideo).removeAttr('controls');
     const VideoParams = $(TagVideo).get(0);
     VideoParams.volume = 1;
     /* VideoParams.pause(); */
-
     let AspectRatio = $(TagVideo).attr('aspect-ratio');
     switch (AspectRatio) {
         case AspectRatio01[0]:
@@ -101,7 +98,6 @@ $(document).ready(function () {
             quality = AspectRatio06[2];
             break;
     }
-
     if (Ratio == 100) {
         var RatioWidth = '100%'
         var RatioHeight = '100%'
@@ -402,7 +398,7 @@ $(document).ready(function () {
     var ProgressBar = $('#' + Hash[15]);
     $(ProgressBar).css({
         'height': '100%',
-        'background': 'red',
+        'background': '#005CC8',
         'border-radius': '5px',
         'position': 'relative',
     });
@@ -430,7 +426,7 @@ $(document).ready(function () {
     });
     $(ProgressBar).append('<span id="' + Hash[17] + '"></span>');
     $('#' + Hash[17]).css({
-        'background': 'red',
+        'background': '#005CC8',
         'position': 'absolute',
         'right': '-7px',
         'top': '-3px',
@@ -466,7 +462,41 @@ $(document).ready(function () {
             'opacity': '1',
             'cursor': 'default',
         });
+
         clearTimeout(timeout);
         InitTimeOpacity();
+    });
+    $('#' + HashButton[6]).attr('title', 'Press (←)');
+    $('#' + HashButton[7]).attr('title', 'Press (Space)');
+    $('#' + HashButton[8]).attr('title', 'Press (→)');
+    $(DivControls01Div02 + ' #' + HashButton[0]).attr('title', 'Press (F)');
+    $(DivControls01Div02 + ' #' + HashButton[1]).attr('title', 'Press (P)');
+    $(DivControls01Div02 + ' #' + HashButton[2] + ' #' + HashButton[3]).attr('title', 'Press (M)');
+    $(document).on('keydown', function (event) {
+        if (event.which === 37) {
+            $(DivControls02 + ' #' + HashButton[6]).trigger('click');
+        } else if (event.which === 32) {
+            $(DivControls02 + ' #' + HashButton[7]).trigger('click');
+        } else if (event.which === 39) {
+            $(DivControls02 + ' #' + HashButton[8]).trigger('click');
+        } else if (event.which === 70) {
+            $(DivControls01Div02 + ' #' + HashButton[0]).trigger('click');
+        } else if (event.which === 80) {
+            $(DivControls01Div02 + ' #' + HashButton[1]).trigger('click');
+        } else if (event.which === 77) {
+            $(DivControls01Div02 + ' #' + HashButton[2] + ' #' + HashButton[3]).trigger('click');
+        } else if (event.which === 38) {
+            var RangeValue = parseFloat($('#' + Hash[9]).val());
+            $('#' + Hash[9]).val(RangeValue + 0.2);
+        } else if (event.which === 40) {
+            var RangeValue = parseFloat($('#' + Hash[9]).val());
+            $('#' + Hash[9]).val(RangeValue - 0.2);
+        } else if (event.which >= 48 && event.which <= 57) {
+            var KeyDown = event.which - 48;
+            var TimeTotal2 = VideoParams.duration;
+            var TimeDesire = KeyDown * 10;
+            var TimeSecondes = (TimeDesire / 100) * TimeTotal2;
+            VideoParams.currentTime = TimeSecondes;
+        }
     });
 });
