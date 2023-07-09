@@ -85,8 +85,4 @@ Please make sure to include the jQuery library before using the web video player
 
 ## [License](LICENSE.md)
 
-- This project is licensed under the `MIT License`.
-
-- Make sure to replace `"video.mp4"` with the actual path to your video file, and don't forget to include the necessary dependencies.
-
-test
+- This project is licensed under the `GNU Affero General Public License v3.0`.
