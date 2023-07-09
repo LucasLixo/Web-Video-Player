@@ -17,7 +17,7 @@ And it lets you display and control videos on your webpage. It uses the `<video>
 
 - `Customizable Appearance`: Customize the player's appearance by modifying CSS styles to match your website's design and branding.
 
-## Usage(Example/Index.html)
+## [Usage](Example/Index.html)
 
 - To use the Web Video Player in your web application, simply include the provided HTML code and ensure that the jQuery JavaScript Library v3.7.0 is properly linked. Then, adjust the configuration options to meet your specific requirements.
 
