@@ -37,6 +37,7 @@ And it lets you display and control videos on your webpage. It uses the `<video>
     |`F`            | `Fullscreen`          |
     |`P`            | `Picture-in-Picture`  |
     |`M`            | `Mute`                |
+    |`0-9`          | `0% - 90% In Video`   |
 
 1. Include the jQuery library in your HTML file. You can download the jQuery library from the official website or use a CDN. Here's an example using the CDN:
 
@@ -50,7 +51,8 @@ And it lets you display and control videos on your webpage. It uses the `<video>
         <source src="video.mp4" type="video/mp4">
     </video>
 
-- In the above example, the aspect ratio is set to 16:9, and both the controls and autoplay options are enabled.
+- In the above example, the `aspect-ratio` is set to 16:9, and both the controls and autoplay options are enabled.
+
 - Being:
   
     | Aspect    | Size (Pixels)   | Quality       |
