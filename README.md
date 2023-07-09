@@ -96,6 +96,6 @@ And it lets you display and control videos on your webpage. It uses the `<video>
 [jQuery JavaScript Library v3.7.0](https://jquery.com/download/)
 Please make sure to include the jQuery library before using the web video player.
 
-## [License](LICENSE.md)
+## [License](LICENSE.txt)
 
 - This project is licensed under the `GNU Affero General Public License v3.0`.
