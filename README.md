@@ -17,7 +17,7 @@ And it lets you display and control videos on your webpage. It uses the `<video>
 
 - `Customizable Appearance`: Customize the player's appearance by modifying CSS styles to match your website's design and branding.
 
-## Usage
+## Usage(Example/Index.html)
 
 - To use the Web Video Player in your web application, simply include the provided HTML code and ensure that the jQuery JavaScript Library v3.7.0 is properly linked. Then, adjust the configuration options to meet your specific requirements.
 
@@ -51,7 +51,7 @@ And it lets you display and control videos on your webpage. It uses the `<video>
         <source src="video.mp4" type="video/mp4">
     </video>
 
-- In the above example, the `aspect-ratio` is set to 16:9, and both the controls and autoplay options are enabled.
+- In the above example, the `aspect-ratio` is set to `16:9`, and both the controls and autoplay options are enabled.
 
 - Being:
   
