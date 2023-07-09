@@ -25,6 +25,19 @@ And it lets you display and control videos on your webpage. It uses the `<video>
 
 - To use the web video player in your web application, follow these steps:
 
+- Keyboard mapping:
+    
+    | Press (Key)   | Action (Key)          |
+    | ------------- | --------------------- |
+    |`←`            | `(-10) Seconds`       |
+    |`Space`        | `Pause / Play`        |
+    |`→`            | `(+10) Seconds`       |
+    |`↓`            | `(-20%) Volume`       |
+    |`↑`            | `(+20%) Volume`       |
+    |`F`            | `Fullscreen`          |
+    |`P`            | `Picture-in-Picture`  |
+    |`M`            | `Mute`                |
+
 1. Include the jQuery library in your HTML file. You can download the jQuery library from the official website or use a CDN. Here's an example using the CDN:
 
     ```html
