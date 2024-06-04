@@ -1,28 +1,28 @@
-# [Web-Video-Player](Web-Video-Player.js) `(Under development)`
-Web Video Player is a lightweight, customizable application that allows you to easily display and control videos on your webpage. With its intuitive interface and seamless integration, you can easily enhance your website with video content.
-And it lets you display and control videos on your webpage. It uses the `<video>` tag and requires the `jQuery JavaScript v3.7.0` library to work correctly.
+# [Web-Video-Player](Web-Video-Player.js)
+Web Video Player é um aplicativo leve e personalizável que permite exibir e controlar facilmente vídeos em sua página da web. Com sua interface intuitiva e integração perfeita, você pode facilmente aprimorar seu site com conteúdo de vídeo.
+E permite exibir e controlar vídeos em sua página da web. Ele usa a tag `<video>` e requer a biblioteca `jQuery JavaScript v3.7.0` para funcionar corretamente.
 
 ## Features
 
-- `Responsive Video Display`: The player provides a responsive video display area that adapts to different screen sizes, ensuring optimal viewing experience on various devices.
+- `Exibição de vídeo responsiva`: O player oferece uma área de exibição de vídeo responsiva que se adapta a diferentes tamanhos de tela, garantindo uma experiência de visualização ideal em vários dispositivos.
 
-- `Playback Controls`: Easily control video playback with built-in controls, including play, pause, volume adjustment, seeking, and fullscreen mode.
+- `Controles de reprodução`: Controle facilmente a reprodução de vídeo com controles integrados, incluindo reprodução, pausa, ajuste de volume, busca e modo de tela cheia.
 
-- `Autoplay`: Configure videos to automatically start playing when the page loads, capturing visitors' attention and providing a seamless viewing experience.
+- `Reprodução automática`: Configure os vídeos para começarem a ser reproduzidos automaticamente quando a página carrega, capturando a atenção dos visitantes e proporcionando uma experiência de visualização perfeita.
 
-- `Aspect Ratio Selection`: Choose from a range of predefined aspect ratios or set a custom aspect ratio to ensure videos are displayed correctly without distortion.
+- `Seleção de proporção de aspecto`: Escolha entre uma variedade de proporções predefinidas ou defina uma proporção personalizada para garantir que os vídeos sejam exibidos corretamente e sem distorção.
 
-- `Customizable Appearance`: Customize the player's appearance by modifying CSS styles to match your website's design and branding.
+- `Aparência personalizável`: Personalize a aparência do player modificando os estilos CSS para combinar com o design e a marca do seu site.
 
 ## [Usage](Example/Index.html)
 
-- To use the Web Video Player in your web application, simply include the provided HTML code and ensure that the jQuery JavaScript Library v3.7.0 is properly linked. Then, adjust the configuration options to meet your specific requirements.
+- Para usar o Web Video Player em seu aplicativo web, basta incluir o código HTML fornecido e garantir que a biblioteca jQuery JavaScript v3.7.0 esteja devidamente vinculada. Em seguida, ajuste as opções de configuração para atender aos seus requisitos específicos.
 
-- The Web Video Player simplifies the process of integrating videos into your website, allowing you to engage your audience and deliver compelling visual content effortlessly.
+- O Web Video Player simplifica o processo de integração de vídeos em seu site, permitindo envolver seu público e fornecer conteúdo visual atraente sem esforço.
 
-- To use the web video player in your web application, follow these steps:
+- Para usar o reprodutor de vídeo da web em seu aplicativo da web, siga estas etapas:
 
-- Keyboard mapping:
+- Mapeamento de teclado:
     
     | Press (Key)   | Action (Key)          |
     | ------------- | --------------------- |
@@ -36,19 +36,19 @@ And it lets you display and control videos on your webpage. It uses the `<video>
     |`M`            | `Mute`                |
     |`0-9`          | `0% - 90% In Video`   |
 
-1. Include the jQuery library in your HTML file. You can download the jQuery library from the official website or use a CDN. Here's an example using the CDN:
+1. Inclua a biblioteca jQuery em seu arquivo HTML. Você pode baixar a biblioteca jQuery do site oficial ou usar um CDN. Aqui está um exemplo usando o CDN:
 
     ```html
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
-2. Add the following HTML code to your web page where you want the video player to appear:
+2. Adicione o seguinte código HTML à sua página da web onde deseja que o player de vídeo apareça:
 
     ```html
     <video id="Web-Video-Player" aspect-ratio="16:9" controls autoplay>
         <source src="video.mp4" type="video/mp4">
     </video>
 
-- In the above example, the `aspect-ratio` is set to `16:9`, and both the controls and autoplay options are enabled.
+- No exemplo acima, a `aspect-ratio` está definida como `16:9` e os controles e as opções de reprodução automática estão ativados.
 
 - Being:
   
@@ -61,7 +61,7 @@ And it lets you display and control videos on your webpage. It uses the `<video>
     |`5:4`      | `1350:1080`     | `HD`          |
     |`7:5`      | `2100:1200`     | `QHD`         |
 
-- Note: If there is no `aspect-ratio`, the width and height will be set to `100%` and you will need a `div` containing the video with the desired theme.
+- Nota: Se não houver `proporção`, a largura e altura serão definidas para `100%` e você precisará de um `div` contendo o vídeo com o tema desejado.
 
     ```html
     <div style="width: 100%; height: 480px;">
@@ -70,7 +70,7 @@ And it lets you display and control videos on your webpage. It uses the `<video>
         </video>
     </div>
 
-3. Include the necessary JavaScript code to initialize the video player. You can place this code in a separate JavaScript file or directly in your HTML file:
+3. Inclua o código JavaScript necessário para inicializar o player de vídeo. Você pode colocar esse código em um arquivo JavaScript separado ou diretamente no seu arquivo HTML:
 
     ```js
     $(document).ready(function() {
@@ -78,23 +78,23 @@ And it lets you display and control videos on your webpage. It uses the `<video>
         $('#JsMedia').jsVideoPlayer();
     });
 
-4. Make sure you have the video.mp4 file available at the specified path and that the file is compatible with the <video> tag.
+4. Certifique-se de ter o arquivo video.mp4 disponível no caminho especificado e de que o arquivo seja compatível com a tag <video>.
 
-5. Open your web page in a browser, and you should see the video player with the specified video playing.
+5. Abra sua página da web em um navegador e você deverá ver o player de vídeo com o vídeo especificado sendo reproduzido.
 
-## Configuration
+## Configurações
 
-1. The web video player provides several configuration options that you can customize according to your needs. Here are some of the available options:
-2. aspect-ratio: Specifies the aspect ratio of the video. You can choose from predefined aspect ratios such as 4:3, 16:9, etc., or set a custom aspect ratio.
-3. controls: Determines whether the video player controls are displayed. Set to true to show the controls, or false to hide them.
-4. autoplay: Specifies whether the video should automatically start playing when the page loads. Set to true for autoplay, or false to disable autoplay.
-5. You can modify the configuration options by adjusting the HTML code for the video element. For example:
+1. O reprodutor de vídeo da web oferece diversas opções de configuração que você pode personalizar de acordo com suas necessidades. Aqui estão algumas das opções disponíveis:
+2. proporção: especifica a proporção do vídeo. Você pode escolher entre proporções predefinidas, como 4:3, 16:9, etc., ou definir uma proporção personalizada.
+3. controles: determina se os controles do player de vídeo serão exibidos. Defina como verdadeiro para mostrar os controles ou falso para ocultá-los.
+4. reprodução automática: especifica se o vídeo deve começar a ser reproduzido automaticamente quando a página for carregada. Defina como verdadeiro para reprodução automática ou falso para desativar a reprodução automática.
+5. Você pode modificar as opções de configuração ajustando o código HTML do elemento de vídeo. Por exemplo:
 
-## Dependencies
+## Dependências
 
 [jQuery JavaScript Library v3.7.0](https://jquery.com/download/)
-Please make sure to include the jQuery library before using the web video player.
+Certifique-se de incluir a biblioteca jQuery antes de usar o reprodutor de vídeo da web.
 
-## [License](LICENSE.txt)
+## [Licença](LICENSE.txt)
 
-- This project is licensed under the `GNU Affero General Public License v3.0`.
+- Este projeto está licenciado sob a `GNU Affero General Public License v3.0`.
