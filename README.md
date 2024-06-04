@@ -1,7 +1,4 @@
 # [Web-Video-Player](Web-Video-Player.js) `(Under development)`
-
-![ImageWebVideoPlayer01](https://github.com/LucasLixo/LucasLixo/assets/104840846/9a7a9b3d-2dea-432c-94b3-272674b5648b)
-
 Web Video Player is a lightweight, customizable application that allows you to easily display and control videos on your webpage. With its intuitive interface and seamless integration, you can easily enhance your website with video content.
 And it lets you display and control videos on your webpage. It uses the `<video>` tag and requires the `jQuery JavaScript v3.7.0` library to work correctly.
 
