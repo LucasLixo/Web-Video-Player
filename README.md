@@ -95,6 +95,6 @@ E permite exibir e controlar vídeos em sua página da web. Ele usa a tag `<vide
 [jQuery JavaScript Library v3.7.0](https://jquery.com/download/)
 Certifique-se de incluir a biblioteca jQuery antes de usar o reprodutor de vídeo da web.
 
-## [Licença](LICENSE.txt)
+## [Licença](LICENSE)
 
 - Este projeto está licenciado sob a `GNU Affero General Public License v3.0`.
