@@ -1,8 +1,11 @@
 # [Web-Video-Player](Web-Video-Player.js)
+
+<img src="fastlane/screenshot/screenshot (1).jpg" align="center">
+
 Web Video Player é um aplicativo leve e personalizável que permite exibir e controlar facilmente vídeos em sua página da web. Com sua interface intuitiva e integração perfeita, você pode facilmente aprimorar seu site com conteúdo de vídeo.
 E permite exibir e controlar vídeos em sua página da web. Ele usa a tag `<video>` e requer a biblioteca `jQuery JavaScript v3.7.0` para funcionar corretamente.
 
-## Features
+## Vantagens
 
 - `Exibição de vídeo responsiva`: O player oferece uma área de exibição de vídeo responsiva que se adapta a diferentes tamanhos de tela, garantindo uma experiência de visualização ideal em vários dispositivos.
 
@@ -14,7 +17,7 @@ E permite exibir e controlar vídeos em sua página da web. Ele usa a tag `<vide
 
 - `Aparência personalizável`: Personalize a aparência do player modificando os estilos CSS para combinar com o design e a marca do seu site.
 
-## [Usage](Example/Index.html)
+## [Uso](Example/Index.html)
 
 - Para usar o Web Video Player em seu aplicativo web, basta incluir o código HTML fornecido e garantir que a biblioteca jQuery JavaScript v3.7.0 esteja devidamente vinculada. Em seguida, ajuste as opções de configuração para atender aos seus requisitos específicos.
 
@@ -97,4 +100,10 @@ Certifique-se de incluir a biblioteca jQuery antes de usar o reprodutor de víde
 
 ## [Licença](LICENSE)
 
-- Este projeto está licenciado sob a `GNU Affero General Public License v3.0`.
+[![GitHub](https://img.shields.io/github/license/LucasLixo/Web-Video-Player?style=for-the-badge)](https://github.com/LucasLixo/Web-Video-Player/blob/main/LICENSE)
+
+<div align="right">
+<table><td>
+<a href="#start-of-content">👆 Role para cima</a>
+</td></table>
+</div>
