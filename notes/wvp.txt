@@ -20,9 +20,11 @@ enum styles {
 }
 // ==================================================
 enum reloaders {
+    resetStyle,
     styles,
     aspectRatio,
-    videos,
+    resetVideo,
+    video,
 }
 // ==================================================
 interface intOptions {
@@ -75,7 +77,8 @@ class WVP {
         this.init([
             reloaders.styles,
             reloaders.aspectRatio,
-            reloaders.videos,
+            reloaders.resetVideo,
+            reloaders.video,
         ]);
     }
 
@@ -131,21 +134,21 @@ class WVP {
         if (this.options.compatibility == value) return;
         this.options.compatibility = value;
         this.init([
-            reloaders.styles,
+            reloaders.resetStyle,
         ]);
     }
     set autoplay(value: boolean) {
         if (this.options.autoplay == value) return;
         this.options.autoplay = value;
         this.init([
-            reloaders.videos,
+            reloaders.video,
         ]);
     }
     set muted(value: boolean) {
         if (this.options.muted == value) return;
         this.options.muted = value;
         this.init([
-            reloaders.videos,
+            reloaders.video,
         ]);
     }
 
@@ -163,14 +166,14 @@ class WVP {
     private getStyles(styleId: string, styleMap: Record<string, string>): string {
         var styleString: string;
 
-        styleString = `#${styleId} {`;
+        styleString = `${styleId} {`;
         for (const key in styleMap) {
             if (styleMap.hasOwnProperty(key)) {
                 if (this.options.compatibility) {
                     styleString += `-moz-${key}: ${styleMap[key]};`;
                     styleString += `-ms-${key}: ${styleMap[key]};`;
                     styleString += `-o-${key}: ${styleMap[key]};`;
-                    styleString += `-webkit-${key}: ${styleMap[key]};`;
+                    // styleString += `-webkit-${key}: ${styleMap[key]};`;
                 }
                 styleString += `${key}: ${styleMap[key]};`;
             }
@@ -204,16 +207,16 @@ class WVP {
 
         const elementStyle: HTMLElement = document.getElementById(this.identifiers.styles) as HTMLElement;
 
-        this.setStyles(elementStyle, this.getStyles(this.identifiers.buttonsTop, stylesMap));
-        this.setStyles(elementStyle, this.getStyles(this.identifiers.buttonsBottom, stylesMap));
+        this.setStyles(elementStyle, this.getStyles(`#${this.identifiers.buttonsTop}`, stylesMap));
+        this.setStyles(elementStyle, this.getStyles(`#${this.identifiers.buttonsBottom}`, stylesMap));
 
         stylesMap['top'] = `calc(${totalHeight / 2}px - 3rem);`;
-        this.setStyles(elementStyle, this.getStyles(this.identifiers.buttonsMiddle, stylesMap));
+        this.setStyles(elementStyle, this.getStyles(`#${this.identifiers.buttonsMiddle}`, stylesMap));
         delete stylesMap['top'];
 
         stylesMap['height'] = `${totalHeight}px`;
 
-        this.setStyles(elementStyle, this.getStyles(this.identifiers.container, stylesMap));
+        this.setStyles(elementStyle, this.getStyles(`#${this.identifiers.container}`, stylesMap));
     }
 
     // ==================================================
@@ -277,10 +280,16 @@ class WVP {
         }
 
         applyStyles(styles.video, this.options.apply);
-        applyStyles(styles.container, this.identifiers.container);
-        applyStyles(styles.buttonsTop, this.identifiers.buttonsTop);
-        applyStyles(styles.buttonsMiddle, this.identifiers.buttonsMiddle);
-        applyStyles(styles.buttonsBottom, this.identifiers.buttonsBottom);
+        applyStyles(styles.container, `#${this.identifiers.container}`);
+        applyStyles(styles.buttonsTop, `#${this.identifiers.buttonsTop}`);
+        applyStyles(styles.buttonsMiddle, `#${this.identifiers.buttonsMiddle}`);
+        applyStyles(styles.buttonsBottom, `#${this.identifiers.buttonsBottom}`);
+    }
+
+    // ==================================================
+    private resetStyle(): void {
+        const elementStyle: HTMLElement = document.getElementById(this.identifiers.styles) as HTMLElement;
+        elementStyle.innerHTML = '';
     }
 
     // ==================================================
@@ -292,20 +301,25 @@ class WVP {
             const load: reloaders = reloader[index];
 
             switch (load) {
+                case reloaders.resetStyle:
+                    this.resetStyle();
+                    this.generateStyles();
+                    this.applyAspectRatio();
+                    break;
                 case reloaders.styles:
                     this.generateStyles();
                     break;
                 case reloaders.aspectRatio:
                     this.applyAspectRatio();
                     break;
-                case reloaders.videos:
+                case reloaders.video:
                     break;
             }
         }
         for (let index = 0; index < elementsVideo.length; index++) {
             const elementVideo: HTMLVideoElement = elementsVideo[index];
 
-            console.log(elementVideo.getAttribute(''));
+            console.log(elementVideo.innerHTML);
         }
 
     }
