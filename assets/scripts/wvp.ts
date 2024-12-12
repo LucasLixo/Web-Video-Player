@@ -4,71 +4,228 @@ class IOError extends Error {
         this.name = "Error";
     }
 }
+// ==================================================
+interface intAspectRatio {
+    horizontal: number;
+    vertical: number;
+}
+// ==================================================
+enum styles {
+    styles,
+    video,
+    container,
+    buttonsTop,
+    buttonsMiddle,
+    buttonsBottom,
+}
+// ==================================================
+enum reloaders {
+    styles,
+    aspectRatio,
+    videos,
+}
+// ==================================================
+interface intOptions {
+    apply: string,
+    aspectRatio: intAspectRatio,
+    colorInactive: string,
+    colorActive: string,
+    compatibility: boolean,
+    autoplay: boolean,
+    muted: boolean,
+}
+// ==================================================
+interface intIdentifiers {
+    styles: string,
+    container: string,
+    buttonsTop: string,
+    buttonsMiddle: string,
+    buttonsBottom: string,
+}
+// ==================================================
+class WVP {
+    options: intOptions;
+    identifiers: intIdentifiers;
 
-try {
     // ==================================================
-    interface intAspectRatio {
-        horizontal: number;
-        vertical: number;
-    }
-    // ==================================================
-    interface intIdentifier {
-        video: string,
-        container: string,
-        buttonsTop: string,
-        buttonsMiddle: string,
-        buttonsBottom: string,
-    }
-
-    // ==================================================
-    enum styles {
-        video,
-        container,
-        buttonsTop,
-        buttonsMiddle,
-        buttonsBottom,
-    }
-
-    // ==================================================
-    class Utils {
-        randomHash(length: number): string {
-            const chars: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            let result: string = "";
-            for (let i: number = 0; i < length; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
+    constructor(apply: string, options?: Record<string, any>) {
+        if (options == undefined) {
+            options = {};
         }
+        this.options = {
+            apply: apply,
+            aspectRatio: {
+                horizontal: parseInt((options['aspectRatio'] ?? '16:9').split(':')[0]),
+                vertical: parseInt((options['aspectRatio'] ?? '16:9').split(':')[1]),
+            },
+            colorInactive: options['colorInactive'] ?? '#007AFF',
+            colorActive: options['colorActive'] ?? '#FFFFFF',
+            compatibility: options['compatibility'] ?? false,
+            autoplay: options['autoplay'] ?? true,
+            muted: options['muted'] ?? true,
+        }
+        this.identifiers = {
+            styles: `styles-${this.randomHash(18)}`,
+            container: `container-${this.randomHash(15)}`,
+            buttonsTop: `top-${this.randomHash(21)}`,
+            buttonsMiddle: `middle-${this.randomHash(18)}`,
+            buttonsBottom: `bottom-${this.randomHash(18)}`,
+        };
+        console.log(this.identifiers);
+        this.init([
+            reloaders.styles,
+            reloaders.aspectRatio,
+            reloaders.videos,
+        ]);
+    }
 
-        // ==================================================
-        getStyles(stylesMap: Record<string, string>): string {
-            var stylesString: string = '';
+    // ==================================================
+    // Getters
+    get aspectRatio(): string {
+        return `${this.options.aspectRatio.horizontal}:${this.options.aspectRatio.vertical}`;
+    }
+    get colorInactive(): string {
+        return this.options.colorInactive;
+    }
+    get colorActive(): string {
+        return this.options.colorActive;
+    }
+    get compatibility(): boolean {
+        return this.options.compatibility;
+    }
+    get autoplay(): boolean {
+        return this.options.autoplay;
+    }
+    get muted(): boolean {
+        return this.options.muted;
+    }
 
-            for (const key in stylesMap) {
-                if (stylesMap.hasOwnProperty(key)) {
-                    // stylesString += `-moz-${key}: ${stylesMap[key]};`;
-                    // stylesString += `-ms-${key}: ${stylesMap[key]};`;
-                    // stylesString += `-o-${key}: ${stylesMap[key]};`;
-                    // stylesString += `-webkit-${key}: ${stylesMap[key]};`;
-                    stylesString += `${key}: ${stylesMap[key]};`;
+    // ==================================================
+    // Setters
+    set aspectRatio(value: string) {
+        const tempAspectRatio = {
+            horizontal: parseInt(value.split(':')[0]),
+            vertical: parseInt(value.split(':')[1]),
+        };
+        if (this.options.aspectRatio == tempAspectRatio) return;
+        this.options.aspectRatio = tempAspectRatio;
+        this.init([
+            reloaders.aspectRatio,
+        ]);
+    }
+    set colorInactive(value: string) {
+        if (this.options.colorInactive == value) return;
+        this.options.colorInactive = value;
+        this.init([
+            reloaders.styles,
+        ]);
+    }
+    set colorActive(value: string) {
+        if (this.options.colorActive == value) return;
+        this.options.colorActive = value;
+        this.init([
+            reloaders.styles,
+        ]);
+    }
+    set compatibility(value: boolean) {
+        if (this.options.compatibility == value) return;
+        this.options.compatibility = value;
+        this.init([
+            reloaders.styles,
+        ]);
+    }
+    set autoplay(value: boolean) {
+        if (this.options.autoplay == value) return;
+        this.options.autoplay = value;
+        this.init([
+            reloaders.videos,
+        ]);
+    }
+    set muted(value: boolean) {
+        if (this.options.muted == value) return;
+        this.options.muted = value;
+        this.init([
+            reloaders.videos,
+        ]);
+    }
+
+    // ==================================================
+    private randomHash(length: number): string {
+        const chars: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let result: string = "";
+        for (let i: number = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+    }
+
+    // ==================================================
+    private getStyles(styleId: string, styleMap: Record<string, string>): string {
+        var styleString: string;
+
+        styleString = `#${styleId} {`;
+        for (const key in styleMap) {
+            if (styleMap.hasOwnProperty(key)) {
+                if (this.options.compatibility) {
+                    styleString += `-moz-${key}: ${styleMap[key]};`;
+                    styleString += `-ms-${key}: ${styleMap[key]};`;
+                    styleString += `-o-${key}: ${styleMap[key]};`;
+                    styleString += `-webkit-${key}: ${styleMap[key]};`;
                 }
+                styleString += `${key}: ${styleMap[key]};`;
             }
-
-            return stylesString;
         }
+        styleString += '}';
+
+        return styleString;
     }
 
     // ==================================================
-    class Elements {
-        utils: Utils;
+    private setStyles(elementStyle: HTMLElement, stringStyle: string): void {
+        elementStyle.innerHTML += stringStyle;
+    }
 
-        // ==================================================
-        constructor() {
-            this.utils = new Utils();
+    // ==================================================
+    private applyAspectRatio(): void {
+        var stylesMap: Record<string, string> = {};
+
+        const elementContainer: HTMLElement = document.getElementById(this.identifiers.container) as HTMLElement;
+
+        var totalWidth: number = elementContainer!.parentElement!.offsetWidth;
+        var totalHeight: number = totalWidth * this.options.aspectRatio.vertical / this.options.aspectRatio.horizontal;
+
+        const differenceHeight = totalHeight - window.innerHeight;
+        if (differenceHeight > 0) {
+            totalWidth = totalWidth - differenceHeight;
+            totalHeight = totalHeight - differenceHeight;
         }
 
-        // ==================================================
-        applyStyles(style: styles, idElementStyle: string): void {
+        stylesMap['width'] = `${totalWidth}px`;
+
+        const elementStyle: HTMLElement = document.getElementById(this.identifiers.styles) as HTMLElement;
+
+        this.setStyles(elementStyle, this.getStyles(this.identifiers.buttonsTop, stylesMap));
+        this.setStyles(elementStyle, this.getStyles(this.identifiers.buttonsBottom, stylesMap));
+
+        stylesMap['top'] = `calc(${totalHeight / 2}px - 3rem);`;
+        this.setStyles(elementStyle, this.getStyles(this.identifiers.buttonsMiddle, stylesMap));
+        delete stylesMap['top'];
+
+        stylesMap['height'] = `${totalHeight}px`;
+
+        this.setStyles(elementStyle, this.getStyles(this.identifiers.container, stylesMap));
+    }
+
+    // ==================================================
+    private generateStyles(): void {
+        const elementHead: HTMLHeadElement = document.head as HTMLHeadElement;
+
+        const elementStyles: HTMLHeadElement = document.createElement('style');
+        elementStyles.setAttribute('type', 'text/css');
+        elementStyles.setAttribute('id', this.identifiers.styles);
+        elementHead.appendChild(elementStyles);
+
+        const applyStyles: Function = (style: styles, idElementStyle: string): void => {
             var stylesMap: Record<string, string> = {};
 
             switch (style) {
@@ -82,7 +239,7 @@ try {
                     stylesMap['display'] = "block";
                     stylesMap['width'] = "100%";
                     stylesMap['height'] = "100%";
-                    stylesMap['z-index'] = "-999";
+                    stylesMap['z-index'] = "-99";
                     stylesMap['background-color'] = "black";
                     break;
                 case styles.buttonsTop:
@@ -90,149 +247,67 @@ try {
                 case styles.buttonsBottom:
                     stylesMap['position'] = "absolute";
                     stylesMap['display'] = "flex";
-                    stylesMap['height'] = "6rem";
                     stylesMap['right'] = "0";
                     stylesMap['left'] = "0";
-                    stylesMap['z-index'] = "999";
-
+                    stylesMap['z-index'] = "99";
+                    stylesMap['flex-direction'] = "row";
+                    stylesMap['justify-content'] = "center";
+                    stylesMap['width'] = "100%";
                     if (style === styles.buttonsTop) {
                         stylesMap['background-color'] = "#FF000080";
                         stylesMap['top'] = "0";
+                        stylesMap['align-items'] = "flex-end";
+                        stylesMap['min-height'] = "2rem";
+                        stylesMap['max-height'] = "6rem";
                     } else if (style === styles.buttonsMiddle) {
                         stylesMap['background-color'] = "#00FF0080";
-                        stylesMap['bottom'] = "0";
+                        stylesMap['align-items'] = "center";
+                        stylesMap['height'] = "6rem";
                     } else if (style === styles.buttonsBottom) {
                         stylesMap['background-color'] = "#0000FF80";
                         stylesMap['bottom'] = "0";
+                        stylesMap['align-items'] = "flex-start";
+                        stylesMap['min-height'] = "2rem";
+                        stylesMap['max-height'] = "6rem";
                     }
                     break;
             }
 
-
-            const elementStyled: HTMLElement | null = document.getElementById(idElementStyle) as HTMLElement | null;
-            if (elementStyled == null) throw new IOError("Error");
-            if (elementStyled && elementStyled.parentElement) {
-                elementStyled.setAttribute('style', this.utils.getStyles(stylesMap));
-            }
+            this.setStyles(elementStyles, this.getStyles(idElementStyle, stylesMap));
         }
 
-        // ==================================================
-        applyAspectRatio(identifier: intIdentifier, aspect: intAspectRatio): void {
-            var stylesMap: Record<string, string> = {};
-
-            const elementContainer: HTMLElement | null = document.getElementById(identifier.container) as HTMLElement | null;
-            if (elementContainer == null) throw new IOError("Error");
-
-            let totalWidth: number = elementContainer!.parentElement!.offsetWidth;
-            let totalHeight: number = totalWidth * aspect.vertical / aspect.horizontal;
-
-            while (totalHeight > window.innerHeight) {
-                totalWidth -= 1;
-                totalHeight = totalWidth * aspect.vertical / aspect.horizontal;
-            }
-
-            stylesMap['width'] = `${totalWidth}px`;
-
-            const elementTop: HTMLElement | null = document.getElementById(identifier.buttonsTop) as HTMLElement | null;
-            if (elementTop == null) throw new IOError("Error");
-            elementTop.setAttribute('style', elementTop.getAttribute('style') + this.utils.getStyles(stylesMap));
-
-            const elementMiddle: HTMLElement | null = document.getElementById(identifier.buttonsMiddle) as HTMLElement | null;
-            if (elementMiddle == null) throw new IOError("Error");
-            elementMiddle.setAttribute('style', elementMiddle.getAttribute('style') + this.utils.getStyles(stylesMap) + `top: calc(${totalHeight / 2}px - 3rem);`);
-
-            const elementBottom: HTMLElement | null = document.getElementById(identifier.buttonsBottom) as HTMLElement | null;
-            if (elementBottom == null) throw new IOError("Error");
-            elementBottom.setAttribute('style', elementBottom.getAttribute('style') + this.utils.getStyles(stylesMap));
-
-            stylesMap['height'] = `${totalHeight}px`;
-
-            elementContainer.setAttribute('style', elementContainer.getAttribute('style') + this.utils.getStyles(stylesMap));
-        }
+        applyStyles(styles.video, this.options.apply);
+        applyStyles(styles.container, this.identifiers.container);
+        applyStyles(styles.buttonsTop, this.identifiers.buttonsTop);
+        applyStyles(styles.buttonsMiddle, this.identifiers.buttonsMiddle);
+        applyStyles(styles.buttonsBottom, this.identifiers.buttonsBottom);
     }
 
     // ==================================================
-    document.addEventListener('DOMContentLoaded', function () {
-        const utils: Utils = new Utils();
-        const elements: Elements = new Elements();
+    private init(reloader: reloaders[]) {
+        const elementsVideo: NodeListOf<HTMLVideoElement> | null = document.querySelectorAll(this.options.apply) as NodeListOf<HTMLVideoElement> | null;
 
-        // ==================================================
-        const intIdentifiers: intIdentifier = {
-            video: 'WVP',
-            container: `c-${utils.randomHash(26)}`,
-            buttonsTop: `bt-${utils.randomHash(26)}`,
-            buttonsMiddle: `bm-${utils.randomHash(26)}`,
-            buttonsBottom: `bb-${utils.randomHash(26)}`,
-        };
+        if (elementsVideo == null) return;
+        for (let index = 0; index < reloader.length; index++) {
+            const load: reloaders = reloader[index];
 
-        // ==================================================
-        const elementVideo: HTMLVideoElement | null = document.getElementById(intIdentifiers.video) as HTMLVideoElement | null;
-        if (elementVideo == null) throw new IOError("Error");
-        elementVideo.removeAttribute('controls');
-        elementVideo.addEventListener('loadedmetadata', () => {
-            elementVideo.controls = false;
-        });
+            switch (load) {
+                case reloaders.styles:
+                    this.generateStyles();
+                    break;
+                case reloaders.aspectRatio:
+                    this.applyAspectRatio();
+                    break;
+                case reloaders.videos:
+                    break;
+            }
+        }
+        for (let index = 0; index < elementsVideo.length; index++) {
+            const elementVideo: HTMLVideoElement = elementsVideo[index];
 
-        // ==================================================
-        // Create container div
-        const elementContainer: HTMLElement = document.createElement('div');
-        if (elementVideo.parentElement) {
-            elementContainer.setAttribute('id', intIdentifiers.container);
-            elementVideo.parentElement.insertBefore(elementContainer, elementVideo);
-            elementContainer.appendChild(elementVideo);
+            console.log(elementVideo.getAttribute(''));
         }
 
-        // ==================================================
-        elements.applyStyles(styles.video, intIdentifiers.video);
-
-        // ==================================================
-        const stringAspectRatio: string = elementVideo.getAttribute('aspect-ratio') || '16:9';
-
-        // ==================================================
-        const aspectRatio: intAspectRatio = {
-            horizontal: parseInt(stringAspectRatio.split(':')[0]),
-            vertical: parseInt(stringAspectRatio.split(':')[1]),
-        }
-        const colorInactive: string = elementVideo.getAttribute('color-inactive') || '#007AFF';
-        const colorActive: string = elementVideo.getAttribute('color-active') || '#FFFFFF';
-
-        // ==================================================
-        elements.applyStyles(styles.container, intIdentifiers.container);
-
-        // ==================================================
-        // Top Buttons
-        const elementTop: HTMLElement = document.createElement('div');
-        elementContainer.appendChild(elementTop);
-        if (elementTop.parentElement) {
-            elementTop.setAttribute('id', intIdentifiers.buttonsTop);
-        }
-        elements.applyStyles(styles.buttonsTop, intIdentifiers.buttonsTop);
-
-        // ==================================================
-        // Middle Buttons
-        const elementMiddle: HTMLElement = document.createElement('div');
-        elementContainer.appendChild(elementMiddle);
-        if (elementMiddle.parentElement) {
-            elementMiddle.setAttribute('id', intIdentifiers.buttonsMiddle);
-        }
-        elements.applyStyles(styles.buttonsMiddle, intIdentifiers.buttonsMiddle);
-
-        // ==================================================
-        // Bottom Buttons
-        const elementBottom: HTMLElement = document.createElement('div');
-        elementContainer.appendChild(elementBottom);
-        if (elementBottom.parentElement) {
-            elementBottom.setAttribute('id', intIdentifiers.buttonsBottom);
-        }
-        elements.applyStyles(styles.buttonsBottom, intIdentifiers.buttonsBottom);
-
-        // ==================================================
-        elements.applyAspectRatio(intIdentifiers, aspectRatio);
-
-        // ==================================================
-        elementVideo.volume = 0;
-        elementVideo.play();
-    });
-} catch (error) {
-    console.error(error);
+    }
 }
+

@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -22,42 +23,203 @@ var IOError = (function (_super) {
     }
     return IOError;
 }(Error));
-try {
-    var styles = void 0;
-    (function (styles) {
-        styles[styles["video"] = 0] = "video";
-        styles[styles["container"] = 1] = "container";
-        styles[styles["buttonsTop"] = 2] = "buttonsTop";
-        styles[styles["buttonsMiddle"] = 3] = "buttonsMiddle";
-        styles[styles["buttonsBottom"] = 4] = "buttonsBottom";
-    })(styles || (styles = {}));
-    var Utils_1 = (function () {
-        function Utils() {
+var styles;
+(function (styles) {
+    styles[styles["styles"] = 0] = "styles";
+    styles[styles["video"] = 1] = "video";
+    styles[styles["container"] = 2] = "container";
+    styles[styles["buttonsTop"] = 3] = "buttonsTop";
+    styles[styles["buttonsMiddle"] = 4] = "buttonsMiddle";
+    styles[styles["buttonsBottom"] = 5] = "buttonsBottom";
+})(styles || (styles = {}));
+var reloaders;
+(function (reloaders) {
+    reloaders[reloaders["styles"] = 0] = "styles";
+    reloaders[reloaders["aspectRatio"] = 1] = "aspectRatio";
+    reloaders[reloaders["videos"] = 2] = "videos";
+})(reloaders || (reloaders = {}));
+var WVP = (function () {
+    function WVP(apply, options) {
+        var _a, _b, _c, _d, _e, _f, _g;
+        if (options == undefined) {
+            options = {};
         }
-        Utils.prototype.randomHash = function (length) {
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var result = "";
-            for (var i = 0; i < length; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
+        this.options = {
+            apply: apply,
+            aspectRatio: {
+                horizontal: parseInt(((_a = options['aspectRatio']) !== null && _a !== void 0 ? _a : '16:9').split(':')[0]),
+                vertical: parseInt(((_b = options['aspectRatio']) !== null && _b !== void 0 ? _b : '16:9').split(':')[1]),
+            },
+            colorInactive: (_c = options['colorInactive']) !== null && _c !== void 0 ? _c : '#007AFF',
+            colorActive: (_d = options['colorActive']) !== null && _d !== void 0 ? _d : '#FFFFFF',
+            compatibility: (_e = options['compatibility']) !== null && _e !== void 0 ? _e : false,
+            autoplay: (_f = options['autoplay']) !== null && _f !== void 0 ? _f : true,
+            muted: (_g = options['muted']) !== null && _g !== void 0 ? _g : true,
         };
-        Utils.prototype.getStyles = function (stylesMap) {
-            var stylesString = '';
-            for (var key in stylesMap) {
-                if (stylesMap.hasOwnProperty(key)) {
-                    stylesString += "".concat(key, ": ").concat(stylesMap[key], ";");
+        this.identifiers = {
+            styles: "styles-".concat(this.randomHash(18)),
+            container: "container-".concat(this.randomHash(15)),
+            buttonsTop: "top-".concat(this.randomHash(21)),
+            buttonsMiddle: "middle-".concat(this.randomHash(18)),
+            buttonsBottom: "bottom-".concat(this.randomHash(18)),
+        };
+        console.log(this.identifiers);
+        this.init([
+            reloaders.styles,
+            reloaders.aspectRatio,
+            reloaders.videos,
+        ]);
+    }
+    Object.defineProperty(WVP.prototype, "aspectRatio", {
+        get: function () {
+            return "".concat(this.options.aspectRatio.horizontal, ":").concat(this.options.aspectRatio.vertical);
+        },
+        set: function (value) {
+            var tempAspectRatio = {
+                horizontal: parseInt(value.split(':')[0]),
+                vertical: parseInt(value.split(':')[1]),
+            };
+            if (this.options.aspectRatio == tempAspectRatio)
+                return;
+            this.options.aspectRatio = tempAspectRatio;
+            this.init([
+                reloaders.aspectRatio,
+            ]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(WVP.prototype, "colorInactive", {
+        get: function () {
+            return this.options.colorInactive;
+        },
+        set: function (value) {
+            if (this.options.colorInactive == value)
+                return;
+            this.options.colorInactive = value;
+            this.init([
+                reloaders.styles,
+            ]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(WVP.prototype, "colorActive", {
+        get: function () {
+            return this.options.colorActive;
+        },
+        set: function (value) {
+            if (this.options.colorActive == value)
+                return;
+            this.options.colorActive = value;
+            this.init([
+                reloaders.styles,
+            ]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(WVP.prototype, "compatibility", {
+        get: function () {
+            return this.options.compatibility;
+        },
+        set: function (value) {
+            if (this.options.compatibility == value)
+                return;
+            this.options.compatibility = value;
+            this.init([
+                reloaders.styles,
+            ]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(WVP.prototype, "autoplay", {
+        get: function () {
+            return this.options.autoplay;
+        },
+        set: function (value) {
+            if (this.options.autoplay == value)
+                return;
+            this.options.autoplay = value;
+            this.init([
+                reloaders.videos,
+            ]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(WVP.prototype, "muted", {
+        get: function () {
+            return this.options.muted;
+        },
+        set: function (value) {
+            if (this.options.muted == value)
+                return;
+            this.options.muted = value;
+            this.init([
+                reloaders.videos,
+            ]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    WVP.prototype.randomHash = function (length) {
+        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var result = "";
+        for (var i = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+    };
+    WVP.prototype.getStyles = function (styleId, styleMap) {
+        var styleString;
+        styleString = "#".concat(styleId, " {");
+        for (var key in styleMap) {
+            if (styleMap.hasOwnProperty(key)) {
+                if (this.options.compatibility) {
+                    styleString += "-moz-".concat(key, ": ").concat(styleMap[key], ";");
+                    styleString += "-ms-".concat(key, ": ").concat(styleMap[key], ";");
+                    styleString += "-o-".concat(key, ": ").concat(styleMap[key], ";");
+                    styleString += "-webkit-".concat(key, ": ").concat(styleMap[key], ";");
                 }
+                styleString += "".concat(key, ": ").concat(styleMap[key], ";");
             }
-            return stylesString;
-        };
-        return Utils;
-    }());
-    var Elements_1 = (function () {
-        function Elements() {
-            this.utils = new Utils_1();
         }
-        Elements.prototype.applyStyles = function (style, idElementStyle) {
+        styleString += '}';
+        return styleString;
+    };
+    WVP.prototype.setStyles = function (elementStyle, stringStyle) {
+        elementStyle.innerHTML += stringStyle;
+    };
+    WVP.prototype.applyAspectRatio = function () {
+        var stylesMap = {};
+        var elementContainer = document.getElementById(this.identifiers.container);
+        var totalWidth = elementContainer.parentElement.offsetWidth;
+        var totalHeight = totalWidth * this.options.aspectRatio.vertical / this.options.aspectRatio.horizontal;
+        var differenceHeight = totalHeight - window.innerHeight;
+        if (differenceHeight > 0) {
+            totalWidth = totalWidth - differenceHeight;
+            totalHeight = totalHeight - differenceHeight;
+        }
+        stylesMap['width'] = "".concat(totalWidth, "px");
+        var elementStyle = document.getElementById(this.identifiers.styles);
+        this.setStyles(elementStyle, this.getStyles(this.identifiers.buttonsTop, stylesMap));
+        this.setStyles(elementStyle, this.getStyles(this.identifiers.buttonsBottom, stylesMap));
+        stylesMap['top'] = "calc(".concat(totalHeight / 2, "px - 3rem);");
+        this.setStyles(elementStyle, this.getStyles(this.identifiers.buttonsMiddle, stylesMap));
+        delete stylesMap['top'];
+        stylesMap['height'] = "".concat(totalHeight, "px");
+        this.setStyles(elementStyle, this.getStyles(this.identifiers.container, stylesMap));
+    };
+    WVP.prototype.generateStyles = function () {
+        var _this = this;
+        var elementHead = document.head;
+        var elementStyles = document.createElement('style');
+        elementStyles.setAttribute('type', 'text/css');
+        elementStyles.setAttribute('id', this.identifiers.styles);
+        elementHead.appendChild(elementStyles);
+        var applyStyles = function (style, idElementStyle) {
             var stylesMap = {};
             switch (style) {
                 case styles.container:
@@ -70,7 +232,7 @@ try {
                     stylesMap['display'] = "block";
                     stylesMap['width'] = "100%";
                     stylesMap['height'] = "100%";
-                    stylesMap['z-index'] = "-999";
+                    stylesMap['z-index'] = "-99";
                     stylesMap['background-color'] = "black";
                     break;
                 case styles.buttonsTop:
@@ -78,115 +240,62 @@ try {
                 case styles.buttonsBottom:
                     stylesMap['position'] = "absolute";
                     stylesMap['display'] = "flex";
-                    stylesMap['height'] = "6rem";
                     stylesMap['right'] = "0";
                     stylesMap['left'] = "0";
-                    stylesMap['z-index'] = "999";
+                    stylesMap['z-index'] = "99";
+                    stylesMap['flex-direction'] = "row";
+                    stylesMap['justify-content'] = "center";
+                    stylesMap['width'] = "100%";
                     if (style === styles.buttonsTop) {
                         stylesMap['background-color'] = "#FF000080";
                         stylesMap['top'] = "0";
+                        stylesMap['align-items'] = "flex-end";
+                        stylesMap['min-height'] = "2rem";
+                        stylesMap['max-height'] = "6rem";
                     }
                     else if (style === styles.buttonsMiddle) {
                         stylesMap['background-color'] = "#00FF0080";
-                        stylesMap['bottom'] = "0";
+                        stylesMap['align-items'] = "center";
+                        stylesMap['height'] = "6rem";
                     }
                     else if (style === styles.buttonsBottom) {
                         stylesMap['background-color'] = "#0000FF80";
                         stylesMap['bottom'] = "0";
+                        stylesMap['align-items'] = "flex-start";
+                        stylesMap['min-height'] = "2rem";
+                        stylesMap['max-height'] = "6rem";
                     }
                     break;
             }
-            var elementStyled = document.getElementById(idElementStyle);
-            if (elementStyled == null)
-                throw new IOError("Error");
-            if (elementStyled && elementStyled.parentElement) {
-                elementStyled.setAttribute('style', this.utils.getStyles(stylesMap));
+            _this.setStyles(elementStyles, _this.getStyles(idElementStyle, stylesMap));
+        };
+        applyStyles(styles.video, this.options.apply);
+        applyStyles(styles.container, this.identifiers.container);
+        applyStyles(styles.buttonsTop, this.identifiers.buttonsTop);
+        applyStyles(styles.buttonsMiddle, this.identifiers.buttonsMiddle);
+        applyStyles(styles.buttonsBottom, this.identifiers.buttonsBottom);
+    };
+    WVP.prototype.init = function (reloader) {
+        var elementsVideo = document.querySelectorAll(this.options.apply);
+        if (elementsVideo == null)
+            return;
+        for (var index = 0; index < reloader.length; index++) {
+            var load = reloader[index];
+            switch (load) {
+                case reloaders.styles:
+                    this.generateStyles();
+                    break;
+                case reloaders.aspectRatio:
+                    this.applyAspectRatio();
+                    break;
+                case reloaders.videos:
+                    break;
             }
-        };
-        Elements.prototype.applyAspectRatio = function (identifier, aspect) {
-            var stylesMap = {};
-            var elementContainer = document.getElementById(identifier.container);
-            if (elementContainer == null)
-                throw new IOError("Error");
-            var totalWidth = elementContainer.parentElement.offsetWidth;
-            var totalHeight = totalWidth * aspect.vertical / aspect.horizontal;
-            while (totalHeight > window.innerHeight) {
-                totalWidth -= 1;
-                totalHeight = totalWidth * aspect.vertical / aspect.horizontal;
-            }
-            stylesMap['width'] = "".concat(totalWidth, "px");
-            var elementTop = document.getElementById(identifier.buttonsTop);
-            if (elementTop == null)
-                throw new IOError("Error");
-            elementTop.setAttribute('style', elementTop.getAttribute('style') + this.utils.getStyles(stylesMap));
-            var elementMiddle = document.getElementById(identifier.buttonsMiddle);
-            if (elementMiddle == null)
-                throw new IOError("Error");
-            elementMiddle.setAttribute('style', elementMiddle.getAttribute('style') + this.utils.getStyles(stylesMap) + "top: calc(".concat(totalHeight / 2, "px - 3rem);"));
-            var elementBottom = document.getElementById(identifier.buttonsBottom);
-            if (elementBottom == null)
-                throw new IOError("Error");
-            elementBottom.setAttribute('style', elementBottom.getAttribute('style') + this.utils.getStyles(stylesMap));
-            stylesMap['height'] = "".concat(totalHeight, "px");
-            elementContainer.setAttribute('style', elementContainer.getAttribute('style') + this.utils.getStyles(stylesMap));
-        };
-        return Elements;
-    }());
-    document.addEventListener('DOMContentLoaded', function () {
-        var utils = new Utils_1();
-        var elements = new Elements_1();
-        var intIdentifiers = {
-            video: 'WVP',
-            container: "c-".concat(utils.randomHash(26)),
-            buttonsTop: "bt-".concat(utils.randomHash(26)),
-            buttonsMiddle: "bm-".concat(utils.randomHash(26)),
-            buttonsBottom: "bb-".concat(utils.randomHash(26)),
-        };
-        var elementVideo = document.getElementById(intIdentifiers.video);
-        if (elementVideo == null)
-            throw new IOError("Error");
-        elementVideo.removeAttribute('controls');
-        elementVideo.addEventListener('loadedmetadata', function () {
-            elementVideo.controls = false;
-        });
-        var elementContainer = document.createElement('div');
-        if (elementVideo.parentElement) {
-            elementContainer.setAttribute('id', intIdentifiers.container);
-            elementVideo.parentElement.insertBefore(elementContainer, elementVideo);
-            elementContainer.appendChild(elementVideo);
         }
-        elements.applyStyles(styles.video, intIdentifiers.video);
-        var stringAspectRatio = elementVideo.getAttribute('aspect-ratio') || '16:9';
-        var aspectRatio = {
-            horizontal: parseInt(stringAspectRatio.split(':')[0]),
-            vertical: parseInt(stringAspectRatio.split(':')[1]),
-        };
-        var colorInactive = elementVideo.getAttribute('color-inactive') || '#007AFF';
-        var colorActive = elementVideo.getAttribute('color-active') || '#FFFFFF';
-        elements.applyStyles(styles.container, intIdentifiers.container);
-        var elementTop = document.createElement('div');
-        elementContainer.appendChild(elementTop);
-        if (elementTop.parentElement) {
-            elementTop.setAttribute('id', intIdentifiers.buttonsTop);
+        for (var index = 0; index < elementsVideo.length; index++) {
+            var elementVideo = elementsVideo[index];
+            console.log(elementVideo.getAttribute(''));
         }
-        elements.applyStyles(styles.buttonsTop, intIdentifiers.buttonsTop);
-        var elementMiddle = document.createElement('div');
-        elementContainer.appendChild(elementMiddle);
-        if (elementMiddle.parentElement) {
-            elementMiddle.setAttribute('id', intIdentifiers.buttonsMiddle);
-        }
-        elements.applyStyles(styles.buttonsMiddle, intIdentifiers.buttonsMiddle);
-        var elementBottom = document.createElement('div');
-        elementContainer.appendChild(elementBottom);
-        if (elementBottom.parentElement) {
-            elementBottom.setAttribute('id', intIdentifiers.buttonsBottom);
-        }
-        elements.applyStyles(styles.buttonsBottom, intIdentifiers.buttonsBottom);
-        elements.applyAspectRatio(intIdentifiers, aspectRatio);
-        elementVideo.volume = 0;
-        elementVideo.play();
-    });
-}
-catch (error) {
-    console.error(error);
-}
+    };
+    return WVP;
+}());
