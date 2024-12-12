@@ -1,8 +1,7 @@
 export declare enum styles {
-    styles = 0,
-    video = 1,
-    container = 2,
-    buttonsTop = 3,
-    buttonsMiddle = 4,
-    buttonsBottom = 5
+    video = 0,
+    container = 1,
+    buttonsTop = 2,
+    buttonsMiddle = 3,
+    buttonsBottom = 4
 }

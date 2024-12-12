@@ -1,19 +1,22 @@
-// Enum
+// Enums
 import { reloaders } from "./enums/reloaders";
 import { styles } from "./enums/styles";
-// Interface
+// Interfaces
 import intIdentifiers from "./interfaces/identifiers";
 import intAspectRatio from "./interfaces/aspect_ratio";
 import { intOptions } from "./interfaces/options"; "./interfaces/options";
 // Functions
 import Utils from "./class/utils";
 // Class
+import IOError from "./class/io_error";
+import Elements from "./class/elements";
 import Controls from "./class/controls";
 import Styles from "./class/styles";
 
 // ==================================================
 export class WVP {
     utils = new Utils();
+    styles: Styles;
 
     // ==================================================
     options: intOptions;
@@ -37,13 +40,14 @@ export class WVP {
             muted: options['muted'] ?? true,
         }
         this.identifiers = {
-            styles: `styles-${this.utils.hash(18)}`,
-            container: `container-${this.utils.hash(15)}`,
-            buttonsTop: `top-${this.utils.hash(21)}`,
-            buttonsMiddle: `middle-${this.utils.hash(18)}`,
-            buttonsBottom: `bottom-${this.utils.hash(18)}`,
+            video: this.utils.hash(28),
+            container: this.utils.hash(28),
+            buttonsTop: this.utils.hash(28),
+            buttonsMiddle: this.utils.hash(28),
+            buttonsBottom: this.utils.hash(28),
         };
-        console.log(this.identifiers);
+        this.styles = new Styles(this.identifiers);
+        this.init();
     }
 
     // ==================================================
@@ -81,4 +85,7 @@ export class WVP {
     }
 
     // ==================================================
+    private init() {
+        this.styles.build();
+    }
 }

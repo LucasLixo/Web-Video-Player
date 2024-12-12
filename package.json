@@ -5,9 +5,10 @@
   "scripts": {
     "watch:ts": "npx tsc --watch",
     "dev": "npm run watch:ts",
-    "build:ts": "npx tsc --target es5 || true",
-    "build:js": "node bundle.js || true",
-    "build": "npm run build:ts && npm run build:js"
+    "build:ts": "npx tsc --target es5",
+    "build:js": "node bundle.js",
+    "build": "npm run build:ts || true && npm run build:js || true",
+    "bundle": "npm run build:ts && npm run build:js"
   },
   "dependencies": {
     "esbuild": "^0.24.0"
