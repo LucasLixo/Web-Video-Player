@@ -1,8 +1,5 @@
 const esbuild = require('esbuild');
 
-const fs = require('fs');
-const path = require('path');
-
 const entryFile = './build/wvp.js';
 const outputBundle = './dist/wvp.js';
 const outputMinified = './dist/wvp.min.js';
@@ -31,9 +28,3 @@ esbuild.build({
     sourcemap: false,
     logLevel: 'info',
 }); */
-
-const inWvpMin = path.join(__dirname, './dist/wvp.js');
-
-const outWvpMin = path.join(__dirname, './example/wvp.js');
-
-fs.copyFileSync(inWvpMin, outWvpMin);

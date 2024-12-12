@@ -1,5 +1,6 @@
 "./interfaces/options";
 import Utils from "./class/utils";
+import Elements from "./class/elements";
 import Styles from "./class/styles";
 var WVP = (function () {
     function WVP(apply, options) {
@@ -21,13 +22,14 @@ var WVP = (function () {
             muted: (_g = options['muted']) !== null && _g !== void 0 ? _g : true,
         };
         this.identifiers = {
-            video: this.utils.hash(28),
+            video: apply,
             container: this.utils.hash(28),
             buttonsTop: this.utils.hash(28),
             buttonsMiddle: this.utils.hash(28),
             buttonsBottom: this.utils.hash(28),
         };
-        this.styles = new Styles(this.identifiers);
+        this.styles = new Styles(this.options.aspectRatio, this.identifiers);
+        this.elements = new Elements(this.options, this.identifiers);
         this.init();
     }
     Object.defineProperty(WVP.prototype, "colorInactive", {

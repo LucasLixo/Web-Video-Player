@@ -9,6 +9,6 @@ export default class Utils {
         for (let i: number = 0; i < length; i++) {
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-        return result;
+        return `WVP-${result}`;
     }
 }

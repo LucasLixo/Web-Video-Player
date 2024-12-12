@@ -17,6 +17,7 @@ import Styles from "./class/styles";
 class WVP {
     utils = new Utils();
     styles: Styles;
+    elements: Elements;
 
     // ==================================================
     options: intOptions;
@@ -29,6 +30,7 @@ class WVP {
         }
         this.options = {
             apply: apply,
+            // styleLocale: options['styleLocale'] ?? 'head',
             aspectRatio: {
                 horizontal: parseInt((options['aspectRatio'] ?? '16:9').split(':')[0]),
                 vertical: parseInt((options['aspectRatio'] ?? '16:9').split(':')[1]),
@@ -40,13 +42,14 @@ class WVP {
             muted: options['muted'] ?? true,
         }
         this.identifiers = {
-            video: this.utils.hash(28),
+            video: apply,
             container: this.utils.hash(28),
             buttonsTop: this.utils.hash(28),
             buttonsMiddle: this.utils.hash(28),
             buttonsBottom: this.utils.hash(28),
         };
-        this.styles = new Styles(this.identifiers);
+        this.styles = new Styles(this.options.aspectRatio, this.identifiers);
+        this.elements = new Elements(this.options, this.identifiers);
         this.init();
     }
 
