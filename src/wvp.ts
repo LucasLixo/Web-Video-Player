@@ -14,7 +14,7 @@ import Controls from "./class/controls";
 import Styles from "./class/styles";
 
 // ==================================================
-export class WVP {
+class WVP {
     utils = new Utils();
     styles: Styles;
 

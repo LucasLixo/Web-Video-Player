@@ -1,4 +1,5 @@
 const esbuild = require('esbuild');
+
 const fs = require('fs');
 const path = require('path');
 
@@ -15,9 +16,10 @@ esbuild.build({
     target: 'es5',
     // globalName: 'WVP',
     format: 'esm',
-    sourcemap: true,
+    sourcemap: false, // true,
+    logLevel: 'info',
 })
-esbuild.build({
+/* esbuild.build({
     entryPoints: [entryFile],
     outfile: outputMinified,
     bundle: true,
@@ -27,10 +29,11 @@ esbuild.build({
     // globalName: 'WVP',
     format: 'esm',
     sourcemap: false,
-});
+    logLevel: 'info',
+}); */
 
-const inWvpMin = path.join(__dirname, './dist/wvp.min.js');
+const inWvpMin = path.join(__dirname, './dist/wvp.js');
 
-const outWvpMin = path.join(__dirname, './example/wvp.min.js');
+const outWvpMin = path.join(__dirname, './example/wvp.js');
 
 fs.copyFileSync(inWvpMin, outWvpMin);

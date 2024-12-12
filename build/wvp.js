@@ -1,5 +1,6 @@
 "./interfaces/options";
 import Utils from "./class/utils";
+import Styles from "./class/styles";
 var WVP = (function () {
     function WVP(apply, options) {
         var _a, _b, _c, _d, _e, _f, _g;
@@ -20,13 +21,14 @@ var WVP = (function () {
             muted: (_g = options['muted']) !== null && _g !== void 0 ? _g : true,
         };
         this.identifiers = {
-            styles: "styles-".concat(this.utils.hash(18)),
-            container: "container-".concat(this.utils.hash(15)),
-            buttonsTop: "top-".concat(this.utils.hash(21)),
-            buttonsMiddle: "middle-".concat(this.utils.hash(18)),
-            buttonsBottom: "bottom-".concat(this.utils.hash(18)),
+            video: this.utils.hash(28),
+            container: this.utils.hash(28),
+            buttonsTop: this.utils.hash(28),
+            buttonsMiddle: this.utils.hash(28),
+            buttonsBottom: this.utils.hash(28),
         };
-        console.log(this.identifiers);
+        this.styles = new Styles(this.identifiers);
+        this.init();
     }
     Object.defineProperty(WVP.prototype, "colorInactive", {
         get: function () {
@@ -76,5 +78,8 @@ var WVP = (function () {
         enumerable: false,
         configurable: true
     });
+    WVP.prototype.init = function () {
+        this.styles.build();
+    };
     return WVP;
 }());
