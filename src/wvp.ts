@@ -7,6 +7,7 @@ import { intOptions } from "./interfaces/options"; "./interfaces/options";
 import IOError from "./class/io_error";
 import Elements from "./class/elements";
 import Styles from "./class/styles";
+import intButtons from "./interfaces/buttons";
 
 // ==================================================
 class WVP {
@@ -16,6 +17,7 @@ class WVP {
     // ==================================================
     options: intOptions;
     identifiers: intIdentifiers;
+    buttons: intButtons;
 
     // ==================================================
     constructor(apply: string, options?: Record<string, any>) {
@@ -24,10 +26,12 @@ class WVP {
         }
         this.options = {
             apply: apply,
+            backgroundColor: options['backgroundColor'] ?? 'transparent',
             colorInactive: options['colorInactive'] ?? '#FFFFFF',
             colorActive: options['colorActive'] ?? '#007AFF',
             autoplay: options['autoplay'] ?? true,
             muted: options['muted'] ?? true,
+            top: options['top'] ?? null,
         }
         this.identifiers = {
             all: 'wvp_all',
@@ -36,10 +40,14 @@ class WVP {
             top: 'wvp__top',
             middle: 'wvp__middle',
             bottom: 'wvp__bottom',
-            icons: 'wvp__icon',
+            icons: 'wvp__icons',
+            buttons: 'wvp__buttons'
         };
+        this.buttons = {
+            playPause: 'wvp__button__play_pause',
+        }
         this.styles = new Styles(this.options, this.identifiers);
-        this.elements = new Elements(this.options, this.identifiers);
+        this.elements = new Elements(this.options, this.identifiers, this.buttons);
         this.init();
     }
 
@@ -80,5 +88,6 @@ class WVP {
     // ==================================================
     private init() {
         this.styles.build();
+        this.elements.build();
     }
 }

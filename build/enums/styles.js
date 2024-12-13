@@ -7,4 +7,5 @@ export var styles;
     styles[styles["middle"] = 4] = "middle";
     styles[styles["bottom"] = 5] = "bottom";
     styles[styles["icons"] = 6] = "icons";
+    styles[styles["buttons"] = 7] = "buttons";
 })(styles || (styles = {}));

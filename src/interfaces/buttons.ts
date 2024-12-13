@@ -1,4 +1,4 @@
 // ==================================================
 export default interface intButtons {
-    playPause: HTMLElement,
+    playPause: string,
 }

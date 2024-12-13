@@ -13,6 +13,7 @@ var Styles = (function () {
             this.identifiers.middle,
             this.identifiers.bottom,
             this.identifiers.icons,
+            this.identifiers.buttons,
         ];
     }
     Styles.prototype.build = function () {
@@ -30,6 +31,7 @@ var Styles = (function () {
         this.applyMiddleStyles("#".concat(this.identifiers.middle));
         this.applyBottomStyles("#".concat(this.identifiers.bottom));
         this.applyIconsStyles("#".concat(this.identifiers.icons));
+        this.applyButtonStyles(".".concat(this.identifiers.buttons));
     };
     Styles.prototype.applyAllStyles = function (identifierElement) {
         var stylesMap = {
@@ -47,7 +49,7 @@ var Styles = (function () {
             'width': '100%',
             'height': '100%',
             'z-index': '-99',
-            'background-color': 'black',
+            'background-color': this.options.backgroundColor,
         };
         this.setStyles(styles.video, this.parseStyles(identifierElement, stylesMap));
     };
@@ -73,27 +75,19 @@ var Styles = (function () {
             'z-index': '99',
             'flex-direction': 'row',
             'justify-content': 'center',
-            'background-color': '#FF000080',
         };
         this.setStyles(styles.top, this.parseStyles(identifierElement, stylesMap));
     };
     Styles.prototype.applyMiddleStyles = function (identifierElement) {
         var stylesMap = {
             'position': 'absolute',
-            'display': 'block',
-            'width': '4rem',
-            'height': '4rem',
+            'width': '3rem',
+            'height': '3rem',
             'top': '50%',
             'left': '50%',
             'z-index': '99',
+            'transform': 'translate(-50%, -50%)',
             'background': this.options.colorActive,
-            'color': 'inherit',
-            'border': 'none',
-            'padding': '0',
-            'font': 'inherit',
-            'cursor': 'pointer',
-            'outline': 'inherit',
-            'touch-action': 'manipulation',
             'border-radius': '100%',
         };
         this.setStyles(styles.middle, this.parseStyles(identifierElement, stylesMap));
@@ -110,14 +104,27 @@ var Styles = (function () {
             'z-index': '99',
             'flex-direction': 'row',
             'justify-content': 'center',
-            'background-color': '#0000FF80',
         };
         this.setStyles(styles.bottom, this.parseStyles(identifierElement, stylesMap));
     };
+    Styles.prototype.applyButtonStyles = function (identifierElement) {
+        var stylesMap = {
+            'display': 'block',
+            'color': 'inherit',
+            'border': 'none',
+            'padding': '0',
+            'margin': '0',
+            'font': 'inherit',
+            'cursor': 'pointer',
+            'outline': 'inherit',
+            'touch-action': 'manipulation',
+            'flex-shrink': '0',
+        };
+        this.setStyles(styles.buttons, this.parseStyles(identifierElement, stylesMap));
+    };
     Styles.prototype.applyIconsStyles = function (identifierElement) {
         var stylesMap = {
-            'width': '3rem',
-            'height': '3rem',
+            'display': 'block',
             'margin': 'auto',
             'fill': this.options.colorInactive,
         };

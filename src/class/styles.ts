@@ -27,6 +27,7 @@ export default class Styles {
             this.identifiers.middle,
             this.identifiers.bottom,
             this.identifiers.icons,
+            this.identifiers.buttons,
         ];
     }
 
@@ -52,6 +53,7 @@ export default class Styles {
         this.applyMiddleStyles(`#${this.identifiers.middle}`);
         this.applyBottomStyles(`#${this.identifiers.bottom}`);
         this.applyIconsStyles(`#${this.identifiers.icons}`);
+        this.applyButtonStyles(`.${this.identifiers.buttons}`);
     }
 
     // ==================================================
@@ -80,7 +82,7 @@ export default class Styles {
             'width': '100%',
             'height': '100%',
             'z-index': '-99',
-            'background-color': 'black',
+            'background-color': this.options.backgroundColor,
         };
 
         this.setStyles(styles.video, this.parseStyles(identifierElement, stylesMap));
@@ -118,7 +120,6 @@ export default class Styles {
             'z-index': '99',
             'flex-direction': 'row',
             'justify-content': 'center',
-            'background-color': '#FF000080',
         };
 
         this.setStyles(styles.top, this.parseStyles(identifierElement, stylesMap));
@@ -131,20 +132,13 @@ export default class Styles {
     private applyMiddleStyles(identifierElement: string): void {
         const stylesMap: Record<string, string> = {
             'position': 'absolute',
-            'display': 'block',
-            'width': '4rem',
-            'height': '4rem',
+            'width': '3rem',
+            'height': '3rem',
             'top': '50%',
             'left': '50%',
             'z-index': '99',
+            'transform':'translate(-50%, -50%)',
             'background': this.options.colorActive,
-            'color': 'inherit',
-            'border': 'none',
-            'padding': '0',
-            'font': 'inherit',
-            'cursor': 'pointer',
-            'outline': 'inherit',
-            'touch-action': 'manipulation',
             'border-radius': '100%',
         };
 
@@ -167,10 +161,30 @@ export default class Styles {
             'z-index': '99',
             'flex-direction': 'row',
             'justify-content': 'center',
-            'background-color': '#0000FF80',
         };
 
         this.setStyles(styles.bottom, this.parseStyles(identifierElement, stylesMap));
+    }
+
+    // ==================================================
+    /**
+     * applyButtonStyles
+    */
+    private applyButtonStyles(identifierElement: string): void {
+        const stylesMap: Record<string, string> = {
+            'display': 'block',
+            'color': 'inherit',
+            'border': 'none',
+            'padding': '0',
+            'margin': '0',
+            'font': 'inherit',
+            'cursor': 'pointer',
+            'outline': 'inherit',
+            'touch-action': 'manipulation',
+            'flex-shrink': '0',
+        };
+
+        this.setStyles(styles.buttons, this.parseStyles(identifierElement, stylesMap));
     }
 
     // ==================================================
@@ -179,8 +193,7 @@ export default class Styles {
     */
     private applyIconsStyles(identifierElement: string): void {
         const stylesMap: Record<string, string> = {
-            'width': '3rem',
-            'height': '3rem',
+            'display': 'block',
             'margin': 'auto',
             'fill': this.options.colorInactive,
         };

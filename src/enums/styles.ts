@@ -7,4 +7,5 @@ export enum styles {
     middle,
     bottom,
     icons,
+    buttons,
 }

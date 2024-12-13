@@ -3,16 +3,18 @@ import Elements from "./class/elements";
 import Styles from "./class/styles";
 var WVP = (function () {
     function WVP(apply, options) {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e, _f;
         if (options == undefined) {
             options = {};
         }
         this.options = {
             apply: apply,
-            colorInactive: (_a = options['colorInactive']) !== null && _a !== void 0 ? _a : '#FFFFFF',
-            colorActive: (_b = options['colorActive']) !== null && _b !== void 0 ? _b : '#007AFF',
-            autoplay: (_c = options['autoplay']) !== null && _c !== void 0 ? _c : true,
-            muted: (_d = options['muted']) !== null && _d !== void 0 ? _d : true,
+            backgroundColor: (_a = options['backgroundColor']) !== null && _a !== void 0 ? _a : 'transparent',
+            colorInactive: (_b = options['colorInactive']) !== null && _b !== void 0 ? _b : '#FFFFFF',
+            colorActive: (_c = options['colorActive']) !== null && _c !== void 0 ? _c : '#007AFF',
+            autoplay: (_d = options['autoplay']) !== null && _d !== void 0 ? _d : true,
+            muted: (_e = options['muted']) !== null && _e !== void 0 ? _e : true,
+            top: (_f = options['top']) !== null && _f !== void 0 ? _f : null,
         };
         this.identifiers = {
             all: 'wvp_all',
@@ -21,10 +23,14 @@ var WVP = (function () {
             top: 'wvp__top',
             middle: 'wvp__middle',
             bottom: 'wvp__bottom',
-            icons: 'wvp__icon',
+            icons: 'wvp__icons',
+            buttons: 'wvp__buttons'
+        };
+        this.buttons = {
+            playPause: 'wvp__button__play_pause',
         };
         this.styles = new Styles(this.options, this.identifiers);
-        this.elements = new Elements(this.options, this.identifiers);
+        this.elements = new Elements(this.options, this.identifiers, this.buttons);
         this.init();
     }
     Object.defineProperty(WVP.prototype, "colorInactive", {
@@ -77,6 +83,7 @@ var WVP = (function () {
     });
     WVP.prototype.init = function () {
         this.styles.build();
+        this.elements.build();
     };
     return WVP;
 }());

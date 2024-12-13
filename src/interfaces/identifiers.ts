@@ -7,4 +7,5 @@ export default interface intIdentifiers {
     middle: string,
     bottom: string,
     icons: string,
+    buttons: string,
 }

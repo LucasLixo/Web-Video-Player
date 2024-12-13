@@ -5,8 +5,8 @@
   "scripts": {
     "watch:ts": "npx tsc --watch",
     "dev": "npm run watch:ts",
-    "build:ts": "npx tsc --target es5 || echo '0_0'",
-    "build:js": "node bundle.js || echo '0_0'",
+    "build:ts": "npx tsc --target es5 || echo 0_0",
+    "build:js": "node bundle.js || echo 0_0",
     "build:ts:err": "npx tsc --target es5",
     "build:js:err": "node bundle.js",
     "build": "npm run build:ts && npm run build:js",
