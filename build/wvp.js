@@ -1,34 +1,29 @@
 "./interfaces/options";
-import Utils from "./class/utils";
 import Elements from "./class/elements";
 import Styles from "./class/styles";
 var WVP = (function () {
     function WVP(apply, options) {
-        var _a, _b, _c, _d, _e, _f, _g;
-        this.utils = new Utils();
+        var _a, _b, _c, _d;
         if (options == undefined) {
             options = {};
         }
         this.options = {
             apply: apply,
-            aspectRatio: {
-                horizontal: parseInt(((_a = options['aspectRatio']) !== null && _a !== void 0 ? _a : '16:9').split(':')[0]),
-                vertical: parseInt(((_b = options['aspectRatio']) !== null && _b !== void 0 ? _b : '16:9').split(':')[1]),
-            },
-            colorInactive: (_c = options['colorInactive']) !== null && _c !== void 0 ? _c : '#007AFF',
-            colorActive: (_d = options['colorActive']) !== null && _d !== void 0 ? _d : '#FFFFFF',
-            compatibility: (_e = options['compatibility']) !== null && _e !== void 0 ? _e : false,
-            autoplay: (_f = options['autoplay']) !== null && _f !== void 0 ? _f : true,
-            muted: (_g = options['muted']) !== null && _g !== void 0 ? _g : true,
+            colorInactive: (_a = options['colorInactive']) !== null && _a !== void 0 ? _a : '#FFFFFF',
+            colorActive: (_b = options['colorActive']) !== null && _b !== void 0 ? _b : '#007AFF',
+            autoplay: (_c = options['autoplay']) !== null && _c !== void 0 ? _c : true,
+            muted: (_d = options['muted']) !== null && _d !== void 0 ? _d : true,
         };
         this.identifiers = {
+            all: 'wvp_all',
             video: apply,
-            container: this.utils.hash(28),
-            buttonsTop: this.utils.hash(28),
-            buttonsMiddle: this.utils.hash(28),
-            buttonsBottom: this.utils.hash(28),
+            container: 'wvp__container',
+            top: 'wvp__top',
+            middle: 'wvp__middle',
+            bottom: 'wvp__bottom',
+            icons: 'wvp__icon',
         };
-        this.styles = new Styles(this.options.aspectRatio, this.identifiers);
+        this.styles = new Styles(this.options, this.identifiers);
         this.elements = new Elements(this.options, this.identifiers);
         this.init();
     }

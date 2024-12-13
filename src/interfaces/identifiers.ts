@@ -1,8 +1,10 @@
 // ==================================================
 export default interface intIdentifiers {
+    all: string,
     video: string,
     container: string,
-    buttonsTop: string,
-    buttonsMiddle: string,
-    buttonsBottom: string,
+    top: string,
+    middle: string,
+    bottom: string,
+    icons: string,
 }

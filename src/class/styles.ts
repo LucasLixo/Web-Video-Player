@@ -1,30 +1,31 @@
 import { styles } from "../enums/styles";
-import intAspectRatio from "../interfaces/aspect_ratio";
 import intIdentifiers from "../interfaces/identifiers";
+import { intOptions } from "../interfaces/options";
 import IOError from "./io_error";
 
 export default class Styles {
     containerStyle: HTMLElement;
 
     // ==================================================
-    aspectRatio:intAspectRatio ;
-
+    options: intOptions;
     identifiers: intIdentifiers;
+
     arrayIdentifiers: string[];
 
     // ==================================================
-    constructor(aspectRatio: intAspectRatio, identifiers: intIdentifiers) {
+    constructor(options: intOptions, identifiers: intIdentifiers) {
         this.containerStyle = document.head as HTMLElement;
 
-        this.aspectRatio = aspectRatio;
-
         this.identifiers = identifiers;
+        this.options = options;
+
         this.arrayIdentifiers = [
+            this.identifiers.all,
             this.identifiers.video,
             this.identifiers.container,
-            this.identifiers.buttonsTop,
-            this.identifiers.buttonsMiddle,
-            this.identifiers.buttonsBottom,
+            this.identifiers.top,
+            this.identifiers.middle,
+            this.identifiers.bottom,
         ];
     }
 
@@ -41,92 +42,154 @@ export default class Styles {
             style.setAttribute('key', identifier);
             this.containerStyle.appendChild(style);
         }
-        this.applyDefaultStyles(styles.video, this.identifiers.video);
-        this.applyDefaultStyles(styles.container, `#${this.identifiers.container}`);
-        this.applyDefaultStyles(styles.buttonsTop, `#${this.identifiers.buttonsTop}`);
-        this.applyDefaultStyles(styles.buttonsMiddle, `#${this.identifiers.buttonsMiddle}`);
-        this.applyDefaultStyles(styles.buttonsBottom, `#${this.identifiers.buttonsBottom}`);
-        this.applyAspectRatio();
+
+        this.applyAllStyles(`${this.identifiers.video}, #${this.identifiers.container}, #${this.identifiers.top}, #${this.identifiers.middle}, #${this.identifiers.bottom}`);
+        // , #${this.identifiers.icons}
+        this.applyVideoStyles(this.identifiers.video);
+        this.applyContainerStyles(`#${this.identifiers.container}`);
+        this.applyTopStyles(`#${this.identifiers.top}`);
+        this.applyMiddleStyles(`#${this.identifiers.middle}`);
+        this.applyBottomStyles(`#${this.identifiers.bottom}`);
+        this.applyIconsStyles(`#${this.identifiers.icons}`);
     }
 
     // ==================================================
     /**
-     * rebuild
+     * applyVideoStyles
     */
-    public rebuild() {
-        for (let index = 0; index < this.arrayIdentifiers.length; index++) {
-            const identifier: string = this.arrayIdentifiers[index];
+    private applyAllStyles(identifierElement: string): void {
+        const stylesMap: Record<string, string> = {
+            'margin': '0',
+            'padding': '0',
+            'box-sizing': 'inherit',
+            'text-shadow': 'none',
+            'direction': 'ltr',
+        };
 
-            const styleElement: HTMLElement | null = document.querySelector('style[key="' + identifier + '"]') as HTMLElement | null;
-            if (styleElement == null) {
-                new IOError("Error: " + 'style[key="' + identifier + '"]' + " doesn't exist!");
-            }
-            styleElement?.remove();
-        }
-
-        this.build();
+        this.setStyles(styles.all, this.parseStyles(identifierElement, stylesMap));
     }
 
     // ==================================================
     /**
-     * applyDefaultStyles
+     * applyVideoStyles
     */
-    private applyDefaultStyles(style: styles, identifierElement: string): void {
-        var stylesMap: Record<string, string> = {};
+    private applyVideoStyles(identifierElement: string): void {
+        const stylesMap: Record<string, string> = {
+            'display': 'block',
+            'width': '100%',
+            'height': '100%',
+            'z-index': '-99',
+            'background-color': 'black',
+        };
 
-        switch (style) {
-            case styles.container:
-                stylesMap['position'] = "relative";
-                stylesMap['display'] = "flex";
-                stylesMap['flex-direction'] = "column";
-                break;
-            case styles.video:
-                stylesMap['position'] = "absolute";
-                stylesMap['display'] = "block";
-                stylesMap['width'] = "100%";
-                stylesMap['height'] = "100%";
-                stylesMap['z-index'] = "-99";
-                stylesMap['background-color'] = "black";
-                break;
-            case styles.buttonsTop:
-            case styles.buttonsMiddle:
-            case styles.buttonsBottom:
-                stylesMap['position'] = "absolute";
-                stylesMap['display'] = "flex";
-                stylesMap['right'] = "0";
-                stylesMap['left'] = "0";
-                stylesMap['z-index'] = "99";
-                stylesMap['flex-direction'] = "row";
-                stylesMap['justify-content'] = "center";
-                stylesMap['width'] = "100%";
-                if (style === styles.buttonsTop) {
-                    stylesMap['background-color'] = "#FF000080";
-                    stylesMap['top'] = "0";
-                    stylesMap['align-items'] = "flex-end";
-                    stylesMap['min-height'] = "2rem";
-                    stylesMap['max-height'] = "6rem";
-                } else if (style === styles.buttonsMiddle) {
-                    stylesMap['background-color'] = "#00FF0080";
-                    stylesMap['align-items'] = "center";
-                    stylesMap['height'] = "6rem";
-                } else if (style === styles.buttonsBottom) {
-                    stylesMap['background-color'] = "#0000FF80";
-                    stylesMap['bottom'] = "0";
-                    stylesMap['align-items'] = "flex-start";
-                    stylesMap['min-height'] = "2rem";
-                    stylesMap['max-height'] = "6rem";
-                }
-                break;
-        }
-
-        this.setStyles(style, this.getStyles(identifierElement, stylesMap));
+        this.setStyles(styles.video, this.parseStyles(identifierElement, stylesMap));
     }
 
     // ==================================================
     /**
-     * getStyles
+     * applyContainerStyles
     */
-    private getStyles(styleId: string, styleMap: Record<string, string>, compatibility: boolean = false): string {
+    private applyContainerStyles(identifierElement: string): void {
+        const stylesMap: Record<string, string> = {
+            'position': 'relative',
+            'display': 'block',
+            'max-width': '100%',
+            'min-width': '240px',
+            'height': 'fit-content',
+        };
+
+        this.setStyles(styles.container, this.parseStyles(identifierElement, stylesMap));
+    }
+
+    // ==================================================
+    /**
+     * applyTopStyles
+    */
+    private applyTopStyles(identifierElement: string): void {
+        const stylesMap: Record<string, string> = {
+            'position': 'absolute',
+            'display': 'flex',
+            'width': '100%',
+            'height': 'fit-content',
+            'right': '0',
+            'left': '0',
+            'top': '0',
+            'z-index': '99',
+            'flex-direction': 'row',
+            'justify-content': 'center',
+            'background-color': '#FF000080',
+        };
+
+        this.setStyles(styles.top, this.parseStyles(identifierElement, stylesMap));
+    }
+
+    // ==================================================
+    /**
+     * applyMiddleStyles
+    */
+    private applyMiddleStyles(identifierElement: string): void {
+        const stylesMap: Record<string, string> = {
+            'position': 'absolute',
+            'display': 'block',
+            'width': '2rem',
+            'height': '2rem',
+            'top': '50%',
+            'left': '50%',
+            'z-index': '99',
+            'background': 'none',
+            'color': 'inherit',
+            'border': 'none',
+            'padding': '0',
+            'font': 'inherit',
+            'cursor': 'pointer',
+            'outline': 'inherit',
+
+            'touch-action': 'manipulation',
+        };
+
+        this.setStyles(styles.middle, this.parseStyles(identifierElement, stylesMap));
+    }
+
+    // ==================================================
+    /**
+     * applyBottomStyles
+    */
+    private applyBottomStyles(identifierElement: string): void {
+        const stylesMap: Record<string, string> = {
+            'position': 'absolute',
+            'display': 'flex',
+            'width': '100%',
+            'height': 'fit-content',
+            'right': '0',
+            'left': '0',
+            'bottom': '0',
+            'z-index': '99',
+            'flex-direction': 'row',
+            'justify-content': 'center',
+            'background-color': '#0000FF80',
+        };
+
+        this.setStyles(styles.bottom, this.parseStyles(identifierElement, stylesMap));
+    }
+
+    // ==================================================
+    /**
+     * applyIconsStyles
+    */
+    private applyIconsStyles(identifierElement: string): void {
+        const stylesMap: Record<string, string> = {
+            'width': '100%',
+            'height': '100%',
+        };
+
+        this.setStyles(styles.bottom, this.parseStyles(identifierElement, stylesMap));
+    }
+
+    // ==================================================
+    /**
+     * parseStyles
+    */
+    private parseStyles(styleId: string, styleMap: Record<string, string>, compatibility: boolean = true): string {
         var styleString: string;
 
         styleString = `${styleId} {`;
@@ -152,7 +215,7 @@ export default class Styles {
     */
     private setStyles(watchStyle: styles, stringStyle: string): void {
         const identifier: string = this.arrayIdentifiers[watchStyle];
-        
+
         const styleElement: HTMLElement | null = document.querySelector('style[key="' + identifier + '"]') as HTMLElement | null;
         if (styleElement == null) {
             new IOError("Error: " + 'style[key="' + identifier + '"]' + " doesn't exist!");
@@ -166,41 +229,11 @@ export default class Styles {
     */
     private addStyles(watchStyle: styles, stringStyle: string): void {
         const identifier: string = this.arrayIdentifiers[watchStyle];
-        
+
         const styleElement: HTMLElement | null = document.querySelector('style[key="' + identifier + '"]') as HTMLElement | null;
         if (styleElement == null) {
             new IOError("Error: " + 'style[key="' + identifier + '"]' + " doesn't exist!");
         }
         styleElement!.innerHTML += stringStyle;
-    }
-
-    // ==================================================
-    private applyAspectRatio: Function = (): void => {
-        var stylesMap: Record<string, string> = {};
-
-        const elementContainer: HTMLElement | null = document.getElementById(this.identifiers.container) as HTMLElement | null;
-        if (elementContainer == null) throw new IOError("Error");
-
-        var totalWidth: number = elementContainer!.parentElement!.offsetWidth;
-        var totalHeight: number = totalWidth * this.aspectRatio.vertical / this.aspectRatio.horizontal;
-
-        const differenceHeight = totalHeight - window.innerHeight;
-        if (differenceHeight > 0) {
-            totalWidth = totalWidth - differenceHeight;
-            totalHeight = totalHeight - differenceHeight;
-        }
-
-        stylesMap['width'] = `${totalWidth}px`;
-
-        this.addStyles(styles.buttonsTop, this.getStyles(`#${this.identifiers.buttonsTop}`, stylesMap));
-        this.addStyles(styles.buttonsBottom, this.getStyles(`#${this.identifiers.buttonsBottom}`, stylesMap));
-
-        stylesMap['top'] = `calc(${totalHeight / 2}px - 3rem);`;
-        this.addStyles(styles.buttonsMiddle, this.getStyles(`#${this.identifiers.buttonsMiddle}`, stylesMap));
-        delete stylesMap['top'];
-
-        stylesMap['height'] = `${totalHeight}px`;
-
-        this.addStyles(styles.container, this.getStyles(`#${this.identifiers.container}`, stylesMap));
     }
 }

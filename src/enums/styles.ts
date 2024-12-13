@@ -1,8 +1,10 @@
 // ==================================================
 export enum styles {
+    all,
     video,
     container,
-    buttonsTop,
-    buttonsMiddle,
-    buttonsBottom,
+    top,
+    middle,
+    bottom,
+    icons,
 }

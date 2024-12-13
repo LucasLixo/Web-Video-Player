@@ -1,12 +1,8 @@
 // Enums
-import { reloaders } from "./enums/reloaders";
 import { styles } from "./enums/styles";
 // Interfaces
 import intIdentifiers from "./interfaces/identifiers";
-import intAspectRatio from "./interfaces/aspect_ratio";
 import { intOptions } from "./interfaces/options"; "./interfaces/options";
-// Functions
-import Utils from "./class/utils";
 // Class
 import IOError from "./class/io_error";
 import Elements from "./class/elements";
@@ -15,7 +11,6 @@ import Styles from "./class/styles";
 
 // ==================================================
 class WVP {
-    utils = new Utils();
     styles: Styles;
     elements: Elements;
 
@@ -30,25 +25,21 @@ class WVP {
         }
         this.options = {
             apply: apply,
-            // styleLocale: options['styleLocale'] ?? 'head',
-            aspectRatio: {
-                horizontal: parseInt((options['aspectRatio'] ?? '16:9').split(':')[0]),
-                vertical: parseInt((options['aspectRatio'] ?? '16:9').split(':')[1]),
-            },
-            colorInactive: options['colorInactive'] ?? '#007AFF',
-            colorActive: options['colorActive'] ?? '#FFFFFF',
-            compatibility: options['compatibility'] ?? false,
+            colorInactive: options['colorInactive'] ?? '#FFFFFF',
+            colorActive: options['colorActive'] ?? '#007AFF',
             autoplay: options['autoplay'] ?? true,
             muted: options['muted'] ?? true,
         }
         this.identifiers = {
+            all: 'wvp_all',
             video: apply,
-            container: this.utils.hash(28),
-            buttonsTop: this.utils.hash(28),
-            buttonsMiddle: this.utils.hash(28),
-            buttonsBottom: this.utils.hash(28),
+            container: 'wvp__container',
+            top: 'wvp__top',
+            middle: 'wvp__middle',
+            bottom: 'wvp__bottom',
+            icons: 'wvp__icon',
         };
-        this.styles = new Styles(this.options.aspectRatio, this.identifiers);
+        this.styles = new Styles(this.options, this.identifiers);
         this.elements = new Elements(this.options, this.identifiers);
         this.init();
     }
