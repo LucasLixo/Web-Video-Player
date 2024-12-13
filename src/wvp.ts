@@ -6,7 +6,6 @@ import { intOptions } from "./interfaces/options"; "./interfaces/options";
 // Class
 import IOError from "./class/io_error";
 import Elements from "./class/elements";
-import Controls from "./class/controls";
 import Styles from "./class/styles";
 
 // ==================================================

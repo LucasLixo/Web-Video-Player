@@ -12,6 +12,7 @@ var Styles = (function () {
             this.identifiers.top,
             this.identifiers.middle,
             this.identifiers.bottom,
+            this.identifiers.icons,
         ];
     }
     Styles.prototype.build = function () {
@@ -80,12 +81,12 @@ var Styles = (function () {
         var stylesMap = {
             'position': 'absolute',
             'display': 'block',
-            'width': '2rem',
-            'height': '2rem',
+            'width': '4rem',
+            'height': '4rem',
             'top': '50%',
             'left': '50%',
             'z-index': '99',
-            'background': 'none',
+            'background': this.options.colorActive,
             'color': 'inherit',
             'border': 'none',
             'padding': '0',
@@ -93,6 +94,7 @@ var Styles = (function () {
             'cursor': 'pointer',
             'outline': 'inherit',
             'touch-action': 'manipulation',
+            'border-radius': '100%',
         };
         this.setStyles(styles.middle, this.parseStyles(identifierElement, stylesMap));
     };
@@ -114,10 +116,12 @@ var Styles = (function () {
     };
     Styles.prototype.applyIconsStyles = function (identifierElement) {
         var stylesMap = {
-            'width': '100%',
-            'height': '100%',
+            'width': '3rem',
+            'height': '3rem',
+            'margin': 'auto',
+            'fill': this.options.colorInactive,
         };
-        this.setStyles(styles.bottom, this.parseStyles(identifierElement, stylesMap));
+        this.setStyles(styles.icons, this.parseStyles(identifierElement, stylesMap));
     };
     Styles.prototype.parseStyles = function (styleId, styleMap, compatibility) {
         if (compatibility === void 0) { compatibility = true; }

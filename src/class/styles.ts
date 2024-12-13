@@ -26,6 +26,7 @@ export default class Styles {
             this.identifiers.top,
             this.identifiers.middle,
             this.identifiers.bottom,
+            this.identifiers.icons,
         ];
     }
 
@@ -131,20 +132,20 @@ export default class Styles {
         const stylesMap: Record<string, string> = {
             'position': 'absolute',
             'display': 'block',
-            'width': '2rem',
-            'height': '2rem',
+            'width': '4rem',
+            'height': '4rem',
             'top': '50%',
             'left': '50%',
             'z-index': '99',
-            'background': 'none',
+            'background': this.options.colorActive,
             'color': 'inherit',
             'border': 'none',
             'padding': '0',
             'font': 'inherit',
             'cursor': 'pointer',
             'outline': 'inherit',
-
             'touch-action': 'manipulation',
+            'border-radius': '100%',
         };
 
         this.setStyles(styles.middle, this.parseStyles(identifierElement, stylesMap));
@@ -178,11 +179,13 @@ export default class Styles {
     */
     private applyIconsStyles(identifierElement: string): void {
         const stylesMap: Record<string, string> = {
-            'width': '100%',
-            'height': '100%',
+            'width': '3rem',
+            'height': '3rem',
+            'margin': 'auto',
+            'fill': this.options.colorInactive,
         };
 
-        this.setStyles(styles.bottom, this.parseStyles(identifierElement, stylesMap));
+        this.setStyles(styles.icons, this.parseStyles(identifierElement, stylesMap));
     }
 
     // ==================================================
