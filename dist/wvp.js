@@ -10,7 +10,6 @@ var Controls = function() {
       elementVideo.controls = false;
     });
     this.buttons.playPause.addEventListener("click", this.togglePlayPause);
-    console.log("init");
   }
   Controls2.prototype.togglePlayPause = function() {
     if (this.elementVideo.paused) {
