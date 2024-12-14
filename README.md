@@ -1,4 +1,4 @@
-# [Web-Video-Player](Web-Video-Player.js)
+# [Web-Video-Player](dist/wvp.js)
 
 <img src="fastlane/screenshot/screenshot (1).png" align="center">
 
