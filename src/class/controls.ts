@@ -1,4 +1,6 @@
 // Interfaces
+import intIdentifiersId from "../interfaces/identifiers_id";
+import intIdentifiersClass from "../interfaces/identifiers_class";
 import intActions from "../interfaces/actions";
 import intOptions from "../interfaces/options";
 import intIconsPath from "../interfaces/icons_path";
@@ -12,6 +14,8 @@ export default class Controls {
     private elementVideo: HTMLVideoElement;
 
     // ==================================================
+    private identifiersId: intIdentifiersId;
+    private identifiersClass: intIdentifiersClass;
     private actions: intActions;
     private iconsPath: intIconsPath;
 
@@ -22,6 +26,8 @@ export default class Controls {
     constructor(
         elementContainer: HTMLDivElement,
         elementVideo: HTMLVideoElement,
+        identifiersId: intIdentifiersId,
+        identifiersClass: intIdentifiersClass,
         options: intOptions,
         actions: intActions,
         iconsPath: intIconsPath,
@@ -29,6 +35,8 @@ export default class Controls {
         this.elementContainer = elementContainer;
         this.elementVideo = elementVideo;
 
+        this.identifiersId = identifiersId;
+        this.identifiersClass = identifiersClass;
         this.actions = actions;
         this.iconsPath = iconsPath;
 
@@ -50,6 +58,7 @@ export default class Controls {
     // ==================================================
     private build(): void {
         this.buildConfig();
+        this.buildFading();
         this.buildPlayPause();
         this.buildFullscreen();
         this.buildPictureInPicture();
@@ -58,6 +67,7 @@ export default class Controls {
         this.buildDurationTime();
         this.buildCurrentTime();
         this.buildRangerProguess();
+        this.buildObserver();
     }
 
     // ==================================================
@@ -65,7 +75,57 @@ export default class Controls {
         this.elementVideo.removeAttribute('controls');
         this.elementVideo.controls = false;
         this.elementVideo.currentTime = this.controls.current;
+        this.elementVideo.setAttribute('playsinline', '');
+        this.elementVideo.setAttribute('controlslist', 'nodownload noremoteplayback');
+        this.elementVideo.addEventListener('contextmenu', (event: MouseEvent) => {
+            event.preventDefault();
+        });
+        if (this.controls.playing) {
+            this.elementVideo.setAttribute('autoplay', '');
+        } else {
+            this.elementVideo.removeAttribute('autoplay');
+        }
+        if (!this.controls.volume) {
+            this.elementVideo.setAttribute('muted', '');
+        } else {
+            this.elementVideo.removeAttribute('muted');
+        }
     }
+
+    // ==================================================
+    private buildFading: Function = (): void => {
+        const allContainers: HTMLElement[] = [
+            document.getElementById(this.identifiersId.top) as HTMLElement,
+            document.getElementById(this.identifiersId.middle) as HTMLElement,
+            document.getElementById(this.identifiersId.bottom) as HTMLElement,
+        ];
+
+        let hideTimeout: ReturnType<typeof setTimeout> | null = null;
+
+        const hideControls: Function = (): void => {
+            if (!this.elementVideo.paused) {
+                allContainers.forEach((container) => {
+                    container.classList.add(this.identifiersClass.fading);
+                    this.elementContainer.classList.add(this.identifiersClass.cursorHide);
+                });
+            }
+        };
+
+        const showControls: Function = (): void => {
+            allContainers.forEach((container) => {
+                container.classList.remove(this.identifiersClass.fading);
+                this.elementContainer.classList.remove(this.identifiersClass.cursorHide);
+            });
+            if (hideTimeout) clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(hideControls, 2500);
+        };
+
+        this.elementContainer.addEventListener('mousemove', () => {
+            showControls();
+        });
+
+        showControls();
+    };
 
     // ==================================================
     private buildPlayPause: Function = (): void => {
@@ -75,14 +135,6 @@ export default class Controls {
             new IOError("Is empty Play/Pause.");
             return;
         }
-
-        function handlePlayPause(videoElement: HTMLVideoElement): void {
-            if (videoElement.paused) {
-                videoElement.play();
-            } else {
-                videoElement.pause();
-            }
-        };
 
         this.elementVideo.addEventListener('pause', () => {
             this.controls.playing = false;
@@ -105,11 +157,11 @@ export default class Controls {
             });
         });
         this.elementVideo.addEventListener('click', () => {
-            handlePlayPause(this.elementVideo);
+            this.playPauseListener();
         });
         buttonsPlayPause.forEach((button) => {
             button.addEventListener('click', () => {
-                handlePlayPause(this.elementVideo);
+                this.playPauseListener();
             });
         });
     }
@@ -117,34 +169,9 @@ export default class Controls {
     // ==================================================
     private buildFullscreen: Function = (): void => {
         const buttonFullscreen: HTMLButtonElement = document.querySelector('button[action="' + `${this.actions.fullscreen}` + '"]') as HTMLButtonElement;
-        const svgFullscreen: SVGPathElement = buttonFullscreen.querySelector('svg > path') as SVGPathElement;
 
         buttonFullscreen.addEventListener('click', () => {
-            if (!this.controls.fullscreen) {
-                this.controls.fullscreen = true;
-                if (this.elementContainer.requestFullscreen) {
-                    this.elementContainer.requestFullscreen();
-                } else if ((this.elementContainer as any).mozRequestFullScreen) {
-                    (this.elementContainer as any).mozRequestFullScreen();
-                } else if ((this.elementContainer as any).webkitRequestFullScreen) {
-                    (this.elementContainer as any).webkitRequestFullScreen();
-                } else if ((this.elementContainer as any).msRequestFullscreen) {
-                    (this.elementContainer as any).msRequestFullscreen();
-                }
-                svgFullscreen.setAttribute('d', this.iconsPath.fullscreenOn);
-            } else {
-                this.controls.fullscreen = false;
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if ((document as any).webkitExitFullscreen) {
-                    (document as any).webkitExitFullscreen();
-                } else if ((document as any).mozCancelFullScreen) {
-                    (document as any).mozCancelFullScreen();
-                } else if ((document as any).msExitFullscreen) {
-                    (document as any).msExitFullscreen();
-                }
-                svgFullscreen.setAttribute('d', this.iconsPath.fullscreenOff);
-            }
+            this.fullscreenListener();
         });
     }
 
@@ -162,18 +189,13 @@ export default class Controls {
     // ==================================================
     private buildVolume: Function = (): void => {
         const buttonVolume: HTMLButtonElement = document.querySelector('button[action="' + `${this.actions.volume}` + '"]') as HTMLButtonElement;
-        const svgVolume: SVGPathElement = buttonVolume.querySelector('svg > path') as SVGPathElement;
+
+        /* this.elementVideo.addEventListener('volumechange', () => {
+            this.volumeListener();
+        }); */
 
         buttonVolume.addEventListener('click', () => {
-            if (this.elementVideo.muted || this.elementVideo.volume === 0) {
-                this.elementVideo.muted = false;
-                this.elementVideo.volume = 1.0;
-                svgVolume.setAttribute('d', this.iconsPath.volumeOn);
-            } else {
-                this.elementVideo.muted = true;
-                this.elementVideo.volume = 0.0;
-                svgVolume.setAttribute('d', this.iconsPath.volumeOff);
-            }
+            this.volumeListener();
         });
     }
 
@@ -184,13 +206,18 @@ export default class Controls {
     private buildDurationTime: Function = (): void => {
         const durationTime: HTMLElement = document.querySelector('p[action="' + `${this.actions.durationTime}` + '"]') as HTMLElement;
 
-        durationTime.innerHTML = this.controls.durationTime;
+        this.elementVideo.addEventListener('loadeddata', () => {
+            this.controls.durationTime = this.formatTime(this.elementVideo.duration ?? 0);
+            this.controls.duration = this.elementVideo.duration ?? 0;
+
+            durationTime.innerHTML = this.controls.durationTime;
+        });
     }
 
     // ==================================================
     private buildCurrentTime: Function = (): void => {
         const currentTime: HTMLElement = document.querySelector('p[action="' + `${this.actions.currentTime}` + '"]') as HTMLElement;
-        
+
         this.elementVideo.addEventListener('timeupdate', () => {
             this.controls.currentTime = this.formatTime(this.elementVideo.currentTime ?? 0);
             this.controls.current = this.elementVideo.currentTime ?? 0;
@@ -201,8 +228,9 @@ export default class Controls {
 
     // ==================================================
     private buildRangerProguess: Function = (): void => {
-        const rangerProguess: HTMLDivElement = document.querySelector('div[action="' + `${this.actions.rangerProguess}` + '"]') as HTMLDivElement;
-        const rangerProguessPoint: HTMLDivElement = document.querySelector('div[action="' + `${this.actions.rangerProguessPoint}` + '"]') as HTMLDivElement;
+        const rangerProguessContainer: HTMLDivElement = document.getElementById(this.actions.rangerProguessContainer) as HTMLDivElement;
+        const rangerProguess: HTMLDivElement = document.getElementById(this.actions.rangerProguess) as HTMLDivElement;
+        const rangerProguessPoint: HTMLDivElement = document.getElementById(this.actions.rangerProguessPoint) as HTMLDivElement;
 
         this.elementVideo.addEventListener('timeupdate', () => {
             const currentTime: number = this.elementVideo.currentTime as number;
@@ -213,8 +241,60 @@ export default class Controls {
             rangerProguess.setAttribute('style', `width: ${progressPercentage}%;`);
             rangerProguessPoint.setAttribute('style', `left: calc(${progressPercentage}% - 1%);`);
         });
+
+        rangerProguessContainer.addEventListener('click', (event: MouseEvent) => {
+            const rect: DOMRect = rangerProguessContainer.getBoundingClientRect();
+            const clickX: number = event.clientX - rect.left;
+            const width: number = rect.width;
+            const percentage = (clickX / width) * 100;
+
+            const newTime = (this.controls.duration * percentage) / 100;
+            this.elementVideo.currentTime = newTime;
+
+            this.controls.currentTime = this.formatTime(newTime);
+            this.controls.current = newTime;
+        });
     }
 
+    // ==================================================
+    private buildObserver: Function = (): void => {
+        document.addEventListener('keydown', (event: KeyboardEvent) => {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    this.elementVideo.currentTime = Math.max(0, Math.min(this.elementVideo.duration, this.elementVideo.currentTime - 10));
+                    break;
+                case ' ':
+                    this.playPauseListener();
+                    break;
+                case 'ArrowRight':
+                    this.elementVideo.currentTime = Math.max(0, Math.min(this.elementVideo.duration, this.elementVideo.currentTime + 10));
+                    break;
+                case 'ArrowDown':
+                    break;
+                case 'ArrowUp':
+                    break;
+                case 'f':
+                    this.fullscreenListener();
+                    break;
+                case 'p':
+                    if (this.elementVideo.requestPictureInPicture) {
+                        this.elementVideo.requestPictureInPicture();
+                    }
+                    break;
+                case 'm':
+                    this.volumeListener();
+                    break;
+                case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+                    const percentage = parseInt(event.key) * 10;
+                    const newTime = (percentage / 100) * this.controls.duration;
+                    this.elementVideo.currentTime = newTime;
+
+                    this.controls.currentTime = this.formatTime(newTime);
+                    this.controls.current = newTime;
+                    break;
+            }
+        });
+    };
 
 
 
@@ -226,6 +306,63 @@ export default class Controls {
 
 
 
+
+    // ==================================================
+    private playPauseListener(): void {
+        if (this.elementVideo.paused) {
+            this.elementVideo.play();
+        } else {
+            this.elementVideo.pause();
+        }
+    };
+
+    // ==================================================
+    private volumeListener(): void {
+        const buttonVolume: HTMLButtonElement = document.querySelector('button[action="' + `${this.actions.volume}` + '"]') as HTMLButtonElement;
+        const svgVolume: SVGPathElement = buttonVolume.querySelector('svg > path') as SVGPathElement;
+
+        if (this.elementVideo.muted || this.elementVideo.volume === 0) {
+            svgVolume.setAttribute('d', this.iconsPath.volumeOn);
+            this.elementVideo.muted = false;
+            this.elementVideo.volume = 1.0;
+        } else {
+            svgVolume.setAttribute('d', this.iconsPath.volumeOff);
+            this.elementVideo.muted = true;
+            this.elementVideo.volume = 0.0;
+        }
+    }
+
+    // ==================================================
+    private fullscreenListener(): void {
+        const buttonFullscreen: HTMLButtonElement = document.querySelector('button[action="' + `${this.actions.fullscreen}` + '"]') as HTMLButtonElement;
+        const svgFullscreen: SVGPathElement = buttonFullscreen.querySelector('svg > path') as SVGPathElement;
+
+        if (!this.controls.fullscreen) {
+            this.controls.fullscreen = true;
+            if (this.elementContainer.requestFullscreen) {
+                this.elementContainer.requestFullscreen();
+            } else if ((this.elementContainer as any).mozRequestFullScreen) {
+                (this.elementContainer as any).mozRequestFullScreen();
+            } else if ((this.elementContainer as any).webkitRequestFullScreen) {
+                (this.elementContainer as any).webkitRequestFullScreen();
+            } else if ((this.elementContainer as any).msRequestFullscreen) {
+                (this.elementContainer as any).msRequestFullscreen();
+            }
+            svgFullscreen.setAttribute('d', this.iconsPath.fullscreenOn);
+        } else {
+            this.controls.fullscreen = false;
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if ((document as any).webkitExitFullscreen) {
+                (document as any).webkitExitFullscreen();
+            } else if ((document as any).mozCancelFullScreen) {
+                (document as any).mozCancelFullScreen();
+            } else if ((document as any).msExitFullscreen) {
+                (document as any).msExitFullscreen();
+            }
+            svgFullscreen.setAttribute('d', this.iconsPath.fullscreenOff);
+        }
+    }
 
     // ==================================================
     private formatTime(seconds: number): string {

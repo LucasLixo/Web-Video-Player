@@ -64,7 +64,7 @@ var Elements = (function () {
             _this.buildMiddle(elementContainer);
             _this.buildBottom(elementContainer);
             try {
-                new Controls(elementContainer, elementVideo, _this.options, _this.actions, _this.iconsPath);
+                new Controls(elementContainer, elementVideo, _this.identifiersId, _this.identifiersClass, _this.options, _this.actions, _this.iconsPath);
             }
             catch (error) {
                 new IOError("Error build Controls: ".concat(error));
@@ -90,11 +90,9 @@ var Elements = (function () {
         elementBottom.appendChild(divRangerProguessContainer);
         var divRangerProguess = document.createElement('div');
         divRangerProguess.setAttribute('id', this.actions.rangerProguess);
-        divRangerProguess.setAttribute('action', this.actions.rangerProguess);
         divRangerProguessContainer.appendChild(divRangerProguess);
         var divRangerProguessPoint = document.createElement('div');
         divRangerProguessPoint.setAttribute('id', this.actions.rangerProguessPoint);
-        divRangerProguessPoint.setAttribute('action', this.actions.rangerProguessPoint);
         divRangerProguessContainer.appendChild(divRangerProguessPoint);
     };
     Elements.prototype.buildDuration = function (elementBottom) {

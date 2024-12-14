@@ -55,6 +55,7 @@ var Styles = (function () {
                 'max-width': '100%',
                 'min-width': '240px',
                 'height': 'fit-content',
+                'cursor': 'default',
             };
             _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.container), stylesMap));
         };
@@ -107,11 +108,17 @@ var Styles = (function () {
                 'align-items': 'center',
             };
             _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.bottom), stylesMap));
-            _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.bottom, " button, #").concat(_this.actions.rangerProguessContainer, ", #").concat(_this.actions.currentTime), {
+            _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.bottom, " button"), {
                 'margin': '0 0.2rem 0 0.2rem',
             }));
-            _this.addStyles(_this.parseStylesMedia("#".concat(_this.identifiersId.bottom, " button, #").concat(_this.actions.rangerProguessContainer, ", #").concat(_this.actions.durationTime), [
+            _this.addStyles(_this.parseStylesMedia("#".concat(_this.identifiersId.bottom, " button"), [
                 { attribute: 'margin', valueMax: '0 0.2rem 0 0.2rem', valueMiddle: '0 0.1rem 0 0.1rem', valueMin: '0 0.1rem 0 0.1rem', },
+            ]));
+            _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessContainer, ", #").concat(_this.actions.currentTime, ", #").concat(_this.actions.durationTime), {
+                'margin': '0 0.3rem 0 0.3rem',
+            }));
+            _this.addStyles(_this.parseStylesMedia("#".concat(_this.actions.rangerProguessContainer, ", #").concat(_this.actions.currentTime, ", #").concat(_this.actions.durationTime), [
+                { attribute: 'margin', valueMax: '0 0.3rem 0 0.3rem', valueMiddle: '0 0.2rem 0 0.2rem', valueMin: '0 0.1rem 0 0.1rem', },
             ]));
         };
         this.actionsTime = function () {
@@ -127,7 +134,7 @@ var Styles = (function () {
                 'position': 'relative',
                 'display': 'block',
                 'width': '100%',
-                'height': '0.5rem',
+                'height': '0.4rem',
                 'background': '#CBCBCB',
                 'border-radius': '1rem',
                 'cursor': 'pointer',
@@ -135,7 +142,7 @@ var Styles = (function () {
             };
             _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessContainer), stylesMap));
             _this.addStyles(_this.parseStylesMedia("#".concat(_this.actions.rangerProguessContainer), [
-                { attribute: 'height', valueMax: '0.4rem', valueMiddle: '0.3rem', valueMin: '0.2rem', },
+                { attribute: 'height', valueMax: '0.3rem', valueMiddle: '0.3rem', valueMin: '0.2rem', },
             ]));
         };
         this.actionsRangerProguess = function () {
@@ -145,7 +152,7 @@ var Styles = (function () {
                 'bottom': '0',
                 'left': '0',
                 'display': 'block',
-                'width': '33%',
+                'width': '0%',
                 'height': '100%',
                 'border-radius': '1rem',
                 'background': _this.options.colorActive,
@@ -161,8 +168,8 @@ var Styles = (function () {
                 'display': 'block',
                 'top': '0',
                 'bottom': '0',
-                'transform': 'translate(0%, -25%)',
-                'left': 'calc(33% - 1%)',
+                'transform': 'translate(0%, -30%)',
+                'left': '0%',
                 'width': '1.2rem',
                 'height': '1.2rem',
                 'background': _this.options.colorInactive,
@@ -172,6 +179,26 @@ var Styles = (function () {
                 'z-index': _this.indexStyles.toString(),
             };
             _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessPoint), stylesMap));
+        };
+        this.buildFading = function () {
+            var stylesMap = {
+                'transition': 'opacity 0.3s ease, visibility 0.3s ease',
+                'opacity': '1',
+                'visibility': 'visible',
+                'overflow': 'visible',
+            };
+            _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.top, ", #").concat(_this.identifiersId.middle, ", #").concat(_this.identifiersId.bottom), stylesMap));
+            _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.fading), {
+                'opacity': '0 !important',
+                'visibility': 'hidden !important',
+                'overflow': 'hidden !important',
+            }));
+        };
+        this.buildCursorHide = function () {
+            var stylesMap = {
+                'cursor': 'none !important',
+            };
+            _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.cursorHide), stylesMap));
         };
         this.buildStylesCompatibility = function (attribute, value) {
             var styleString = '';
@@ -193,6 +220,8 @@ var Styles = (function () {
         this.buildId();
         this.applyVideo();
         this.buildActions();
+        this.buildFading();
+        this.buildCursorHide();
         this.setStyles();
     };
     Styles.prototype.buildClass = function () {

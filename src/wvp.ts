@@ -23,17 +23,25 @@ class WVP {
     
     // ==================================================
     constructor(apply: string, options?: Record<string, any>) {
-        if (options == undefined) {
-            options = {};
+        const optionsClear: Record<string, any> = {};
+        
+        if (options != undefined) {
+            Object.keys(options as Object).forEach((key) => {
+                const value = options![key];
+                if (value !== null && value !== '') {
+                    optionsClear[key] = value;
+                }
+            });
         }
+
         this.options = {
             apply: apply,
-            backgroundColor: options['backgroundColor'] ?? 'transparent',
-            colorInactive: options['colorInactive'] ?? '#FFFFFF',
-            colorActive: options['colorActive'] ?? '#007AFF',
-            autoplay: options['autoplay'] ?? true,
-            muted: options['muted'] ?? true,
-            top: options['top'] ?? null,
+            backgroundColor: optionsClear['backgroundColor'] ?? 'transparent',
+            colorInactive: optionsClear['colorInactive'] ?? '#FFFFFF',
+            colorActive: optionsClear['colorActive'] ?? '#007AFF',
+            autoplay: optionsClear['autoplay'] ?? true,
+            muted: optionsClear['muted'] ?? false,
+            top: optionsClear['top'] ?? null,
         }
         this.identifiersId = {
             container: 'wvp__container',
@@ -45,6 +53,8 @@ class WVP {
             all: 'wvp_all',
             buttons: 'wvp__buttons',
             icons: 'wvp__icons',
+            fading: 'wvp__fading',
+            cursorHide: 'wvp__cursor_hide',
         };
         this.actions = {
             playPause: 'wvp__button__play_pause',

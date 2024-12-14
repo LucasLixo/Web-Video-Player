@@ -32,13 +32,57 @@ var io_error_default = IOError;
 
 // build/class/controls.js
 var Controls = function() {
-  function Controls2(elementContainer, elementVideo, options, actions, iconsPath) {
+  function Controls2(elementContainer, elementVideo, identifiersId, identifiersClass, options, actions, iconsPath) {
     var _this = this;
     var _a;
     this.buildConfig = function() {
       _this.elementVideo.removeAttribute("controls");
       _this.elementVideo.controls = false;
       _this.elementVideo.currentTime = _this.controls.current;
+      _this.elementVideo.setAttribute("playsinline", "");
+      _this.elementVideo.setAttribute("controlslist", "nodownload noremoteplayback");
+      _this.elementVideo.addEventListener("contextmenu", function(event) {
+        event.preventDefault();
+      });
+      if (_this.controls.playing) {
+        _this.elementVideo.setAttribute("autoplay", "");
+      } else {
+        _this.elementVideo.removeAttribute("autoplay");
+      }
+      if (!_this.controls.volume) {
+        _this.elementVideo.setAttribute("muted", "");
+      } else {
+        _this.elementVideo.removeAttribute("muted");
+      }
+    };
+    this.buildFading = function() {
+      var allContainers = [
+        document.getElementById(_this.identifiersId.top),
+        document.getElementById(_this.identifiersId.middle),
+        document.getElementById(_this.identifiersId.bottom)
+      ];
+      var hideTimeout = null;
+      var hideControls = function() {
+        if (!_this.elementVideo.paused) {
+          allContainers.forEach(function(container) {
+            container.classList.add(_this.identifiersClass.fading);
+            _this.elementContainer.classList.add(_this.identifiersClass.cursorHide);
+          });
+        }
+      };
+      var showControls = function() {
+        allContainers.forEach(function(container) {
+          container.classList.remove(_this.identifiersClass.fading);
+          _this.elementContainer.classList.remove(_this.identifiersClass.cursorHide);
+        });
+        if (hideTimeout)
+          clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(hideControls, 2500);
+      };
+      _this.elementContainer.addEventListener("mousemove", function() {
+        showControls();
+      });
+      showControls();
     };
     this.buildPlayPause = function() {
       var buttonsPlayPause = document.querySelectorAll('button[action="' + "".concat(_this.actions.playPause) + '"]');
@@ -46,14 +90,6 @@ var Controls = function() {
         new io_error_default("Is empty Play/Pause.");
         return;
       }
-      function handlePlayPause(videoElement) {
-        if (videoElement.paused) {
-          videoElement.play();
-        } else {
-          videoElement.pause();
-        }
-      }
-      ;
       _this.elementVideo.addEventListener("pause", function() {
         _this.controls.playing = false;
         buttonsPlayPause.forEach(function(button) {
@@ -73,43 +109,18 @@ var Controls = function() {
         });
       });
       _this.elementVideo.addEventListener("click", function() {
-        handlePlayPause(_this.elementVideo);
+        _this.playPauseListener();
       });
       buttonsPlayPause.forEach(function(button) {
         button.addEventListener("click", function() {
-          handlePlayPause(_this.elementVideo);
+          _this.playPauseListener();
         });
       });
     };
     this.buildFullscreen = function() {
       var buttonFullscreen = document.querySelector('button[action="' + "".concat(_this.actions.fullscreen) + '"]');
-      var svgFullscreen = buttonFullscreen.querySelector("svg > path");
       buttonFullscreen.addEventListener("click", function() {
-        if (!_this.controls.fullscreen) {
-          _this.controls.fullscreen = true;
-          if (_this.elementContainer.requestFullscreen) {
-            _this.elementContainer.requestFullscreen();
-          } else if (_this.elementContainer.mozRequestFullScreen) {
-            _this.elementContainer.mozRequestFullScreen();
-          } else if (_this.elementContainer.webkitRequestFullScreen) {
-            _this.elementContainer.webkitRequestFullScreen();
-          } else if (_this.elementContainer.msRequestFullscreen) {
-            _this.elementContainer.msRequestFullscreen();
-          }
-          svgFullscreen.setAttribute("d", _this.iconsPath.fullscreenOn);
-        } else {
-          _this.controls.fullscreen = false;
-          if (document.exitFullscreen) {
-            document.exitFullscreen();
-          } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-          } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-          } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-          }
-          svgFullscreen.setAttribute("d", _this.iconsPath.fullscreenOff);
-        }
+        _this.fullscreenListener();
       });
     };
     this.buildPictureInPicture = function() {
@@ -122,24 +133,20 @@ var Controls = function() {
     };
     this.buildVolume = function() {
       var buttonVolume = document.querySelector('button[action="' + "".concat(_this.actions.volume) + '"]');
-      var svgVolume = buttonVolume.querySelector("svg > path");
       buttonVolume.addEventListener("click", function() {
-        if (_this.elementVideo.muted || _this.elementVideo.volume === 0) {
-          _this.elementVideo.muted = false;
-          _this.elementVideo.volume = 1;
-          svgVolume.setAttribute("d", _this.iconsPath.volumeOn);
-        } else {
-          _this.elementVideo.muted = true;
-          _this.elementVideo.volume = 0;
-          svgVolume.setAttribute("d", _this.iconsPath.volumeOff);
-        }
+        _this.volumeListener();
       });
     };
     this.buildRangerVolume = function() {
     };
     this.buildDurationTime = function() {
       var durationTime = document.querySelector('p[action="' + "".concat(_this.actions.durationTime) + '"]');
-      durationTime.innerHTML = _this.controls.durationTime;
+      _this.elementVideo.addEventListener("loadeddata", function() {
+        var _a2, _b;
+        _this.controls.durationTime = _this.formatTime((_a2 = _this.elementVideo.duration) !== null && _a2 !== void 0 ? _a2 : 0);
+        _this.controls.duration = (_b = _this.elementVideo.duration) !== null && _b !== void 0 ? _b : 0;
+        durationTime.innerHTML = _this.controls.durationTime;
+      });
     };
     this.buildCurrentTime = function() {
       var currentTime = document.querySelector('p[action="' + "".concat(_this.actions.currentTime) + '"]');
@@ -151,8 +158,9 @@ var Controls = function() {
       });
     };
     this.buildRangerProguess = function() {
-      var rangerProguess = document.querySelector('div[action="' + "".concat(_this.actions.rangerProguess) + '"]');
-      var rangerProguessPoint = document.querySelector('div[action="' + "".concat(_this.actions.rangerProguessPoint) + '"]');
+      var rangerProguessContainer = document.getElementById(_this.actions.rangerProguessContainer);
+      var rangerProguess = document.getElementById(_this.actions.rangerProguess);
+      var rangerProguessPoint = document.getElementById(_this.actions.rangerProguessPoint);
       _this.elementVideo.addEventListener("timeupdate", function() {
         var currentTime = _this.elementVideo.currentTime;
         var duration = _this.elementVideo.duration;
@@ -160,9 +168,67 @@ var Controls = function() {
         rangerProguess.setAttribute("style", "width: ".concat(progressPercentage, "%;"));
         rangerProguessPoint.setAttribute("style", "left: calc(".concat(progressPercentage, "% - 1%);"));
       });
+      rangerProguessContainer.addEventListener("click", function(event) {
+        var rect = rangerProguessContainer.getBoundingClientRect();
+        var clickX = event.clientX - rect.left;
+        var width = rect.width;
+        var percentage = clickX / width * 100;
+        var newTime = _this.controls.duration * percentage / 100;
+        _this.elementVideo.currentTime = newTime;
+        _this.controls.currentTime = _this.formatTime(newTime);
+        _this.controls.current = newTime;
+      });
+    };
+    this.buildObserver = function() {
+      document.addEventListener("keydown", function(event) {
+        switch (event.key) {
+          case "ArrowLeft":
+            _this.elementVideo.currentTime = Math.max(0, Math.min(_this.elementVideo.duration, _this.elementVideo.currentTime - 10));
+            break;
+          case " ":
+            _this.playPauseListener();
+            break;
+          case "ArrowRight":
+            _this.elementVideo.currentTime = Math.max(0, Math.min(_this.elementVideo.duration, _this.elementVideo.currentTime + 10));
+            break;
+          case "ArrowDown":
+            break;
+          case "ArrowUp":
+            break;
+          case "f":
+            _this.fullscreenListener();
+            break;
+          case "p":
+            if (_this.elementVideo.requestPictureInPicture) {
+              _this.elementVideo.requestPictureInPicture();
+            }
+            break;
+          case "m":
+            _this.volumeListener();
+            break;
+          case "0":
+          case "1":
+          case "2":
+          case "3":
+          case "4":
+          case "5":
+          case "6":
+          case "7":
+          case "8":
+          case "9":
+            var percentage = parseInt(event.key) * 10;
+            var newTime = percentage / 100 * _this.controls.duration;
+            _this.elementVideo.currentTime = newTime;
+            _this.controls.currentTime = _this.formatTime(newTime);
+            _this.controls.current = newTime;
+            break;
+        }
+      });
     };
     this.elementContainer = elementContainer;
     this.elementVideo = elementVideo;
+    this.identifiersId = identifiersId;
+    this.identifiersClass = identifiersClass;
     this.actions = actions;
     this.iconsPath = iconsPath;
     this.controls = {
@@ -180,6 +246,7 @@ var Controls = function() {
   }
   Controls2.prototype.build = function() {
     this.buildConfig();
+    this.buildFading();
     this.buildPlayPause();
     this.buildFullscreen();
     this.buildPictureInPicture();
@@ -188,6 +255,57 @@ var Controls = function() {
     this.buildDurationTime();
     this.buildCurrentTime();
     this.buildRangerProguess();
+    this.buildObserver();
+  };
+  Controls2.prototype.playPauseListener = function() {
+    if (this.elementVideo.paused) {
+      this.elementVideo.play();
+    } else {
+      this.elementVideo.pause();
+    }
+  };
+  ;
+  Controls2.prototype.volumeListener = function() {
+    var buttonVolume = document.querySelector('button[action="' + "".concat(this.actions.volume) + '"]');
+    var svgVolume = buttonVolume.querySelector("svg > path");
+    if (this.elementVideo.muted || this.elementVideo.volume === 0) {
+      svgVolume.setAttribute("d", this.iconsPath.volumeOn);
+      this.elementVideo.muted = false;
+      this.elementVideo.volume = 1;
+    } else {
+      svgVolume.setAttribute("d", this.iconsPath.volumeOff);
+      this.elementVideo.muted = true;
+      this.elementVideo.volume = 0;
+    }
+  };
+  Controls2.prototype.fullscreenListener = function() {
+    var buttonFullscreen = document.querySelector('button[action="' + "".concat(this.actions.fullscreen) + '"]');
+    var svgFullscreen = buttonFullscreen.querySelector("svg > path");
+    if (!this.controls.fullscreen) {
+      this.controls.fullscreen = true;
+      if (this.elementContainer.requestFullscreen) {
+        this.elementContainer.requestFullscreen();
+      } else if (this.elementContainer.mozRequestFullScreen) {
+        this.elementContainer.mozRequestFullScreen();
+      } else if (this.elementContainer.webkitRequestFullScreen) {
+        this.elementContainer.webkitRequestFullScreen();
+      } else if (this.elementContainer.msRequestFullscreen) {
+        this.elementContainer.msRequestFullscreen();
+      }
+      svgFullscreen.setAttribute("d", this.iconsPath.fullscreenOn);
+    } else {
+      this.controls.fullscreen = false;
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+      svgFullscreen.setAttribute("d", this.iconsPath.fullscreenOff);
+    }
   };
   Controls2.prototype.formatTime = function(seconds) {
     function padZero(number) {
@@ -270,7 +388,7 @@ var Elements = function() {
       _this.buildMiddle(elementContainer);
       _this.buildBottom(elementContainer);
       try {
-        new controls_default(elementContainer, elementVideo, _this.options, _this.actions, _this.iconsPath);
+        new controls_default(elementContainer, elementVideo, _this.identifiersId, _this.identifiersClass, _this.options, _this.actions, _this.iconsPath);
       } catch (error) {
         new io_error_default("Error build Controls: ".concat(error));
       }
@@ -295,11 +413,9 @@ var Elements = function() {
     elementBottom.appendChild(divRangerProguessContainer);
     var divRangerProguess = document.createElement("div");
     divRangerProguess.setAttribute("id", this.actions.rangerProguess);
-    divRangerProguess.setAttribute("action", this.actions.rangerProguess);
     divRangerProguessContainer.appendChild(divRangerProguess);
     var divRangerProguessPoint = document.createElement("div");
     divRangerProguessPoint.setAttribute("id", this.actions.rangerProguessPoint);
-    divRangerProguessPoint.setAttribute("action", this.actions.rangerProguessPoint);
     divRangerProguessContainer.appendChild(divRangerProguessPoint);
   };
   Elements2.prototype.buildDuration = function(elementBottom) {
@@ -396,7 +512,8 @@ var Styles = function() {
         "display": "block",
         "max-width": "100%",
         "min-width": "240px",
-        "height": "fit-content"
+        "height": "fit-content",
+        "cursor": "default"
       };
       _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.container), stylesMap));
     };
@@ -449,11 +566,17 @@ var Styles = function() {
         "align-items": "center"
       };
       _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.bottom), stylesMap));
-      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.bottom, " button, #").concat(_this.actions.rangerProguessContainer, ", #").concat(_this.actions.currentTime), {
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.bottom, " button"), {
         "margin": "0 0.2rem 0 0.2rem"
       }));
-      _this.addStyles(_this.parseStylesMedia("#".concat(_this.identifiersId.bottom, " button, #").concat(_this.actions.rangerProguessContainer, ", #").concat(_this.actions.durationTime), [
+      _this.addStyles(_this.parseStylesMedia("#".concat(_this.identifiersId.bottom, " button"), [
         { attribute: "margin", valueMax: "0 0.2rem 0 0.2rem", valueMiddle: "0 0.1rem 0 0.1rem", valueMin: "0 0.1rem 0 0.1rem" }
+      ]));
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessContainer, ", #").concat(_this.actions.currentTime, ", #").concat(_this.actions.durationTime), {
+        "margin": "0 0.3rem 0 0.3rem"
+      }));
+      _this.addStyles(_this.parseStylesMedia("#".concat(_this.actions.rangerProguessContainer, ", #").concat(_this.actions.currentTime, ", #").concat(_this.actions.durationTime), [
+        { attribute: "margin", valueMax: "0 0.3rem 0 0.3rem", valueMiddle: "0 0.2rem 0 0.2rem", valueMin: "0 0.1rem 0 0.1rem" }
       ]));
     };
     this.actionsTime = function() {
@@ -469,7 +592,7 @@ var Styles = function() {
         "position": "relative",
         "display": "block",
         "width": "100%",
-        "height": "0.5rem",
+        "height": "0.4rem",
         "background": "#CBCBCB",
         "border-radius": "1rem",
         "cursor": "pointer",
@@ -477,7 +600,7 @@ var Styles = function() {
       };
       _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessContainer), stylesMap));
       _this.addStyles(_this.parseStylesMedia("#".concat(_this.actions.rangerProguessContainer), [
-        { attribute: "height", valueMax: "0.4rem", valueMiddle: "0.3rem", valueMin: "0.2rem" }
+        { attribute: "height", valueMax: "0.3rem", valueMiddle: "0.3rem", valueMin: "0.2rem" }
       ]));
     };
     this.actionsRangerProguess = function() {
@@ -487,7 +610,7 @@ var Styles = function() {
         "bottom": "0",
         "left": "0",
         "display": "block",
-        "width": "33%",
+        "width": "0%",
         "height": "100%",
         "border-radius": "1rem",
         "background": _this.options.colorActive,
@@ -503,8 +626,8 @@ var Styles = function() {
         "display": "block",
         "top": "0",
         "bottom": "0",
-        "transform": "translate(0%, -25%)",
-        "left": "calc(33% - 1%)",
+        "transform": "translate(0%, -30%)",
+        "left": "0%",
         "width": "1.2rem",
         "height": "1.2rem",
         "background": _this.options.colorInactive,
@@ -514,6 +637,26 @@ var Styles = function() {
         "z-index": _this.indexStyles.toString()
       };
       _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessPoint), stylesMap));
+    };
+    this.buildFading = function() {
+      var stylesMap = {
+        "transition": "opacity 0.3s ease, visibility 0.3s ease",
+        "opacity": "1",
+        "visibility": "visible",
+        "overflow": "visible"
+      };
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.top, ", #").concat(_this.identifiersId.middle, ", #").concat(_this.identifiersId.bottom), stylesMap));
+      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.fading), {
+        "opacity": "0 !important",
+        "visibility": "hidden !important",
+        "overflow": "hidden !important"
+      }));
+    };
+    this.buildCursorHide = function() {
+      var stylesMap = {
+        "cursor": "none !important"
+      };
+      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.cursorHide), stylesMap));
     };
     this.buildStylesCompatibility = function(attribute, value) {
       var styleString = "";
@@ -535,6 +678,8 @@ var Styles = function() {
     this.buildId();
     this.applyVideo();
     this.buildActions();
+    this.buildFading();
+    this.buildCursorHide();
     this.setStyles();
   };
   Styles2.prototype.buildClass = function() {
@@ -598,17 +743,23 @@ var styles_default = Styles;
 var WVP = function() {
   function WVP2(apply, options) {
     var _a, _b, _c, _d, _e, _f;
-    if (options == void 0) {
-      options = {};
+    var optionsClear = {};
+    if (options != void 0) {
+      Object.keys(options).forEach(function(key) {
+        var value = options[key];
+        if (value !== null && value !== "") {
+          optionsClear[key] = value;
+        }
+      });
     }
     this.options = {
       apply: apply,
-      backgroundColor: (_a = options["backgroundColor"]) !== null && _a !== void 0 ? _a : "transparent",
-      colorInactive: (_b = options["colorInactive"]) !== null && _b !== void 0 ? _b : "#FFFFFF",
-      colorActive: (_c = options["colorActive"]) !== null && _c !== void 0 ? _c : "#007AFF",
-      autoplay: (_d = options["autoplay"]) !== null && _d !== void 0 ? _d : true,
-      muted: (_e = options["muted"]) !== null && _e !== void 0 ? _e : true,
-      top: (_f = options["top"]) !== null && _f !== void 0 ? _f : null
+      backgroundColor: (_a = optionsClear["backgroundColor"]) !== null && _a !== void 0 ? _a : "transparent",
+      colorInactive: (_b = optionsClear["colorInactive"]) !== null && _b !== void 0 ? _b : "#FFFFFF",
+      colorActive: (_c = optionsClear["colorActive"]) !== null && _c !== void 0 ? _c : "#007AFF",
+      autoplay: (_d = optionsClear["autoplay"]) !== null && _d !== void 0 ? _d : true,
+      muted: (_e = optionsClear["muted"]) !== null && _e !== void 0 ? _e : false,
+      top: (_f = optionsClear["top"]) !== null && _f !== void 0 ? _f : null
     };
     this.identifiersId = {
       container: "wvp__container",
@@ -619,7 +770,9 @@ var WVP = function() {
     this.identifiersClass = {
       all: "wvp_all",
       buttons: "wvp__buttons",
-      icons: "wvp__icons"
+      icons: "wvp__icons",
+      fading: "wvp__fading",
+      cursorHide: "wvp__cursor_hide"
     };
     this.actions = {
       playPause: "wvp__button__play_pause",

@@ -4,17 +4,23 @@ import Styles from "./class/styles";
 var WVP = (function () {
     function WVP(apply, options) {
         var _a, _b, _c, _d, _e, _f;
-        if (options == undefined) {
-            options = {};
+        var optionsClear = {};
+        if (options != undefined) {
+            Object.keys(options).forEach(function (key) {
+                var value = options[key];
+                if (value !== null && value !== '') {
+                    optionsClear[key] = value;
+                }
+            });
         }
         this.options = {
             apply: apply,
-            backgroundColor: (_a = options['backgroundColor']) !== null && _a !== void 0 ? _a : 'transparent',
-            colorInactive: (_b = options['colorInactive']) !== null && _b !== void 0 ? _b : '#FFFFFF',
-            colorActive: (_c = options['colorActive']) !== null && _c !== void 0 ? _c : '#007AFF',
-            autoplay: (_d = options['autoplay']) !== null && _d !== void 0 ? _d : true,
-            muted: (_e = options['muted']) !== null && _e !== void 0 ? _e : true,
-            top: (_f = options['top']) !== null && _f !== void 0 ? _f : null,
+            backgroundColor: (_a = optionsClear['backgroundColor']) !== null && _a !== void 0 ? _a : 'transparent',
+            colorInactive: (_b = optionsClear['colorInactive']) !== null && _b !== void 0 ? _b : '#FFFFFF',
+            colorActive: (_c = optionsClear['colorActive']) !== null && _c !== void 0 ? _c : '#007AFF',
+            autoplay: (_d = optionsClear['autoplay']) !== null && _d !== void 0 ? _d : true,
+            muted: (_e = optionsClear['muted']) !== null && _e !== void 0 ? _e : false,
+            top: (_f = optionsClear['top']) !== null && _f !== void 0 ? _f : null,
         };
         this.identifiersId = {
             container: 'wvp__container',
@@ -26,6 +32,8 @@ var WVP = (function () {
             all: 'wvp_all',
             buttons: 'wvp__buttons',
             icons: 'wvp__icons',
+            fading: 'wvp__fading',
+            cursorHide: 'wvp__cursor_hide',
         };
         this.actions = {
             playPause: 'wvp__button__play_pause',

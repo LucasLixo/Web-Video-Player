@@ -73,7 +73,7 @@ export default class Elements {
 
             // Controls
             try {
-                new Controls(elementContainer, elementVideo, this.options, this.actions, this.iconsPath);
+                new Controls(elementContainer, elementVideo, this.identifiersId, this.identifiersClass, this.options, this.actions, this.iconsPath);
             } catch (error) {
                 new IOError(`Error build Controls: ${error}`);
             }
@@ -148,12 +148,10 @@ export default class Elements {
 
         const divRangerProguess: HTMLElement = document.createElement('div');
         divRangerProguess.setAttribute('id', this.actions.rangerProguess);
-        divRangerProguess.setAttribute('action', this.actions.rangerProguess);
         divRangerProguessContainer.appendChild(divRangerProguess);
 
         const divRangerProguessPoint: HTMLElement = document.createElement('div');
         divRangerProguessPoint.setAttribute('id', this.actions.rangerProguessPoint);
-        divRangerProguessPoint.setAttribute('action', this.actions.rangerProguessPoint);
         divRangerProguessContainer.appendChild(divRangerProguessPoint);
     }
 

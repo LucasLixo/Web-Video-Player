@@ -38,6 +38,8 @@ export default class Styles {
         this.buildId();
         this.applyVideo();
         this.buildActions();
+        this.buildFading();
+        this.buildCursorHide();
         this.setStyles();
     }
 
@@ -148,6 +150,7 @@ export default class Styles {
             'max-width': '100%',
             'min-width': '240px',
             'height': 'fit-content',
+            'cursor': 'default',
         };
 
         this.addStyles(this.parseStyles(
@@ -228,16 +231,30 @@ export default class Styles {
         ));
 
         this.addStyles(this.parseStyles(
-            `#${this.identifiersId.bottom} button, #${this.actions.rangerProguessContainer}, #${this.actions.currentTime}`,
+            `#${this.identifiersId.bottom} button`,
             {
                 'margin': '0 0.2rem 0 0.2rem',
             },
         ));
 
         this.addStyles(this.parseStylesMedia(
-            `#${this.identifiersId.bottom} button, #${this.actions.rangerProguessContainer}, #${this.actions.durationTime}`,
+            `#${this.identifiersId.bottom} button`,
             [
                 { attribute: 'margin', valueMax: '0 0.2rem 0 0.2rem', valueMiddle: '0 0.1rem 0 0.1rem', valueMin: '0 0.1rem 0 0.1rem', },
+            ]
+        ));
+
+        this.addStyles(this.parseStyles(
+            `#${this.actions.rangerProguessContainer}, #${this.actions.currentTime}, #${this.actions.durationTime}`,
+            {
+                'margin': '0 0.3rem 0 0.3rem',
+            },
+        ));
+
+        this.addStyles(this.parseStylesMedia(
+            `#${this.actions.rangerProguessContainer}, #${this.actions.currentTime}, #${this.actions.durationTime}`,
+            [
+                { attribute: 'margin', valueMax: '0 0.3rem 0 0.3rem', valueMiddle: '0 0.2rem 0 0.2rem', valueMin: '0 0.1rem 0 0.1rem', },
             ]
         ));
     }
@@ -263,7 +280,7 @@ export default class Styles {
             'position': 'relative',
             'display': 'block',
             'width': '100%',
-            'height': '0.5rem',
+            'height': '0.4rem',
             'background': '#CBCBCB',
             'border-radius': '1rem',
             'cursor': 'pointer',
@@ -278,7 +295,7 @@ export default class Styles {
         this.addStyles(this.parseStylesMedia(
             `#${this.actions.rangerProguessContainer}`,
             [
-                { attribute: 'height', valueMax: '0.4rem', valueMiddle: '0.3rem', valueMin: '0.2rem', },
+                { attribute: 'height', valueMax: '0.3rem', valueMiddle: '0.3rem', valueMin: '0.2rem', },
             ]
         ));
     }
@@ -291,7 +308,7 @@ export default class Styles {
             'bottom': '0',
             'left': '0',
             'display': 'block',
-            'width': '33%',
+            'width': '0%',
             'height': '100%',
             'border-radius': '1rem',
             'background': this.options.colorActive,
@@ -313,8 +330,8 @@ export default class Styles {
             'display': 'block',
             'top': '0',
             'bottom': '0',
-            'transform': 'translate(0%, -25%)',
-            'left': 'calc(33% - 1%)',
+            'transform': 'translate(0%, -30%)',
+            'left': '0%',
             'width': '1.2rem',
             'height': '1.2rem',
             'background': this.options.colorInactive,
@@ -329,8 +346,43 @@ export default class Styles {
             stylesMap,
         ));
     }
+    
+    // ==================================================
+    // Fading
+    private buildFading: Function = (): void => {
+        const stylesMap: Record<string, string> = {
+            'transition': 'opacity 0.3s ease, visibility 0.3s ease',
+            'opacity': '1',
+            'visibility': 'visible',
+            'overflow': 'visible',
+        };
+        
+        this.addStyles(this.parseStyles(
+            `#${this.identifiersId.top}, #${this.identifiersId.middle}, #${this.identifiersId.bottom}`,
+            stylesMap,
+        ));
+        
+        this.addStyles(this.parseStyles(
+            `.${this.identifiersClass.fading}`,
+            { 
+                'opacity': '0 !important',
+                'visibility': 'hidden !important',
+                'overflow': 'hidden !important',
+            },
+        ));
+    }
+    
+    // ==================================================
+    private buildCursorHide: Function = (): void => {
+        const stylesMap: Record<string, string> = {
+            'cursor': 'none !important',
+        };
 
-
+        this.addStyles(this.parseStyles(
+            `.${this.identifiersClass.cursorHide}`,
+            stylesMap,
+        ));
+    }
 
 
 

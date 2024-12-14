@@ -1,29 +1,55 @@
 # [Web-Video-Player](Web-Video-Player.js)
 
-<img src="fastlane/screenshot/screenshot (1).jpg" align="center">
+<img src="fastlane/screenshot/screenshot (1).png" align="center">
 
-Web Video Player is a lightweight and customizable app that allows you to easily display and control videos on your web page. With its intuitive interface and seamless integration, you can effortlessly enhance your website with video content.
-It uses the `<video>` tag and requires the `jQuery JavaScript v3.7.0` library to function correctly.
+The WVP (Web Video Player) is a lightweight, independent HTML5 video player that provides full functionality without relying on any internet connection or external libraries. It is compatible with various browser prefixes including -o-, -moz-, and -ms-. This player is built using TypeScript and compiled down to JavaScript ES5 for maximum compatibility. It allows users to control video playback and has additional features such as custom colors, fullscreen mode, and picture-in-picture support.
+
+## [Usage](example/Index.html)
+
+- To integrate the WVP player into your project, include the following script tag in your HTML file:
+
+- ```js
+<script type="application/javascript" src="../dist/wvp.js"></script>
+<script type="application/javascript" defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        const webVideoPlayer = new WVP('#video', {
+            backgroundColor: 'black',    // Custom background color
+            colorInactive: '',           // Inactive icon color
+            colorActive: '',             // Active progress bar and button color
+            autoplay: false,             // Autoplay the video (default: false)
+            muted: false,                // Mute the video (default: false)
+            top: '<p>Title</p>',         // Content to display at the top of the video (can be null for no header)
+        });
+    });
+</script>
+```
+
+## Parameters
+
+- `Element Selector` (Required):
+    - The first argument in the WVP constructor is the selector for the video element (e.g., '#video').
+    - The player works with multiple video tags on the same page by using querySelectorAll.
+
+
+- `Options` (Optional): You can customize the following options for the video player:
+
+    - backgroundColor: Sets the background color of the player container.
+    - Default: black
+    - colorInactive: Sets the color of the inactive icons.
+    - Default: '' (no color specified)
+    - colorActive: Sets the color of the active progress bar and buttons.
+    - Default: '' (no color specified)
+    - autoplay: If set to true, the video will start automatically when the page loads.
+    - Default: false
+    - muted: If set to true, the video will be muted by default.
+    - Default: false
+    - top: Defines the content displayed at the top of the video player (header).
+    - Default: null (no header)
+    - You can pass any HTML content as the value (e.g., <p>Title</p>). The content will be positioned absolutely at the top of the player.
 
 ## Advantages
 
-- `Responsive video display`: The player provides a responsive video display area that adapts to different screen sizes, ensuring an optimal viewing experience on various devices.
-
-- `Playback controls`: Easily control video playback with built-in controls, including play, pause, volume adjustment, seeking, and fullscreen mode.
-
-- `Autoplay`: Configure videos to start playing automatically when the page loads, capturing visitors' attention and providing a seamless viewing experience.
-
-- `Aspect ratio selection`: Choose from a variety of predefined aspect ratios or set a custom ratio to ensure videos display correctly without distortion.
-
-- `Customizable appearance`: Customize the player's appearance by modifying CSS styles to match your website's design and branding.
-
-## [Usage](Example/Index.html)
-
-- To use the Web Video Player in your web application, simply include the provided HTML code and ensure that the jQuery JavaScript v3.7.0 library is properly linked. Then, adjust the configuration options to meet your specific requirements.
-
-- Web Video Player simplifies the process of embedding videos on your website, allowing you to engage your audience and provide visually appealing content effortlessly.
-
-- To use the web video player in your web application, follow these steps:
+- `File Size`: 33.1KB (compiled JavaScript).
 
 - Keyboard mapping:
     
@@ -32,75 +58,52 @@ It uses the `<video>` tag and requires the `jQuery JavaScript v3.7.0` library to
     |`←`            | `(-10) Seconds`       |
     |`Space`        | `Pause / Play`        |
     |`→`            | `(+10) Seconds`       |
-    |`↓`            | `(-20%) Volume`       |
-    |`↑`            | `(+20%) Volume`       |
     |`F`            | `Fullscreen`          |
     |`P`            | `Picture-in-Picture`  |
     |`M`            | `Mute`                |
     |`0-9`          | `0% - 90% In Video`   |
 
-1. Include the jQuery library in your HTML file. You can download the jQuery library from the official website or use a CDN. Here’s an example using the CDN:
+- `No Dependencies`: The player does not rely on any external libraries or internet connection.
 
-    ```html
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    ```
+- `Cross-Browser Compatibility`: Supports browsers with -o-, -moz-, and -ms- prefixes for maximum compatibility.
 
-2. Add the following HTML code to your web page where you want the video player to appear:
+- `Autoplay and Mute`: Customize whether the video should autoplay and be muted by default.
 
-    ```html
-    <video id="Web-Video-Player" aspect-ratio="16:9" controls autoplay>
-        <source src="video.mp4" type="video/mp4">
-    </video>
-    ```
+- `Customizable Colors`: Define custom colors for inactive icons and active progress bars and buttons.
 
-- In the example above, the `aspect-ratio` is set to `16:9`, with controls and autoplay options enabled.
+- `Multiple Video Support`: Can handle multiple video elements on the same page via querySelectorAll.
 
-- Being:
-  
-    | Aspect    | Size (Pixels)   | Quality       |
-    | --------- | --------------- | ------------- |
-    |`0:0`      | `100%`          | `Undefined`   |
-    |`4:3`      | `1024:768`      | `SD`          |
-    |`16:9`     | `1280:720`      | `HD`          |
-    |`3:2`      | `1080:720`      | `HD`          |
-    |`5:4`      | `1350:1080`     | `HD`          |
-    |`7:5`      | `2100:1200`     | `QHD`         |
+## Example(example/Index.html)
 
-- Note: If there’s no `aspect ratio`, the width and height will be set to `100%`, and you'll need a `div` containing the video with the desired theme.
-
-    ```html
-    <div style="width: 100%; height: 480px;">
-        <video id="Web-Video-Player" aspect-ratio="16:9" controls autoplay>
-            <source src="video.mp4" type="video/mp4">
-        </video>
-    </div>
-    ```
-
-3. Include the required JavaScript code to initialize the video player. You can place this code in a separate JavaScript file or directly in your HTML file:
-
-    ```js
-    $(document).ready(function() {
-        // Initialize the video player
-        $('#JsMedia').jsVideoPlayer();
+```js
+<script type="application/javascript" src="../dist/wvp.js"></script>
+<script type="application/javascript" defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        new WVP('.video' /* Supports multiple videos */, {
+            backgroundColor: 'black',
+            colorInactive: 'gray',
+            colorActive: 'blue',
+            autoplay: true,
+            muted: false,
+            top: '<h2>My Custom Video Header</h2>',
+        });
     });
-    ```
+</script>
+```
 
-4. Make sure to have the `video.mp4` file available at the specified path and that the file is compatible with the `<video>` tag.
+## Browser Support
 
-5. Open your web page in a browser, and you should see the video player with the specified video playing.
+- The WVP player is designed to work on the latest versions of major browsers, including:
+    - Chrome
+    - Firefox
+    - Safari
+    - Edge
+    - Opera
+- The player includes CSS vendor prefixes (-o-, -moz-, -ms-) to ensure compatibility with a wide range of browsers.
 
-## Settings
+## Conclusion
 
-1. The web video player offers several configuration options that you can customize to suit your needs. Here are some available options:
-2. aspect ratio: specifies the video’s aspect ratio. You can choose from predefined ratios like 4:3, 16:9, etc., or set a custom ratio.
-3. controls: determines whether the video player's controls will be displayed. Set to true to show controls or false to hide them.
-4. autoplay: specifies whether the video should start playing automatically when the page loads. Set to true for autoplay or false to disable it.
-5. You can modify the configuration options by adjusting the HTML code of the video element. For example:
-
-## Dependencies
-
-[jQuery JavaScript Library v3.7.0](https://jquery.com/download/)  
-Make sure to include the jQuery library before using the web video player.
+- WVP (Web Video Player) is a lightweight, standalone video player that supports modern browsers and provides easy customization and control via JavaScript. Whether you are building a simple page or a complex web app, WVP ensures a smooth and feature-rich video experience without the need for additional dependencies.
 
 ## [License](LICENSE)
 

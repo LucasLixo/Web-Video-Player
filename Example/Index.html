@@ -13,12 +13,6 @@
             box-sizing: border-box;
             font-family: system-ui;
         }
-
-        p {
-            color: white;
-            size: 22;
-            font-weight: bold;
-        }
     </style>
 </head>
 
@@ -26,7 +20,7 @@
     <br>
     <br>
     <div style="display: block; width: 70%; height: auto; margin: auto;">
-        <video id="video" playsinline controls autoplay>
+        <video id="video" controls>
             <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
                 type="video/mp4">
         </video>
@@ -36,16 +30,14 @@
     </script>
     <script type="application/javascript" defer>
         document.addEventListener('DOMContentLoaded', function () {
-            const options = {
+            const webVideoPlayer = new WVP('#video', {
                 backgroundColor: 'black',
-                // colorInactive: "#FF0000",
-                // colorActive: "#00FF00",
+                colorInactive: '',
+                colorActive: '',
                 autoplay: false,
                 muted: false,
                 top: '<p>Titulo</p>',
-            };
-
-            const webVideoPlayer = new WVP('#video', options);
+            });
         });
     </script>
 </body>
