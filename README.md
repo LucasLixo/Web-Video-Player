@@ -8,7 +8,7 @@ The WVP (Web Video Player) is a lightweight, independent HTML5 video player that
 
 - To integrate the WVP player into your project, include the following script tag in your HTML file:
 
-- ```js
+```js
 <script type="application/javascript" src="../dist/wvp.js"></script>
 <script type="application/javascript" defer>
     document.addEventListener('DOMContentLoaded', function () {
