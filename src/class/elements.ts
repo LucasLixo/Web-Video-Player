@@ -1,22 +1,35 @@
-import intIdentifiers from "../interfaces/identifiers";
-import { intOptions } from "../interfaces/options";
-import intButtons from "../interfaces/buttons";
+// Interfaces
+import intIdentifiersId from "../interfaces/identifiers_id";
+import intIdentifiersClass from "../interfaces/identifiers_class";
+import intActions from "../interfaces/actions";
+import intOptions from "../interfaces/options";
 import intIconsPath from "../interfaces/icons_path";
-import IOError from "./io_error";
-import Controls from "./controls";
+// Class
+import IOError from "../class/io_error";
+import Controls from "../class/controls";
 
 export default class Elements {
     // ==================================================
-    options: intOptions;
-    identifiers: intIdentifiers;
-    buttons: intButtons;
-    iconsPath: intIconsPath;
+    private options: intOptions;
+    private identifiersId: intIdentifiersId;
+    private identifiersClass: intIdentifiersClass;
+    private actions: intActions;
 
     // ==================================================
-    constructor(options: intOptions, identifiers: intIdentifiers, buttons: intButtons) {
+    private iconsPath: intIconsPath;
+
+    // ==================================================
+    constructor(
+        options: intOptions,
+        identifiersId: intIdentifiersId,
+        identifiersClass: intIdentifiersClass,
+        actions: intActions,
+    ) {
         this.options = options;
-        this.identifiers = identifiers;
-        this.buttons = buttons;
+        this.identifiersId = identifiersId;
+        this.identifiersClass = identifiersClass;
+        this.actions = actions;
+
         this.iconsPath = {
             fullscreenOn: 'M333-200v-133H200v-60h193v193h-60Zm234 0v-193h193v60H627v133h-60ZM200-567v-60h133v-133h60v193H200Zm367 0v-193h60v133h133v60H567Z',
             fullscreenOff: 'M200-200v-193h60v133h133v60H200Zm0-367v-193h193v60H260v133h-60Zm367 367v-60h133v-133h60v193H567Zm133-367v-133H567v-60h193v193h-60Z',
@@ -33,10 +46,8 @@ export default class Elements {
     }
 
     // ==================================================
-    /**
-     * build
-     */
-    public build() {
+    // Build
+    public build(): void {
         const elementVideos: NodeListOf<HTMLVideoElement> = document.querySelectorAll(this.options.apply) as NodeListOf<HTMLVideoElement>;
 
         if (elementVideos.length === 0) {
@@ -44,16 +55,15 @@ export default class Elements {
         }
 
         elementVideos.forEach(elementVideo => {
-            const elementContainer: HTMLElement = document.createElement('div');
             const parentElement: HTMLElement = elementVideo.parentElement as HTMLElement;
 
             if (parentElement == null) {
                 new IOError(`Error parentElement is null`);
             }
 
-            elementVideo.addEventListener('contextmenu', event => event.preventDefault());
-
-            elementContainer.setAttribute('id', this.identifiers.container);
+            // Build Container
+            const elementContainer: HTMLDivElement = document.createElement('div');
+            elementContainer.setAttribute('id', this.identifiersId.container);
             parentElement.insertBefore(elementContainer, elementVideo);
             elementContainer.appendChild(elementVideo);
 
@@ -63,19 +73,18 @@ export default class Elements {
 
             // Controls
             try {
-                new Controls(elementContainer, elementVideo, { buttons: this.buttons, pathIcons: this.iconsPath, autoplay: this.options.autoplay, muted: this.options.muted, });
+                new Controls(elementContainer, elementVideo, this.options, this.actions, this.iconsPath);
             } catch (error) {
                 new IOError(`Error build Controls: ${error}`);
             }
         });
-
     }
 
     // ==================================================
-    // Top Buttons
-    private buildTop(elementContainer: HTMLElement): void {
+    // Top
+    private buildTop: Function = (elementContainer: HTMLDivElement): void => {
         const elementTop: HTMLElement = document.createElement('div');
-        elementTop.setAttribute('id', this.identifiers.top);
+        elementTop.setAttribute('id', this.identifiersId.top);
         elementContainer.appendChild(elementTop);
 
         if (this.options.top != null) {
@@ -84,78 +93,113 @@ export default class Elements {
     }
 
     // ==================================================
-    // Middle Buttons
-    private buildMiddle(elementContainer: HTMLElement): void {
+    // Middle
+    private buildMiddle: Function = (elementContainer: HTMLDivElement): void => {
         const elementMiddle: HTMLElement = document.createElement('button');
-        elementMiddle.setAttribute('id', this.identifiers.middle);
-        elementMiddle.setAttribute('class', this.identifiers.buttons);
-        elementMiddle.setAttribute('key', this.buttons.playPause);
+        elementMiddle.setAttribute('id', this.identifiersId.middle);
+        elementMiddle.setAttribute('class', this.identifiersClass.buttons);
+        elementMiddle.setAttribute('action', this.actions.playPause);
         elementContainer.appendChild(elementMiddle);
 
         elementMiddle.innerHTML = this.buildIcon(this.iconsPath.play);
     }
 
     // ==================================================
-    // Bottom Buttons
-    private buildBottom(elementContainer: HTMLElement): void {
+    // Bottom
+    private buildBottom: Function = (elementContainer: HTMLDivElement): void => {
         const elementBottom: HTMLElement = document.createElement('div');
-        elementBottom.setAttribute('id', this.identifiers.bottom);
+        elementBottom.setAttribute('id', this.identifiersId.bottom);
         elementContainer.appendChild(elementBottom);
 
-        // Play and Pause
+        this.buildPlayPause(elementBottom);
+        this.buildCurrent(elementBottom);
+        this.buildRangerProguess(elementBottom);
+        this.buildDuration(elementBottom);
+        this.buildVolume(elementBottom);
+        this.buildPictureInPicture(elementBottom);
+        this.buildFullscren(elementBottom);
+    }
+
+    // ==================================================
+    // Play Pause
+    private buildPlayPause(elementBottom: HTMLElement): void {
         const buttonPlayPause: HTMLElement = document.createElement('button');
-        buttonPlayPause.setAttribute('class', this.identifiers.buttons);
-        buttonPlayPause.setAttribute('key', this.buttons.playPause);
+        buttonPlayPause.setAttribute('class', this.identifiersClass.buttons);
+        buttonPlayPause.setAttribute('action', this.actions.playPause);
         buttonPlayPause.innerHTML = this.buildIcon(this.iconsPath.play);
         elementBottom.appendChild(buttonPlayPause);
+    }
 
-        // Ranger Volume
-        const divRangerVolume: HTMLElement = document.createElement('div');
-        divRangerVolume.setAttribute('id', this.identifiers.rangerVolume);
-        elementBottom.appendChild(divRangerVolume);
+    // ==================================================
+    // Current
+    private buildCurrent(elementBottom: HTMLElement): void {
+        const pCurrent: HTMLElement = document.createElement('p');
+        pCurrent.setAttribute('id', this.actions.currentTime);
+        pCurrent.setAttribute('action', this.actions.currentTime);
+        elementBottom.appendChild(pCurrent);
+    }
+
+    // ==================================================
+    // Ranger Proguess
+    private buildRangerProguess(elementBottom: HTMLElement): void {
+        const divRangerProguessContainer: HTMLElement = document.createElement('div');
+        divRangerProguessContainer.setAttribute('id', this.actions.rangerProguessContainer);
+        elementBottom.appendChild(divRangerProguessContainer);
 
         const divRangerProguess: HTMLElement = document.createElement('div');
-        divRangerProguess.setAttribute('id', this.identifiers.rangerProguess);
-        divRangerProguess.setAttribute('key', this.buttons.rangerProguess);
-        divRangerVolume.appendChild(divRangerProguess);
+        divRangerProguess.setAttribute('id', this.actions.rangerProguess);
+        divRangerProguess.setAttribute('action', this.actions.rangerProguess);
+        divRangerProguessContainer.appendChild(divRangerProguess);
 
         const divRangerProguessPoint: HTMLElement = document.createElement('div');
-        divRangerProguessPoint.setAttribute('id', this.identifiers.rangerProguessPoint);
-        divRangerProguessPoint.setAttribute('key', this.buttons.rangerProguessPoint);
-        divRangerVolume.appendChild(divRangerProguessPoint);
+        divRangerProguessPoint.setAttribute('id', this.actions.rangerProguessPoint);
+        divRangerProguessPoint.setAttribute('action', this.actions.rangerProguessPoint);
+        divRangerProguessContainer.appendChild(divRangerProguessPoint);
+    }
 
-        // Duration
-        const buttonDuration: HTMLElement = document.createElement('p');
-        buttonDuration.setAttribute('class', this.identifiers.duration);
-        buttonDuration.setAttribute('key', this.buttons.duration);
-        elementBottom.appendChild(buttonDuration);
+    // ==================================================
+    // Duration
+    private buildDuration(elementBottom: HTMLElement): void {
+        const pDuration: HTMLElement = document.createElement('p');
+        pDuration.setAttribute('id', this.actions.durationTime);
+        pDuration.setAttribute('action', this.actions.durationTime);
+        elementBottom.appendChild(pDuration);
+    }
 
-        // Volume
+    // ==================================================
+    // Volume
+    private buildVolume(elementBottom: HTMLElement): void {
         const buttonVolume: HTMLElement = document.createElement('button');
-        buttonVolume.setAttribute('class', this.identifiers.buttons);
-        buttonVolume.setAttribute('key', this.buttons.volume);
+        buttonVolume.setAttribute('class', this.identifiersClass.buttons);
+        buttonVolume.setAttribute('action', this.actions.volume);
         buttonVolume.innerHTML = this.buildIcon(this.iconsPath.volumeOn);
         elementBottom.appendChild(buttonVolume);
+    }
 
-        // Picture in Picture
+    // ==================================================
+    // Picture in Picture
+    private buildPictureInPicture(elementBottom: HTMLElement): void {
         const buttonPictureInPicture: HTMLElement = document.createElement('button');
-        buttonPictureInPicture.setAttribute('class', this.identifiers.buttons);
-        buttonPictureInPicture.setAttribute('key', this.buttons.pictureInPicture);
+        buttonPictureInPicture.setAttribute('class', this.identifiersClass.buttons);
+        buttonPictureInPicture.setAttribute('action', this.actions.pictureInPicture);
         buttonPictureInPicture.innerHTML = this.buildIcon(this.iconsPath.pictureInPicture);
         elementBottom.appendChild(buttonPictureInPicture);
+    }
 
-        // Fullscreen
+    // ==================================================
+    // Fullscreen
+    private buildFullscren(elementBottom: HTMLElement): void {
         const buttonFullscreen: HTMLElement = document.createElement('button');
-        buttonFullscreen.setAttribute('class', this.identifiers.buttons);
-        buttonFullscreen.setAttribute('key', this.buttons.fullscreen);
+        buttonFullscreen.setAttribute('class', this.identifiersClass.buttons);
+        buttonFullscreen.setAttribute('action', this.actions.fullscreen);
         buttonFullscreen.innerHTML = this.buildIcon(this.iconsPath.fullscreenOff);
         elementBottom.appendChild(buttonFullscreen);
     }
 
     // ==================================================
-    // Bottom Buttons
+    // Icons
     private buildIcon(pathIcon: string): string {
-        var icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" id="${this.identifiers.icons}">`;
+        var icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="${this.identifiersClass.icons}">`;
         icon += `<path d="${pathIcon}" />`;
         icon += '</svg>';
         return icon;

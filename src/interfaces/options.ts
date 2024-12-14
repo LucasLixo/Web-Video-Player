@@ -1,4 +1,4 @@
-export interface intOptions {
+export default interface intOptions {
     apply: string,
     backgroundColor: string,
     colorInactive: string,

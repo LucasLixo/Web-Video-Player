@@ -1,4 +1,4 @@
-"./interfaces/options";
+import IOError from "./class/io_error";
 import Elements from "./class/elements";
 import Styles from "./class/styles";
 var WVP = (function () {
@@ -16,34 +16,48 @@ var WVP = (function () {
             muted: (_e = options['muted']) !== null && _e !== void 0 ? _e : true,
             top: (_f = options['top']) !== null && _f !== void 0 ? _f : null,
         };
-        this.identifiers = {
-            all: 'wvp_all',
-            video: apply,
+        this.identifiersId = {
             container: 'wvp__container',
             top: 'wvp__top',
             middle: 'wvp__middle',
             bottom: 'wvp__bottom',
-            duration: 'wvp__duration',
-            rangerVolume: 'wvp__ranger_volume',
-            rangerProguess: 'wvp__ranger_proguess',
-            rangerProguessPoint: 'wvp__ranger_proguess_point',
-            icons: 'wvp__icons',
-            buttons: 'wvp__buttons'
         };
-        this.buttons = {
+        this.identifiersClass = {
+            all: 'wvp_all',
+            buttons: 'wvp__buttons',
+            icons: 'wvp__icons',
+        };
+        this.actions = {
             playPause: 'wvp__button__play_pause',
             fullscreen: 'wvp__button__fullscreen',
             pictureInPicture: 'wvp__button__picture_in_picture',
             volume: 'wvp__button__volume',
-            duration: 'wvp__button__duration',
+            rangerVolumeContainer: 'wvp__button__ranger_volume_container',
             rangerVolume: 'wvp__button__ranger_volume',
+            rangerVolumePoint: 'wvp__button__ranger_volume_point',
+            durationTime: 'wvp__button__duration_time',
+            currentTime: 'wvp__button__current_time',
+            rangerProguessContainer: 'wvp__button__ranger_proguess_container',
             rangerProguess: 'wvp__button__ranger_proguess',
             rangerProguessPoint: 'wvp__button__ranger_proguess_point',
         };
-        this.styles = new Styles(this.options, this.identifiers);
-        this.elements = new Elements(this.options, this.identifiers, this.buttons);
+        this.elements = new Elements(this.options, this.identifiersId, this.identifiersClass, this.actions);
+        this.styles = new Styles(this.options, this.identifiersId, this.identifiersClass, this.actions);
         this.init();
     }
+    Object.defineProperty(WVP.prototype, "backgroundColor", {
+        get: function () {
+            return this.options.backgroundColor;
+        },
+        set: function (value) {
+            if (this.options.backgroundColor == value)
+                return;
+            this.options.backgroundColor = value;
+            new IOError('Error backgroundColor(); not suport!');
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(WVP.prototype, "colorInactive", {
         get: function () {
             return this.options.colorInactive;
@@ -52,6 +66,7 @@ var WVP = (function () {
             if (this.options.colorInactive == value)
                 return;
             this.options.colorInactive = value;
+            new IOError('Error colorInactive(); not suport!');
         },
         enumerable: false,
         configurable: true
@@ -64,37 +79,14 @@ var WVP = (function () {
             if (this.options.colorActive == value)
                 return;
             this.options.colorActive = value;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(WVP.prototype, "autoplay", {
-        get: function () {
-            return this.options.autoplay;
-        },
-        set: function (value) {
-            if (this.options.autoplay == value)
-                return;
-            this.options.autoplay = value;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(WVP.prototype, "muted", {
-        get: function () {
-            return this.options.muted;
-        },
-        set: function (value) {
-            if (this.options.muted == value)
-                return;
-            this.options.muted = value;
+            new IOError('Error colorActive(); not suport!');
         },
         enumerable: false,
         configurable: true
     });
     WVP.prototype.init = function () {
-        this.styles.build();
         this.elements.build();
+        this.styles.build();
     };
     return WVP;
 }());

@@ -1,24 +1,26 @@
-// Enums
-import { styles } from "./enums/styles";
 // Interfaces
-import intIdentifiers from "./interfaces/identifiers";
-import { intOptions } from "./interfaces/options"; "./interfaces/options";
+import intIdentifiersId from "./interfaces/identifiers_id";
+import intIdentifiersClass from "./interfaces/identifiers_class";
+import intActions from "./interfaces/actions";
+import intOptions from "./interfaces/options";
 // Class
 import IOError from "./class/io_error";
 import Elements from "./class/elements";
 import Styles from "./class/styles";
-import intButtons from "./interfaces/buttons";
 
-// ==================================================
 class WVP {
-    styles: Styles;
-    elements: Elements;
-
     // ==================================================
+    // Interfaces
     options: intOptions;
-    identifiers: intIdentifiers;
-    buttons: intButtons;
-
+    identifiersId: intIdentifiersId;
+    identifiersClass: intIdentifiersClass;
+    actions: intActions;
+    
+    // ==================================================
+    // Class
+    elements: Elements;
+    styles: Styles;
+    
     // ==================================================
     constructor(apply: string, options?: Record<string, any>) {
         if (options == undefined) {
@@ -33,72 +35,71 @@ class WVP {
             muted: options['muted'] ?? true,
             top: options['top'] ?? null,
         }
-        this.identifiers = {
-            all: 'wvp_all',
-            video: apply,
+        this.identifiersId = {
             container: 'wvp__container',
             top: 'wvp__top',
             middle: 'wvp__middle',
             bottom: 'wvp__bottom',
-            duration: 'wvp__duration',
-            rangerVolume: 'wvp__ranger_volume',
-            rangerProguess: 'wvp__ranger_proguess',
-            rangerProguessPoint: 'wvp__ranger_proguess_point',
-            icons: 'wvp__icons',
-            buttons: 'wvp__buttons'
         };
-        this.buttons = {
+        this.identifiersClass = {
+            all: 'wvp_all',
+            buttons: 'wvp__buttons',
+            icons: 'wvp__icons',
+        };
+        this.actions = {
             playPause: 'wvp__button__play_pause',
             fullscreen: 'wvp__button__fullscreen',
             pictureInPicture: 'wvp__button__picture_in_picture',
             volume: 'wvp__button__volume',
-            duration: 'wvp__button__duration',
+            rangerVolumeContainer: 'wvp__button__ranger_volume_container',
             rangerVolume: 'wvp__button__ranger_volume',
+            rangerVolumePoint: 'wvp__button__ranger_volume_point',
+            durationTime: 'wvp__button__duration_time',
+            currentTime: 'wvp__button__current_time',
+            rangerProguessContainer: 'wvp__button__ranger_proguess_container',
             rangerProguess: 'wvp__button__ranger_proguess',
             rangerProguessPoint: 'wvp__button__ranger_proguess_point',
-        }
-        this.styles = new Styles(this.options, this.identifiers);
-        this.elements = new Elements(this.options, this.identifiers, this.buttons);
+        };
+        //
+        this.elements = new Elements(this.options, this.identifiersId, this.identifiersClass, this.actions);
+        this.styles = new Styles(this.options, this.identifiersId, this.identifiersClass, this.actions);
+        //
         this.init();
     }
 
     // ==================================================
     // Getters
+    get backgroundColor(): string {
+        return this.options.backgroundColor;
+    }
     get colorInactive(): string {
         return this.options.colorInactive;
     }
     get colorActive(): string {
         return this.options.colorActive;
     }
-    get autoplay(): boolean {
-        return this.options.autoplay;
-    }
-    get muted(): boolean {
-        return this.options.muted;
-    }
 
     // ==================================================
     // Setters
+    set backgroundColor(value: string) {
+        if (this.options.backgroundColor == value) return;
+        this.options.backgroundColor = value;
+        new IOError('Error backgroundColor(); not suport!');
+    }
     set colorInactive(value: string) {
         if (this.options.colorInactive == value) return;
         this.options.colorInactive = value;
+        new IOError('Error colorInactive(); not suport!');
     }
     set colorActive(value: string) {
         if (this.options.colorActive == value) return;
         this.options.colorActive = value;
-    }
-    set autoplay(value: boolean) {
-        if (this.options.autoplay == value) return;
-        this.options.autoplay = value;
-    }
-    set muted(value: boolean) {
-        if (this.options.muted == value) return;
-        this.options.muted = value;
+        new IOError('Error colorActive(); not suport!');
     }
 
     // ==================================================
     private init() {
-        this.styles.build();
         this.elements.build();
+        this.styles.build();
     }
 }

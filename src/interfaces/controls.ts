@@ -5,7 +5,9 @@ export default interface intControls {
     pictureInPicture: boolean,
     volume: boolean,
     rangerVolume: number,
-    rangerProguess: number,
-    duration: string,
-    currentTime: number,
+    durationTime: string,
+    currentTime: string,
+    duration: number,
+    current: number,
+    // rangerProguess: number,
 }

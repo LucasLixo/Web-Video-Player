@@ -1,13 +1,8 @@
 // ==================================================
-export enum styles {
-    all,
+export enum StylesId {
     video,
     container,
     top,
     middle,
     bottom,
-    duration,
-    rangerVolume,
-    buttons,
-    icons,
 }

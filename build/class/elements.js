@@ -1,10 +1,40 @@
-import IOError from "./io_error";
-import Controls from "./controls";
+import IOError from "../class/io_error";
+import Controls from "../class/controls";
 var Elements = (function () {
-    function Elements(options, identifiers, buttons) {
+    function Elements(options, identifiersId, identifiersClass, actions) {
+        var _this = this;
+        this.buildTop = function (elementContainer) {
+            var elementTop = document.createElement('div');
+            elementTop.setAttribute('id', _this.identifiersId.top);
+            elementContainer.appendChild(elementTop);
+            if (_this.options.top != null) {
+                elementTop.innerHTML = _this.options.top;
+            }
+        };
+        this.buildMiddle = function (elementContainer) {
+            var elementMiddle = document.createElement('button');
+            elementMiddle.setAttribute('id', _this.identifiersId.middle);
+            elementMiddle.setAttribute('class', _this.identifiersClass.buttons);
+            elementMiddle.setAttribute('action', _this.actions.playPause);
+            elementContainer.appendChild(elementMiddle);
+            elementMiddle.innerHTML = _this.buildIcon(_this.iconsPath.play);
+        };
+        this.buildBottom = function (elementContainer) {
+            var elementBottom = document.createElement('div');
+            elementBottom.setAttribute('id', _this.identifiersId.bottom);
+            elementContainer.appendChild(elementBottom);
+            _this.buildPlayPause(elementBottom);
+            _this.buildCurrent(elementBottom);
+            _this.buildRangerProguess(elementBottom);
+            _this.buildDuration(elementBottom);
+            _this.buildVolume(elementBottom);
+            _this.buildPictureInPicture(elementBottom);
+            _this.buildFullscren(elementBottom);
+        };
         this.options = options;
-        this.identifiers = identifiers;
-        this.buttons = buttons;
+        this.identifiersId = identifiersId;
+        this.identifiersClass = identifiersClass;
+        this.actions = actions;
         this.iconsPath = {
             fullscreenOn: 'M333-200v-133H200v-60h193v193h-60Zm234 0v-193h193v60H627v133h-60ZM200-567v-60h133v-133h60v193H200Zm367 0v-193h60v133h133v60H567Z',
             fullscreenOff: 'M200-200v-193h60v133h133v60H200Zm0-367v-193h193v60H260v133h-60Zm367 367v-60h133v-133h60v193H567Zm133-367v-133H567v-60h193v193h-60Z',
@@ -22,84 +52,80 @@ var Elements = (function () {
             return;
         }
         elementVideos.forEach(function (elementVideo) {
-            var elementContainer = document.createElement('div');
             var parentElement = elementVideo.parentElement;
             if (parentElement == null) {
                 new IOError("Error parentElement is null");
             }
-            elementVideo.addEventListener('contextmenu', function (event) { return event.preventDefault(); });
-            elementContainer.setAttribute('id', _this.identifiers.container);
+            var elementContainer = document.createElement('div');
+            elementContainer.setAttribute('id', _this.identifiersId.container);
             parentElement.insertBefore(elementContainer, elementVideo);
             elementContainer.appendChild(elementVideo);
             _this.buildTop(elementContainer);
             _this.buildMiddle(elementContainer);
             _this.buildBottom(elementContainer);
             try {
-                new Controls(elementContainer, elementVideo, { buttons: _this.buttons, pathIcons: _this.iconsPath, autoplay: _this.options.autoplay, muted: _this.options.muted, });
+                new Controls(elementContainer, elementVideo, _this.options, _this.actions, _this.iconsPath);
             }
             catch (error) {
                 new IOError("Error build Controls: ".concat(error));
             }
         });
     };
-    Elements.prototype.buildTop = function (elementContainer) {
-        var elementTop = document.createElement('div');
-        elementTop.setAttribute('id', this.identifiers.top);
-        elementContainer.appendChild(elementTop);
-        if (this.options.top != null) {
-            elementTop.innerHTML = this.options.top;
-        }
-    };
-    Elements.prototype.buildMiddle = function (elementContainer) {
-        var elementMiddle = document.createElement('button');
-        elementMiddle.setAttribute('id', this.identifiers.middle);
-        elementMiddle.setAttribute('class', this.identifiers.buttons);
-        elementMiddle.setAttribute('key', this.buttons.playPause);
-        elementContainer.appendChild(elementMiddle);
-        elementMiddle.innerHTML = this.buildIcon(this.iconsPath.play);
-    };
-    Elements.prototype.buildBottom = function (elementContainer) {
-        var elementBottom = document.createElement('div');
-        elementBottom.setAttribute('id', this.identifiers.bottom);
-        elementContainer.appendChild(elementBottom);
+    Elements.prototype.buildPlayPause = function (elementBottom) {
         var buttonPlayPause = document.createElement('button');
-        buttonPlayPause.setAttribute('class', this.identifiers.buttons);
-        buttonPlayPause.setAttribute('key', this.buttons.playPause);
+        buttonPlayPause.setAttribute('class', this.identifiersClass.buttons);
+        buttonPlayPause.setAttribute('action', this.actions.playPause);
         buttonPlayPause.innerHTML = this.buildIcon(this.iconsPath.play);
         elementBottom.appendChild(buttonPlayPause);
-        var divRangerVolume = document.createElement('div');
-        divRangerVolume.setAttribute('id', this.identifiers.rangerVolume);
-        elementBottom.appendChild(divRangerVolume);
+    };
+    Elements.prototype.buildCurrent = function (elementBottom) {
+        var pCurrent = document.createElement('p');
+        pCurrent.setAttribute('id', this.actions.currentTime);
+        pCurrent.setAttribute('action', this.actions.currentTime);
+        elementBottom.appendChild(pCurrent);
+    };
+    Elements.prototype.buildRangerProguess = function (elementBottom) {
+        var divRangerProguessContainer = document.createElement('div');
+        divRangerProguessContainer.setAttribute('id', this.actions.rangerProguessContainer);
+        elementBottom.appendChild(divRangerProguessContainer);
         var divRangerProguess = document.createElement('div');
-        divRangerProguess.setAttribute('id', this.identifiers.rangerProguess);
-        divRangerProguess.setAttribute('key', this.buttons.rangerProguess);
-        divRangerVolume.appendChild(divRangerProguess);
+        divRangerProguess.setAttribute('id', this.actions.rangerProguess);
+        divRangerProguess.setAttribute('action', this.actions.rangerProguess);
+        divRangerProguessContainer.appendChild(divRangerProguess);
         var divRangerProguessPoint = document.createElement('div');
-        divRangerProguessPoint.setAttribute('id', this.identifiers.rangerProguessPoint);
-        divRangerProguessPoint.setAttribute('key', this.buttons.rangerProguessPoint);
-        divRangerVolume.appendChild(divRangerProguessPoint);
-        var buttonDuration = document.createElement('p');
-        buttonDuration.setAttribute('class', this.identifiers.duration);
-        buttonDuration.setAttribute('key', this.buttons.duration);
-        elementBottom.appendChild(buttonDuration);
+        divRangerProguessPoint.setAttribute('id', this.actions.rangerProguessPoint);
+        divRangerProguessPoint.setAttribute('action', this.actions.rangerProguessPoint);
+        divRangerProguessContainer.appendChild(divRangerProguessPoint);
+    };
+    Elements.prototype.buildDuration = function (elementBottom) {
+        var pDuration = document.createElement('p');
+        pDuration.setAttribute('id', this.actions.durationTime);
+        pDuration.setAttribute('action', this.actions.durationTime);
+        elementBottom.appendChild(pDuration);
+    };
+    Elements.prototype.buildVolume = function (elementBottom) {
         var buttonVolume = document.createElement('button');
-        buttonVolume.setAttribute('class', this.identifiers.buttons);
-        buttonVolume.setAttribute('key', this.buttons.volume);
+        buttonVolume.setAttribute('class', this.identifiersClass.buttons);
+        buttonVolume.setAttribute('action', this.actions.volume);
         buttonVolume.innerHTML = this.buildIcon(this.iconsPath.volumeOn);
         elementBottom.appendChild(buttonVolume);
+    };
+    Elements.prototype.buildPictureInPicture = function (elementBottom) {
         var buttonPictureInPicture = document.createElement('button');
-        buttonPictureInPicture.setAttribute('class', this.identifiers.buttons);
-        buttonPictureInPicture.setAttribute('key', this.buttons.pictureInPicture);
+        buttonPictureInPicture.setAttribute('class', this.identifiersClass.buttons);
+        buttonPictureInPicture.setAttribute('action', this.actions.pictureInPicture);
         buttonPictureInPicture.innerHTML = this.buildIcon(this.iconsPath.pictureInPicture);
         elementBottom.appendChild(buttonPictureInPicture);
+    };
+    Elements.prototype.buildFullscren = function (elementBottom) {
         var buttonFullscreen = document.createElement('button');
-        buttonFullscreen.setAttribute('class', this.identifiers.buttons);
-        buttonFullscreen.setAttribute('key', this.buttons.fullscreen);
+        buttonFullscreen.setAttribute('class', this.identifiersClass.buttons);
+        buttonFullscreen.setAttribute('action', this.actions.fullscreen);
         buttonFullscreen.innerHTML = this.buildIcon(this.iconsPath.fullscreenOff);
         elementBottom.appendChild(buttonFullscreen);
     };
     Elements.prototype.buildIcon = function (pathIcon) {
-        var icon = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 -960 960 960\" id=\"".concat(this.identifiers.icons, "\">");
+        var icon = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 -960 960 960\" class=\"".concat(this.identifiersClass.icons, "\">");
         icon += "<path d=\"".concat(pathIcon, "\" />");
         icon += '</svg>';
         return icon;

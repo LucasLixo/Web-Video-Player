@@ -1,5 +1,3 @@
-"./interfaces/options";
-
 // build/class/io_error.js
 var __extends = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
@@ -34,159 +32,174 @@ var io_error_default = IOError;
 
 // build/class/controls.js
 var Controls = function() {
-  function Controls2(elementContainer, elementVideo, options) {
-    this.formatTime = function(seconds) {
-      function padZero(number) {
-        return (number < 10 ? "0" : "") + number;
+  function Controls2(elementContainer, elementVideo, options, actions, iconsPath) {
+    var _this = this;
+    var _a;
+    this.buildConfig = function() {
+      _this.elementVideo.removeAttribute("controls");
+      _this.elementVideo.controls = false;
+      _this.elementVideo.currentTime = _this.controls.current;
+    };
+    this.buildPlayPause = function() {
+      var buttonsPlayPause = document.querySelectorAll('button[action="' + "".concat(_this.actions.playPause) + '"]');
+      if (buttonsPlayPause.length === 0) {
+        new io_error_default("Is empty Play/Pause.");
+        return;
       }
-      var hours = Math.floor(seconds / 3600);
-      var minutes = Math.floor(seconds % 3600 / 60);
-      var secondsLeft = Math.floor(seconds % 60);
-      if (hours > 0) {
-        return padZero(hours) + ":" + padZero(minutes) + ":" + padZero(secondsLeft);
+      function handlePlayPause(videoElement) {
+        if (videoElement.paused) {
+          videoElement.play();
+        } else {
+          videoElement.pause();
+        }
       }
-      return padZero(minutes) + ":" + padZero(secondsLeft);
+      ;
+      _this.elementVideo.addEventListener("pause", function() {
+        _this.controls.playing = false;
+        buttonsPlayPause.forEach(function(button) {
+          var svgPath = button.querySelector("svg > path");
+          if (svgPath) {
+            svgPath.setAttribute("d", _this.iconsPath.play);
+          }
+        });
+      });
+      _this.elementVideo.addEventListener("play", function() {
+        _this.controls.playing = true;
+        buttonsPlayPause.forEach(function(button) {
+          var svgPath = button.querySelector("svg > path");
+          if (svgPath) {
+            svgPath.setAttribute("d", _this.iconsPath.pause);
+          }
+        });
+      });
+      _this.elementVideo.addEventListener("click", function() {
+        handlePlayPause(_this.elementVideo);
+      });
+      buttonsPlayPause.forEach(function(button) {
+        button.addEventListener("click", function() {
+          handlePlayPause(_this.elementVideo);
+        });
+      });
+    };
+    this.buildFullscreen = function() {
+      var buttonFullscreen = document.querySelector('button[action="' + "".concat(_this.actions.fullscreen) + '"]');
+      var svgFullscreen = buttonFullscreen.querySelector("svg > path");
+      buttonFullscreen.addEventListener("click", function() {
+        if (!_this.controls.fullscreen) {
+          _this.controls.fullscreen = true;
+          if (_this.elementContainer.requestFullscreen) {
+            _this.elementContainer.requestFullscreen();
+          } else if (_this.elementContainer.mozRequestFullScreen) {
+            _this.elementContainer.mozRequestFullScreen();
+          } else if (_this.elementContainer.webkitRequestFullScreen) {
+            _this.elementContainer.webkitRequestFullScreen();
+          } else if (_this.elementContainer.msRequestFullscreen) {
+            _this.elementContainer.msRequestFullscreen();
+          }
+          svgFullscreen.setAttribute("d", _this.iconsPath.fullscreenOn);
+        } else {
+          _this.controls.fullscreen = false;
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
+          svgFullscreen.setAttribute("d", _this.iconsPath.fullscreenOff);
+        }
+      });
+    };
+    this.buildPictureInPicture = function() {
+      var buttonPictureInPicture = document.querySelector('button[action="' + "".concat(_this.actions.pictureInPicture) + '"]');
+      buttonPictureInPicture.addEventListener("click", function() {
+        if (_this.elementVideo.requestPictureInPicture) {
+          _this.elementVideo.requestPictureInPicture();
+        }
+      });
+    };
+    this.buildVolume = function() {
+      var buttonVolume = document.querySelector('button[action="' + "".concat(_this.actions.volume) + '"]');
+      var svgVolume = buttonVolume.querySelector("svg > path");
+      buttonVolume.addEventListener("click", function() {
+        if (_this.elementVideo.muted || _this.elementVideo.volume === 0) {
+          _this.elementVideo.muted = false;
+          _this.elementVideo.volume = 1;
+          svgVolume.setAttribute("d", _this.iconsPath.volumeOn);
+        } else {
+          _this.elementVideo.muted = true;
+          _this.elementVideo.volume = 0;
+          svgVolume.setAttribute("d", _this.iconsPath.volumeOff);
+        }
+      });
+    };
+    this.buildRangerVolume = function() {
+    };
+    this.buildDurationTime = function() {
+      var durationTime = document.querySelector('p[action="' + "".concat(_this.actions.durationTime) + '"]');
+      durationTime.innerHTML = _this.controls.durationTime;
+    };
+    this.buildCurrentTime = function() {
+      var currentTime = document.querySelector('p[action="' + "".concat(_this.actions.currentTime) + '"]');
+      _this.elementVideo.addEventListener("timeupdate", function() {
+        var _a2, _b;
+        _this.controls.currentTime = _this.formatTime((_a2 = _this.elementVideo.currentTime) !== null && _a2 !== void 0 ? _a2 : 0);
+        _this.controls.current = (_b = _this.elementVideo.currentTime) !== null && _b !== void 0 ? _b : 0;
+        currentTime.innerHTML = _this.controls.currentTime;
+      });
+    };
+    this.buildRangerProguess = function() {
+      var rangerProguess = document.querySelector('div[action="' + "".concat(_this.actions.rangerProguess) + '"]');
+      var rangerProguessPoint = document.querySelector('div[action="' + "".concat(_this.actions.rangerProguessPoint) + '"]');
+      _this.elementVideo.addEventListener("timeupdate", function() {
+        var currentTime = _this.elementVideo.currentTime;
+        var duration = _this.elementVideo.duration;
+        var progressPercentage = currentTime / duration * 100;
+        rangerProguess.setAttribute("style", "width: ".concat(progressPercentage, "%;"));
+        rangerProguessPoint.setAttribute("style", "left: calc(".concat(progressPercentage, "% - 1%);"));
+      });
     };
     this.elementContainer = elementContainer;
     this.elementVideo = elementVideo;
-    this.buttons = options.buttons;
-    this.pathIcons = options.pathIcons;
+    this.actions = actions;
+    this.iconsPath = iconsPath;
     this.controls = {
       playing: options.autoplay,
       fullscreen: false,
       pictureInPicture: false,
       volume: !options.muted,
       rangerVolume: options.muted ? 0 : 1,
-      rangerProguess: 0,
-      duration: this.formatTime(0),
-      currentTime: 0
+      durationTime: this.formatTime((_a = this.elementVideo.duration) !== null && _a !== void 0 ? _a : 0),
+      currentTime: this.formatTime(0),
+      duration: this.elementVideo.duration,
+      current: 0
     };
-    this.elementVideo.removeAttribute("controls");
-    elementVideo.controls = false;
-    this.controls.duration = this.formatTime(this.elementVideo.duration);
-    this.elementVideo.currentTime = this.controls.currentTime;
-    this.togglePlayPause();
-    this.duration();
-    this.rangerVolume();
-    this.toggleVolume();
-    this.pictureInPicture();
-    this.fullscreen();
+    this.build();
   }
-  Controls2.prototype.togglePlayPause = function() {
-    var _this = this;
-    var buttonsPlayPause = document.querySelectorAll('button[key="' + "".concat(this.buttons.playPause) + '"]');
-    if (buttonsPlayPause.length === 0) {
-      new io_error_default("Is empty Play/Pause.");
-      return;
+  Controls2.prototype.build = function() {
+    this.buildConfig();
+    this.buildPlayPause();
+    this.buildFullscreen();
+    this.buildPictureInPicture();
+    this.buildVolume();
+    this.buildRangerVolume();
+    this.buildDurationTime();
+    this.buildCurrentTime();
+    this.buildRangerProguess();
+  };
+  Controls2.prototype.formatTime = function(seconds) {
+    function padZero(number) {
+      return (number < 10 ? "0" : "") + number;
     }
-    var handlePlayPause = function(videoElement) {
-      if (videoElement.paused) {
-        videoElement.play();
-      } else {
-        videoElement.pause();
-      }
-    };
-    this.elementVideo.addEventListener("pause", function() {
-      _this.controls.playing = false;
-      buttonsPlayPause.forEach(function(button) {
-        var svgPath = button.querySelector("svg > path");
-        if (svgPath) {
-          svgPath.setAttribute("d", _this.pathIcons.play);
-        }
-      });
-    });
-    this.elementVideo.addEventListener("play", function() {
-      _this.controls.playing = true;
-      buttonsPlayPause.forEach(function(button) {
-        var svgPath = button.querySelector("svg > path");
-        if (svgPath) {
-          svgPath.setAttribute("d", _this.pathIcons.pause);
-        }
-      });
-    });
-    this.elementVideo.addEventListener("click", function() {
-      handlePlayPause(_this.elementVideo);
-    });
-    buttonsPlayPause.forEach(function(button) {
-      button.addEventListener("click", function() {
-        handlePlayPause(_this.elementVideo);
-      });
-    });
-  };
-  Controls2.prototype.duration = function() {
-    var pDuration = document.querySelector('p[key="' + "".concat(this.buttons.duration) + '"]');
-    pDuration.innerHTML = this.controls.duration;
-  };
-  Controls2.prototype.rangerVolume = function() {
-    var _this = this;
-    var rangerProguess = document.querySelector('div[key="' + "".concat(this.buttons.volume) + '"]');
-    var rangerProguessPoint = document.querySelector('div[key="' + "".concat(this.buttons.volume) + '"]');
-    this.elementVideo.addEventListener("timeupdate", function() {
-      var currentTime = _this.elementVideo.currentTime;
-      var duration = _this.elementVideo.duration;
-      var progressPercentage = currentTime / duration * 100;
-      rangerProguess.setAttribute("style", "width: ".concat(progressPercentage, "%;"));
-      rangerProguessPoint.setAttribute("style", "left: calc(".concat(progressPercentage, "% - 1%);"));
-      _this.controls.currentTime = currentTime;
-      _this.controls.rangerProguess = progressPercentage;
-    });
-  };
-  Controls2.prototype.toggleVolume = function() {
-    var _this = this;
-    var buttonVolume = document.querySelector('button[key="' + "".concat(this.buttons.volume) + '"]');
-    var svgVolume = buttonVolume.querySelector("svg > path");
-    buttonVolume.addEventListener("click", function() {
-      if (_this.elementVideo.muted || _this.elementVideo.volume === 0) {
-        _this.elementVideo.muted = false;
-        _this.elementVideo.volume = 1;
-        svgVolume.setAttribute("d", _this.pathIcons.volumeOn);
-      } else {
-        _this.elementVideo.muted = true;
-        _this.elementVideo.volume = 0;
-        svgVolume.setAttribute("d", _this.pathIcons.volumeOff);
-      }
-    });
-  };
-  Controls2.prototype.pictureInPicture = function() {
-    var _this = this;
-    var buttonPictureInPicture = document.querySelector('button[key="' + "".concat(this.buttons.pictureInPicture) + '"]');
-    buttonPictureInPicture.addEventListener("click", function() {
-      if (_this.elementVideo.requestPictureInPicture) {
-        _this.elementVideo.requestPictureInPicture();
-      }
-    });
-  };
-  Controls2.prototype.fullscreen = function() {
-    var _this = this;
-    var buttonFullscreen = document.querySelector('button[key="' + "".concat(this.buttons.fullscreen) + '"]');
-    var svgFullscreen = buttonFullscreen.querySelector("svg > path");
-    buttonFullscreen.addEventListener("click", function() {
-      if (!_this.controls.fullscreen) {
-        _this.controls.fullscreen = true;
-        if (_this.elementContainer.requestFullscreen) {
-          _this.elementContainer.requestFullscreen();
-        } else if (_this.elementContainer.mozRequestFullScreen) {
-          _this.elementContainer.mozRequestFullScreen();
-        } else if (_this.elementContainer.webkitRequestFullScreen) {
-          _this.elementContainer.webkitRequestFullScreen();
-        } else if (_this.elementContainer.msRequestFullscreen) {
-          _this.elementContainer.msRequestFullscreen();
-        }
-        svgFullscreen.setAttribute("d", _this.pathIcons.fullscreenOn);
-      } else {
-        _this.controls.fullscreen = false;
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-        svgFullscreen.setAttribute("d", _this.pathIcons.fullscreenOff);
-      }
-    });
+    var hours = Math.floor(seconds / 3600);
+    var minutes = Math.floor(seconds % 3600 / 60);
+    var secondsLeft = Math.floor(seconds % 60);
+    if (hours > 0) {
+      return padZero(hours) + ":" + padZero(minutes) + ":" + padZero(secondsLeft);
+    }
+    return padZero(minutes) + ":" + padZero(secondsLeft);
   };
   return Controls2;
 }();
@@ -194,10 +207,40 @@ var controls_default = Controls;
 
 // build/class/elements.js
 var Elements = function() {
-  function Elements2(options, identifiers, buttons) {
+  function Elements2(options, identifiersId, identifiersClass, actions) {
+    var _this = this;
+    this.buildTop = function(elementContainer) {
+      var elementTop = document.createElement("div");
+      elementTop.setAttribute("id", _this.identifiersId.top);
+      elementContainer.appendChild(elementTop);
+      if (_this.options.top != null) {
+        elementTop.innerHTML = _this.options.top;
+      }
+    };
+    this.buildMiddle = function(elementContainer) {
+      var elementMiddle = document.createElement("button");
+      elementMiddle.setAttribute("id", _this.identifiersId.middle);
+      elementMiddle.setAttribute("class", _this.identifiersClass.buttons);
+      elementMiddle.setAttribute("action", _this.actions.playPause);
+      elementContainer.appendChild(elementMiddle);
+      elementMiddle.innerHTML = _this.buildIcon(_this.iconsPath.play);
+    };
+    this.buildBottom = function(elementContainer) {
+      var elementBottom = document.createElement("div");
+      elementBottom.setAttribute("id", _this.identifiersId.bottom);
+      elementContainer.appendChild(elementBottom);
+      _this.buildPlayPause(elementBottom);
+      _this.buildCurrent(elementBottom);
+      _this.buildRangerProguess(elementBottom);
+      _this.buildDuration(elementBottom);
+      _this.buildVolume(elementBottom);
+      _this.buildPictureInPicture(elementBottom);
+      _this.buildFullscren(elementBottom);
+    };
     this.options = options;
-    this.identifiers = identifiers;
-    this.buttons = buttons;
+    this.identifiersId = identifiersId;
+    this.identifiersClass = identifiersClass;
+    this.actions = actions;
     this.iconsPath = {
       fullscreenOn: "M333-200v-133H200v-60h193v193h-60Zm234 0v-193h193v60H627v133h-60ZM200-567v-60h133v-133h60v193H200Zm367 0v-193h60v133h133v60H567Z",
       fullscreenOff: "M200-200v-193h60v133h133v60H200Zm0-367v-193h193v60H260v133h-60Zm367 367v-60h133v-133h60v193H567Zm133-367v-133H567v-60h193v193h-60Z",
@@ -215,85 +258,79 @@ var Elements = function() {
       return;
     }
     elementVideos.forEach(function(elementVideo) {
-      var elementContainer = document.createElement("div");
       var parentElement = elementVideo.parentElement;
       if (parentElement == null) {
         new io_error_default("Error parentElement is null");
       }
-      elementVideo.addEventListener("contextmenu", function(event) {
-        return event.preventDefault();
-      });
-      elementContainer.setAttribute("id", _this.identifiers.container);
+      var elementContainer = document.createElement("div");
+      elementContainer.setAttribute("id", _this.identifiersId.container);
       parentElement.insertBefore(elementContainer, elementVideo);
       elementContainer.appendChild(elementVideo);
       _this.buildTop(elementContainer);
       _this.buildMiddle(elementContainer);
       _this.buildBottom(elementContainer);
       try {
-        new controls_default(elementContainer, elementVideo, { buttons: _this.buttons, pathIcons: _this.iconsPath, autoplay: _this.options.autoplay, muted: _this.options.muted });
+        new controls_default(elementContainer, elementVideo, _this.options, _this.actions, _this.iconsPath);
       } catch (error) {
         new io_error_default("Error build Controls: ".concat(error));
       }
     });
   };
-  Elements2.prototype.buildTop = function(elementContainer) {
-    var elementTop = document.createElement("div");
-    elementTop.setAttribute("id", this.identifiers.top);
-    elementContainer.appendChild(elementTop);
-    if (this.options.top != null) {
-      elementTop.innerHTML = this.options.top;
-    }
-  };
-  Elements2.prototype.buildMiddle = function(elementContainer) {
-    var elementMiddle = document.createElement("button");
-    elementMiddle.setAttribute("id", this.identifiers.middle);
-    elementMiddle.setAttribute("class", this.identifiers.buttons);
-    elementMiddle.setAttribute("key", this.buttons.playPause);
-    elementContainer.appendChild(elementMiddle);
-    elementMiddle.innerHTML = this.buildIcon(this.iconsPath.play);
-  };
-  Elements2.prototype.buildBottom = function(elementContainer) {
-    var elementBottom = document.createElement("div");
-    elementBottom.setAttribute("id", this.identifiers.bottom);
-    elementContainer.appendChild(elementBottom);
+  Elements2.prototype.buildPlayPause = function(elementBottom) {
     var buttonPlayPause = document.createElement("button");
-    buttonPlayPause.setAttribute("class", this.identifiers.buttons);
-    buttonPlayPause.setAttribute("key", this.buttons.playPause);
+    buttonPlayPause.setAttribute("class", this.identifiersClass.buttons);
+    buttonPlayPause.setAttribute("action", this.actions.playPause);
     buttonPlayPause.innerHTML = this.buildIcon(this.iconsPath.play);
     elementBottom.appendChild(buttonPlayPause);
-    var divRangerVolume = document.createElement("div");
-    divRangerVolume.setAttribute("id", this.identifiers.rangerVolume);
-    elementBottom.appendChild(divRangerVolume);
+  };
+  Elements2.prototype.buildCurrent = function(elementBottom) {
+    var pCurrent = document.createElement("p");
+    pCurrent.setAttribute("id", this.actions.currentTime);
+    pCurrent.setAttribute("action", this.actions.currentTime);
+    elementBottom.appendChild(pCurrent);
+  };
+  Elements2.prototype.buildRangerProguess = function(elementBottom) {
+    var divRangerProguessContainer = document.createElement("div");
+    divRangerProguessContainer.setAttribute("id", this.actions.rangerProguessContainer);
+    elementBottom.appendChild(divRangerProguessContainer);
     var divRangerProguess = document.createElement("div");
-    divRangerProguess.setAttribute("id", this.identifiers.rangerProguess);
-    divRangerProguess.setAttribute("key", this.buttons.rangerProguess);
-    divRangerVolume.appendChild(divRangerProguess);
+    divRangerProguess.setAttribute("id", this.actions.rangerProguess);
+    divRangerProguess.setAttribute("action", this.actions.rangerProguess);
+    divRangerProguessContainer.appendChild(divRangerProguess);
     var divRangerProguessPoint = document.createElement("div");
-    divRangerProguessPoint.setAttribute("id", this.identifiers.rangerProguessPoint);
-    divRangerProguessPoint.setAttribute("key", this.buttons.rangerProguessPoint);
-    divRangerVolume.appendChild(divRangerProguessPoint);
-    var buttonDuration = document.createElement("p");
-    buttonDuration.setAttribute("class", this.identifiers.duration);
-    buttonDuration.setAttribute("key", this.buttons.duration);
-    elementBottom.appendChild(buttonDuration);
+    divRangerProguessPoint.setAttribute("id", this.actions.rangerProguessPoint);
+    divRangerProguessPoint.setAttribute("action", this.actions.rangerProguessPoint);
+    divRangerProguessContainer.appendChild(divRangerProguessPoint);
+  };
+  Elements2.prototype.buildDuration = function(elementBottom) {
+    var pDuration = document.createElement("p");
+    pDuration.setAttribute("id", this.actions.durationTime);
+    pDuration.setAttribute("action", this.actions.durationTime);
+    elementBottom.appendChild(pDuration);
+  };
+  Elements2.prototype.buildVolume = function(elementBottom) {
     var buttonVolume = document.createElement("button");
-    buttonVolume.setAttribute("class", this.identifiers.buttons);
-    buttonVolume.setAttribute("key", this.buttons.volume);
+    buttonVolume.setAttribute("class", this.identifiersClass.buttons);
+    buttonVolume.setAttribute("action", this.actions.volume);
     buttonVolume.innerHTML = this.buildIcon(this.iconsPath.volumeOn);
     elementBottom.appendChild(buttonVolume);
+  };
+  Elements2.prototype.buildPictureInPicture = function(elementBottom) {
     var buttonPictureInPicture = document.createElement("button");
-    buttonPictureInPicture.setAttribute("class", this.identifiers.buttons);
-    buttonPictureInPicture.setAttribute("key", this.buttons.pictureInPicture);
+    buttonPictureInPicture.setAttribute("class", this.identifiersClass.buttons);
+    buttonPictureInPicture.setAttribute("action", this.actions.pictureInPicture);
     buttonPictureInPicture.innerHTML = this.buildIcon(this.iconsPath.pictureInPicture);
     elementBottom.appendChild(buttonPictureInPicture);
+  };
+  Elements2.prototype.buildFullscren = function(elementBottom) {
     var buttonFullscreen = document.createElement("button");
-    buttonFullscreen.setAttribute("class", this.identifiers.buttons);
-    buttonFullscreen.setAttribute("key", this.buttons.fullscreen);
+    buttonFullscreen.setAttribute("class", this.identifiersClass.buttons);
+    buttonFullscreen.setAttribute("action", this.actions.fullscreen);
     buttonFullscreen.innerHTML = this.buildIcon(this.iconsPath.fullscreenOff);
     elementBottom.appendChild(buttonFullscreen);
   };
   Elements2.prototype.buildIcon = function(pathIcon) {
-    var icon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" id="'.concat(this.identifiers.icons, '">');
+    var icon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="'.concat(this.identifiersClass.icons, '">');
     icon += '<path d="'.concat(pathIcon, '" />');
     icon += "</svg>";
     return icon;
@@ -302,323 +339,256 @@ var Elements = function() {
 }();
 var elements_default = Elements;
 
-// build/enums/styles.js
-var styles;
-(function(styles2) {
-  styles2[styles2["all"] = 0] = "all";
-  styles2[styles2["video"] = 1] = "video";
-  styles2[styles2["container"] = 2] = "container";
-  styles2[styles2["top"] = 3] = "top";
-  styles2[styles2["middle"] = 4] = "middle";
-  styles2[styles2["bottom"] = 5] = "bottom";
-  styles2[styles2["duration"] = 6] = "duration";
-  styles2[styles2["rangerVolume"] = 7] = "rangerVolume";
-  styles2[styles2["buttons"] = 8] = "buttons";
-  styles2[styles2["icons"] = 9] = "icons";
-})(styles || (styles = {}));
-
 // build/class/styles.js
 var Styles = function() {
-  function Styles2(options, identifiers) {
-    this.containerStyle = document.head;
-    this.identifiers = identifiers;
+  function Styles2(options, identifiersId, identifiersClass, actions) {
+    var _this = this;
+    this.allStyles = "";
+    this.indexStyles = 99;
+    this.classAll = function() {
+      var stylesMap = {
+        "margin": "0",
+        "padding": "0",
+        "box-sizing": "inherit",
+        "text-shadow": "none"
+      };
+      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.all), stylesMap));
+    };
+    this.classButtons = function() {
+      var stylesMap = {
+        "display": "block",
+        "color": "inherit",
+        "border": "none",
+        "padding": "0",
+        "margin": "0",
+        "font": "inherit",
+        "cursor": "pointer",
+        "outline": "inherit",
+        "touch-action": "manipulation",
+        "flex-shrink": "0",
+        "background": "transparent"
+      };
+      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.buttons), stylesMap));
+    };
+    this.classIcons = function() {
+      var stylesMap = {
+        "display": "block",
+        "margin": "auto",
+        "fill": _this.options.colorInactive,
+        "width": "2rem",
+        "height": "2rem"
+      };
+      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.icons), stylesMap));
+    };
+    this.applyVideo = function() {
+      var stylesMap = {
+        "display": "block",
+        "width": "100%",
+        "height": "100%",
+        "z-index": "-".concat(_this.indexStyles),
+        "background-color": _this.options.backgroundColor
+      };
+      _this.addStyles(_this.parseStyles(_this.options.apply, stylesMap));
+    };
+    this.idContainer = function() {
+      var stylesMap = {
+        "position": "relative",
+        "display": "block",
+        "max-width": "100%",
+        "min-width": "240px",
+        "height": "fit-content"
+      };
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.container), stylesMap));
+    };
+    this.idTop = function() {
+      var stylesMap = {
+        "position": "absolute",
+        "display": "block",
+        "width": "100%",
+        "height": "fit-content",
+        "right": "0",
+        "left": "0",
+        "top": "0",
+        "z-index": _this.indexStyles.toString(),
+        "padding": "1rem",
+        "background": "linear-gradient(to bottom, black, transparent)"
+      };
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.top), stylesMap));
+    };
+    this.idMiddle = function() {
+      var stylesMap = {
+        "position": "absolute",
+        "width": "3rem",
+        "height": "3rem",
+        "top": "50%",
+        "left": "50%",
+        "z-index": _this.indexStyles.toString(),
+        "transform": "translate(-50%, -50%)",
+        "background": _this.options.colorActive,
+        "border-radius": "100%"
+      };
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.middle), stylesMap));
+      _this.addStyles(_this.parseStylesMedia("#".concat(_this.identifiersId.middle), [
+        { attribute: "height", valueMax: "2.7rem", valueMiddle: "2.5rem", valueMin: "2.3rem" }
+      ]));
+    };
+    this.idBottom = function() {
+      var stylesMap = {
+        "position": "absolute",
+        "display": "flex",
+        "width": "100%",
+        "height": "fit-content",
+        "right": "0",
+        "left": "0",
+        "bottom": "0",
+        "z-index": _this.indexStyles.toString(),
+        "padding": "1rem",
+        "background": "linear-gradient(to top, black, transparent)",
+        "flex-direction": "row",
+        "justify-content": "space-between",
+        "align-items": "center"
+      };
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.bottom), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.bottom, " button, #").concat(_this.actions.rangerProguessContainer, ", #").concat(_this.actions.currentTime), {
+        "margin": "0 0.2rem 0 0.2rem"
+      }));
+      _this.addStyles(_this.parseStylesMedia("#".concat(_this.identifiersId.bottom, " button, #").concat(_this.actions.rangerProguessContainer, ", #").concat(_this.actions.durationTime), [
+        { attribute: "margin", valueMax: "0 0.2rem 0 0.2rem", valueMiddle: "0 0.1rem 0 0.1rem", valueMin: "0 0.1rem 0 0.1rem" }
+      ]));
+    };
+    this.actionsTime = function() {
+      var stylesMap = {
+        "font-family": "inherit",
+        "font-size": "1rem",
+        "font-weight": "bold"
+      };
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.durationTime, ", #").concat(_this.actions.currentTime), stylesMap));
+    };
+    this.actionsRangerProguessContainer = function() {
+      var stylesMap = {
+        "position": "relative",
+        "display": "block",
+        "width": "100%",
+        "height": "0.5rem",
+        "background": "#CBCBCB",
+        "border-radius": "1rem",
+        "cursor": "pointer",
+        "overflow": "visible"
+      };
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessContainer), stylesMap));
+      _this.addStyles(_this.parseStylesMedia("#".concat(_this.actions.rangerProguessContainer), [
+        { attribute: "height", valueMax: "0.4rem", valueMiddle: "0.3rem", valueMin: "0.2rem" }
+      ]));
+    };
+    this.actionsRangerProguess = function() {
+      var stylesMap = {
+        "position": "absolute",
+        "top": "0",
+        "bottom": "0",
+        "left": "0",
+        "display": "block",
+        "width": "33%",
+        "height": "100%",
+        "border-radius": "1rem",
+        "background": _this.options.colorActive,
+        "cursor": "pointer",
+        "pointer-events": "none",
+        "transition": "width 0.1s linear"
+      };
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguess), stylesMap));
+    };
+    this.actionsRangerProguessPoint = function() {
+      var stylesMap = {
+        "position": "absolute",
+        "display": "block",
+        "top": "0",
+        "bottom": "0",
+        "transform": "translate(0%, -25%)",
+        "left": "calc(33% - 1%)",
+        "width": "1.2rem",
+        "height": "1.2rem",
+        "background": _this.options.colorInactive,
+        "border-radius": "100%",
+        "cursor": "pointer",
+        "pointer-events": "none",
+        "z-index": _this.indexStyles.toString()
+      };
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessPoint), stylesMap));
+    };
+    this.buildStylesCompatibility = function(attribute, value) {
+      var styleString = "";
+      if (true) {
+        styleString += "-moz-".concat(attribute, ": ").concat(value, ";");
+        styleString += "-ms-".concat(attribute, ": ").concat(value, ";");
+        styleString += "-o-".concat(attribute, ": ").concat(value, ";");
+      }
+      styleString += "".concat(attribute, ": ").concat(value, ";");
+      return styleString;
+    };
     this.options = options;
-    this.arrayIdentifiers = [
-      this.identifiers.all,
-      this.identifiers.video,
-      this.identifiers.container,
-      this.identifiers.top,
-      this.identifiers.middle,
-      this.identifiers.bottom,
-      this.identifiers.duration,
-      this.identifiers.rangerVolume,
-      this.identifiers.icons,
-      this.identifiers.buttons
-    ];
+    this.identifiersId = identifiersId;
+    this.identifiersClass = identifiersClass;
+    this.actions = actions;
   }
   Styles2.prototype.build = function() {
-    for (var index = 0; index < this.arrayIdentifiers.length; index++) {
-      var identifier = this.arrayIdentifiers[index];
-      var style = document.createElement("style");
-      style.setAttribute("type", "text/css");
-      style.setAttribute("key", identifier);
-      this.containerStyle.appendChild(style);
-    }
-    this.applyAllStyles();
-    this.applyVideoStyles();
-    this.applyContainerStyles();
-    this.applyTopStyles();
-    this.applyMiddleStyles();
-    this.applyBottomStyles();
-    this.applyDurationStyles();
-    this.applyRangerVolumeStyles();
-    this.applyRangerProguessStyles();
-    this.applyRangerProguessPointStyles();
-    this.applyIconsStyles();
-    this.applyButtonStyles();
+    this.buildClass();
+    this.buildId();
+    this.applyVideo();
+    this.buildActions();
+    this.setStyles();
   };
-  Styles2.prototype.applyAllStyles = function() {
-    var identifierElement = "".concat(this.identifiers.video, ", #").concat(this.identifiers.container, ", #").concat(this.identifiers.top, ", #").concat(this.identifiers.middle, ", #").concat(this.identifiers.bottom);
-    var stylesMap = {
-      "margin": "0",
-      "padding": "0",
-      "box-sizing": "inherit",
-      "text-shadow": "none",
-      "direction": "ltr"
-    };
-    this.setStyles(styles.all, this.parseStyles(identifierElement, stylesMap));
+  Styles2.prototype.buildClass = function() {
+    this.classAll();
+    this.classButtons();
+    this.classIcons();
   };
-  Styles2.prototype.applyVideoStyles = function() {
-    var identifierElement = this.identifiers.video;
-    var stylesMap = {
-      "display": "block",
-      "width": "100%",
-      "height": "100%",
-      "z-index": "-99",
-      "background-color": this.options.backgroundColor
-    };
-    this.setStyles(styles.video, this.parseStyles(identifierElement, stylesMap));
+  Styles2.prototype.buildId = function() {
+    this.idContainer();
+    this.idTop();
+    this.idMiddle();
+    this.idBottom();
   };
-  Styles2.prototype.applyContainerStyles = function() {
-    var identifierElement = "#".concat(this.identifiers.container);
-    var stylesMap = {
-      "position": "relative",
-      "display": "block",
-      "max-width": "100%",
-      "min-width": "240px",
-      "height": "fit-content"
-    };
-    this.setStyles(styles.container, this.parseStyles(identifierElement, stylesMap));
+  Styles2.prototype.buildActions = function() {
+    this.actionsTime();
+    this.actionsRangerProguessContainer();
+    this.actionsRangerProguess();
+    this.actionsRangerProguessPoint();
   };
-  Styles2.prototype.applyTopStyles = function() {
-    var identifierElement = "#".concat(this.identifiers.top);
-    var stylesMap = {
-      "position": "absolute",
-      "display": "block",
-      "width": "100%",
-      "height": "fit-content",
-      "right": "0",
-      "left": "0",
-      "top": "0",
-      "z-index": "99",
-      "padding": "1rem",
-      "background": "linear-gradient(to bottom, black, transparent)"
-    };
-    this.setStyles(styles.top, this.parseStyles(identifierElement, stylesMap));
-  };
-  Styles2.prototype.applyMiddleStyles = function() {
-    var identifierElement = "#".concat(this.identifiers.middle);
-    var stylesMap = {
-      "position": "absolute",
-      "width": "3rem",
-      "height": "3rem",
-      "top": "50%",
-      "left": "50%",
-      "z-index": "99",
-      "transform": "translate(-50%, -50%)",
-      "background": this.options.colorActive,
-      "border-radius": "100%"
-    };
-    this.setStyles(styles.middle, this.parseStyles(identifierElement, stylesMap));
-    this.addStyles(styles.middle, this.parseStyles("".concat(identifierElement), {
-      "height": "2.7rem"
-    }, {
-      before: "@media (max-width: 480px) {",
-      after: "}"
-    }));
-    this.addStyles(styles.middle, this.parseStyles("".concat(identifierElement), {
-      "height": "2.5rem"
-    }, {
-      before: "@media (max-width: 360px) {",
-      after: "}"
-    }));
-  };
-  Styles2.prototype.applyBottomStyles = function() {
-    var identifierElement = "#".concat(this.identifiers.bottom);
-    var stylesMap = {
-      "position": "absolute",
-      "display": "flex",
-      "width": "100%",
-      "height": "fit-content",
-      "right": "0",
-      "left": "0",
-      "bottom": "0",
-      "z-index": "99",
-      "padding": "1rem",
-      "background": "linear-gradient(to top, black, transparent)",
-      "flex-direction": "row",
-      "justify-content": "space-between",
-      "align-items": "center"
-    };
-    this.setStyles(styles.bottom, this.parseStyles(identifierElement, stylesMap));
-    this.addStyles(styles.bottom, this.parseStyles("".concat(identifierElement), {
-      "height": "1.7rem"
-    }, {
-      before: "@media (max-width: 480px) {",
-      after: "}"
-    }));
-    this.addStyles(styles.bottom, this.parseStyles("".concat(identifierElement), {
-      "height": "1.5rem"
-    }, {
-      before: "@media (max-width: 360px) {",
-      after: "}"
-    }));
-    this.addStyles(styles.bottom, this.parseStyles("".concat(identifierElement, " button, ").concat(identifierElement, " p"), {
-      "margin-left": "0.3rem",
-      "margin-right": "0.3rem"
-    }));
-    this.addStyles(styles.bottom, this.parseStyles("".concat(identifierElement, " button, ").concat(identifierElement, " p"), {
-      "margin-left": "0.2rem",
-      "margin-right": "0.2rem"
-    }, {
-      before: "@media (max-width: 480px) {",
-      after: "}"
-    }));
-    this.addStyles(styles.bottom, this.parseStyles("".concat(identifierElement, " button, ").concat(identifierElement, " p"), {
-      "margin-left": "0.1rem",
-      "margin-right": "0.1rem"
-    }, {
-      before: "@media (max-width: 360px) {",
-      after: "}"
-    }));
-  };
-  Styles2.prototype.applyDurationStyles = function() {
-    var identifierElement = "#".concat(this.identifiers.duration);
-    var stylesMap = {
-      "font-family": "inherit",
-      "font-size": "2.5rem",
-      "font-weight": "bold"
-    };
-    this.setStyles(styles.duration, this.parseStyles(identifierElement, stylesMap));
-  };
-  Styles2.prototype.applyRangerVolumeStyles = function() {
-    var identifierElement = "#".concat(this.identifiers.rangerVolume);
-    var stylesMap = {
-      "position": "relative",
-      "display": "block",
-      "width": "100%",
-      "height": "0.5rem",
-      "background": "#CBCBCB",
-      "border-radius": "1rem",
-      "cursor": "pointer",
-      "overflow": "visible"
-    };
-    this.setStyles(styles.rangerVolume, this.parseStyles(identifierElement, stylesMap));
-    this.addStyles(styles.rangerVolume, this.parseStyles("".concat(identifierElement), {
-      "height": "0.4rem"
-    }, {
-      before: "@media (max-width: 480px) {",
-      after: "}"
-    }));
-    this.addStyles(styles.rangerVolume, this.parseStyles("".concat(identifierElement), {
-      "height": "0.3rem"
-    }, {
-      before: "@media (max-width: 360px) {",
-      after: "}"
-    }));
-  };
-  Styles2.prototype.applyRangerProguessStyles = function() {
-    var identifierElement = "#".concat(this.identifiers.rangerProguess);
-    var stylesMap = {
-      "position": "absolute",
-      "top": "0",
-      "bottom": "0",
-      "left": "0",
-      "display": "block",
-      "width": "33%",
-      "height": "100%",
-      "border-radius": "1rem",
-      "background": this.options.colorActive,
-      "cursor": "pointer",
-      "pointer-events": "none",
-      "transition": "width 0.1s linear"
-    };
-    this.addStyles(styles.rangerVolume, this.parseStyles(identifierElement, stylesMap));
-  };
-  Styles2.prototype.applyRangerProguessPointStyles = function() {
-    var identifierElement = "#".concat(this.identifiers.rangerProguessPoint);
-    var stylesMap = {
-      "position": "absolute",
-      "display": "block",
-      "top": "0",
-      "bottom": "0",
-      "transform": "translate(0%, -25%)",
-      "left": "calc(33% - 1%)",
-      "width": "1.2rem",
-      "height": "1.2rem",
-      "background": this.options.colorInactive,
-      "border-radius": "100%",
-      "cursor": "pointer",
-      "pointer-events": "none",
-      "z-index": "99"
-    };
-    this.addStyles(styles.rangerVolume, this.parseStyles(identifierElement, stylesMap));
-  };
-  Styles2.prototype.applyButtonStyles = function() {
-    var identifierElement = ".".concat(this.identifiers.buttons);
-    var stylesMap = {
-      "display": "block",
-      "color": "inherit",
-      "border": "none",
-      "padding": "0",
-      "margin": "0",
-      "font": "inherit",
-      "cursor": "pointer",
-      "outline": "inherit",
-      "touch-action": "manipulation",
-      "flex-shrink": "0",
-      "background": "transparent"
-    };
-    this.setStyles(styles.buttons, this.parseStyles(identifierElement, stylesMap));
-  };
-  Styles2.prototype.applyIconsStyles = function() {
-    var identifierElement = "#".concat(this.identifiers.icons);
-    var stylesMap = {
-      "display": "block",
-      "margin": "auto",
-      "fill": this.options.colorInactive,
-      "width": "2rem",
-      "height": "2rem"
-    };
-    this.setStyles(styles.icons, this.parseStyles(identifierElement, stylesMap));
-  };
-  Styles2.prototype.parseStyles = function(styleId, styleMap, extra) {
+  Styles2.prototype.parseStyles = function(styleId, styleMap) {
     var styleString = "";
-    if (extra) {
-      styleString += extra.before;
-    }
     styleString += "".concat(styleId, " {");
     for (var key in styleMap) {
       if (styleMap.hasOwnProperty(key)) {
-        if (true) {
-          styleString += "-moz-".concat(key, ": ").concat(styleMap[key], ";");
-          styleString += "-ms-".concat(key, ": ").concat(styleMap[key], ";");
-          styleString += "-o-".concat(key, ": ").concat(styleMap[key], ";");
-        }
-        styleString += "".concat(key, ": ").concat(styleMap[key], ";");
+        styleString += this.buildStylesCompatibility(key, styleMap[key]);
       }
     }
     styleString += "}";
-    if (extra) {
-      styleString += extra.after;
-    }
     return styleString;
   };
-  Styles2.prototype.setStyles = function(watchStyle, stringStyle) {
-    var identifier = this.arrayIdentifiers[watchStyle];
-    var styleElement = document.querySelector('style[key="' + identifier + '"]');
-    if (styleElement == null) {
-      new io_error_default('Error: style[key="' + identifier + "\"] doesn't exist!");
-    }
-    styleElement.innerHTML = stringStyle;
+  Styles2.prototype.parseStylesMedia = function(styleId, extra) {
+    var styleString = "";
+    extra.forEach(function(property) {
+      styleString += "@media (max-width: 480px) {";
+      styleString += "".concat(styleId, " { ").concat(property.attribute, ": ").concat(property.valueMax, "; }");
+      styleString += "}";
+      styleString += "@media (max-width: 360px) {";
+      styleString += "".concat(styleId, " { ").concat(property.attribute, ": ").concat(property.valueMiddle, "; }");
+      styleString += "}";
+      styleString += "@media (max-width: 240px) {";
+      styleString += "".concat(styleId, " { ").concat(property.attribute, ": ").concat(property.valueMin, "; }");
+      styleString += "}";
+    });
+    return styleString;
   };
-  Styles2.prototype.addStyles = function(watchStyle, stringStyle) {
-    var identifier = this.arrayIdentifiers[watchStyle];
-    var styleElement = document.querySelector('style[key="' + identifier + '"]');
-    if (styleElement == null) {
-      new io_error_default('Error: style[key="' + identifier + "\"] doesn't exist!");
-    }
-    styleElement.innerHTML += stringStyle;
+  Styles2.prototype.addStyles = function(stringStyle) {
+    this.allStyles += stringStyle;
+  };
+  Styles2.prototype.setStyles = function() {
+    var headElement = document.head;
+    var style = document.createElement("style");
+    style.setAttribute("type", "text/css");
+    style.innerHTML = this.allStyles;
+    headElement.appendChild(style);
   };
   return Styles2;
 }();
@@ -640,34 +610,48 @@ var WVP = function() {
       muted: (_e = options["muted"]) !== null && _e !== void 0 ? _e : true,
       top: (_f = options["top"]) !== null && _f !== void 0 ? _f : null
     };
-    this.identifiers = {
-      all: "wvp_all",
-      video: apply,
+    this.identifiersId = {
       container: "wvp__container",
       top: "wvp__top",
       middle: "wvp__middle",
-      bottom: "wvp__bottom",
-      duration: "wvp__duration",
-      rangerVolume: "wvp__ranger_volume",
-      rangerProguess: "wvp__ranger_proguess",
-      rangerProguessPoint: "wvp__ranger_proguess_point",
-      icons: "wvp__icons",
-      buttons: "wvp__buttons"
+      bottom: "wvp__bottom"
     };
-    this.buttons = {
+    this.identifiersClass = {
+      all: "wvp_all",
+      buttons: "wvp__buttons",
+      icons: "wvp__icons"
+    };
+    this.actions = {
       playPause: "wvp__button__play_pause",
       fullscreen: "wvp__button__fullscreen",
       pictureInPicture: "wvp__button__picture_in_picture",
       volume: "wvp__button__volume",
-      duration: "wvp__button__duration",
+      rangerVolumeContainer: "wvp__button__ranger_volume_container",
       rangerVolume: "wvp__button__ranger_volume",
+      rangerVolumePoint: "wvp__button__ranger_volume_point",
+      durationTime: "wvp__button__duration_time",
+      currentTime: "wvp__button__current_time",
+      rangerProguessContainer: "wvp__button__ranger_proguess_container",
       rangerProguess: "wvp__button__ranger_proguess",
       rangerProguessPoint: "wvp__button__ranger_proguess_point"
     };
-    this.styles = new styles_default(this.options, this.identifiers);
-    this.elements = new elements_default(this.options, this.identifiers, this.buttons);
+    this.elements = new elements_default(this.options, this.identifiersId, this.identifiersClass, this.actions);
+    this.styles = new styles_default(this.options, this.identifiersId, this.identifiersClass, this.actions);
     this.init();
   }
+  Object.defineProperty(WVP2.prototype, "backgroundColor", {
+    get: function() {
+      return this.options.backgroundColor;
+    },
+    set: function(value) {
+      if (this.options.backgroundColor == value)
+        return;
+      this.options.backgroundColor = value;
+      new io_error_default("Error backgroundColor(); not suport!");
+    },
+    enumerable: false,
+    configurable: true
+  });
   Object.defineProperty(WVP2.prototype, "colorInactive", {
     get: function() {
       return this.options.colorInactive;
@@ -676,6 +660,7 @@ var WVP = function() {
       if (this.options.colorInactive == value)
         return;
       this.options.colorInactive = value;
+      new io_error_default("Error colorInactive(); not suport!");
     },
     enumerable: false,
     configurable: true
@@ -688,37 +673,14 @@ var WVP = function() {
       if (this.options.colorActive == value)
         return;
       this.options.colorActive = value;
-    },
-    enumerable: false,
-    configurable: true
-  });
-  Object.defineProperty(WVP2.prototype, "autoplay", {
-    get: function() {
-      return this.options.autoplay;
-    },
-    set: function(value) {
-      if (this.options.autoplay == value)
-        return;
-      this.options.autoplay = value;
-    },
-    enumerable: false,
-    configurable: true
-  });
-  Object.defineProperty(WVP2.prototype, "muted", {
-    get: function() {
-      return this.options.muted;
-    },
-    set: function(value) {
-      if (this.options.muted == value)
-        return;
-      this.options.muted = value;
+      new io_error_default("Error colorActive(); not suport!");
     },
     enumerable: false,
     configurable: true
   });
   WVP2.prototype.init = function() {
-    this.styles.build();
     this.elements.build();
+    this.styles.build();
   };
   return WVP2;
 }();
