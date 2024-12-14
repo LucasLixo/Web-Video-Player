@@ -90,6 +90,10 @@ export default class Controls {
         } else {
             this.elementVideo.removeAttribute('muted');
         }
+        this.elementVideo.onloadedmetadata = (): void => {
+            this.controls.durationTime = this.formatTime(this.elementVideo.duration ?? 0);
+            this.controls.duration = this.elementVideo.duration;
+        };
     }
 
     // ==================================================

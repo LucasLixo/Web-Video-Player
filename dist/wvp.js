@@ -54,6 +54,11 @@ var Controls = function() {
       } else {
         _this.elementVideo.removeAttribute("muted");
       }
+      _this.elementVideo.onloadedmetadata = function() {
+        var _a2;
+        _this.controls.durationTime = _this.formatTime((_a2 = _this.elementVideo.duration) !== null && _a2 !== void 0 ? _a2 : 0);
+        _this.controls.duration = _this.elementVideo.duration;
+      };
     };
     this.buildFading = function() {
       var allContainers = [

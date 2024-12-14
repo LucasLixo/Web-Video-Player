@@ -2,7 +2,7 @@ const esbuild = require('esbuild');
 
 const entryFile = './build/wvp.js';
 const outputBundle = './dist/wvp.js';
-const outputMinified = './dist/wvp.min.js';
+/* const outputMinified = './dist/wvp.min.js'; */
 
 esbuild.build({
     entryPoints: [entryFile],
@@ -11,9 +11,8 @@ esbuild.build({
     minify: false,
     platform: 'browser',
     target: 'es5',
-    // globalName: 'WVP',
     format: 'esm',
-    sourcemap: false, // true,
+    sourcemap: false,
     logLevel: 'info',
 })
 /* esbuild.build({
@@ -23,8 +22,9 @@ esbuild.build({
     minify: true,
     platform: 'browser',
     target: 'es5',
-    // globalName: 'WVP',
     format: 'esm',
     sourcemap: false,
     logLevel: 'info',
+    minifyIdentifiers: false,
+    keepNames: true,
 }); */

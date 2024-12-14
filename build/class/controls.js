@@ -24,6 +24,11 @@ var Controls = (function () {
             else {
                 _this.elementVideo.removeAttribute('muted');
             }
+            _this.elementVideo.onloadedmetadata = function () {
+                var _a;
+                _this.controls.durationTime = _this.formatTime((_a = _this.elementVideo.duration) !== null && _a !== void 0 ? _a : 0);
+                _this.controls.duration = _this.elementVideo.duration;
+            };
         };
         this.buildFading = function () {
             var allContainers = [
