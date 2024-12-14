@@ -40,11 +40,22 @@ class WVP {
             top: 'wvp__top',
             middle: 'wvp__middle',
             bottom: 'wvp__bottom',
+            duration: 'wvp__duration',
+            rangerVolume: 'wvp__ranger_volume',
+            rangerProguess: 'wvp__ranger_proguess',
+            rangerProguessPoint: 'wvp__ranger_proguess_point',
             icons: 'wvp__icons',
             buttons: 'wvp__buttons'
         };
         this.buttons = {
             playPause: 'wvp__button__play_pause',
+            fullscreen: 'wvp__button__fullscreen',
+            pictureInPicture: 'wvp__button__picture_in_picture',
+            volume: 'wvp__button__volume',
+            duration: 'wvp__button__duration',
+            rangerVolume: 'wvp__button__ranger_volume',
+            rangerProguess: 'wvp__button__ranger_proguess',
+            rangerProguessPoint: 'wvp__button__ranger_proguess_point',
         }
         this.styles = new Styles(this.options, this.identifiers);
         this.elements = new Elements(this.options, this.identifiers, this.buttons);

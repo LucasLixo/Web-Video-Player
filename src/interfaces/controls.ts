@@ -1,5 +1,11 @@
 // ==================================================
 export default interface intControls {
-    isPlaying: boolean,
-    volume: number,
+    playing: boolean,
+    fullscreen: boolean,
+    pictureInPicture: boolean,
+    volume: boolean,
+    rangerVolume: number,
+    rangerProguess: number,
+    duration: string,
+    currentTime: number,
 }

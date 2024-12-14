@@ -6,6 +6,8 @@ export enum styles {
     top,
     middle,
     bottom,
-    icons,
+    duration,
+    rangerVolume,
     buttons,
+    icons,
 }

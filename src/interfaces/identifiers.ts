@@ -6,6 +6,10 @@ export default interface intIdentifiers {
     top: string,
     middle: string,
     bottom: string,
+    duration: string,
+    rangerVolume: string,
+    rangerProguess: string,
+    rangerProguessPoint: string,
     icons: string,
     buttons: string,
 }

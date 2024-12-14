@@ -12,6 +12,8 @@ var Styles = (function () {
             this.identifiers.top,
             this.identifiers.middle,
             this.identifiers.bottom,
+            this.identifiers.duration,
+            this.identifiers.rangerVolume,
             this.identifiers.icons,
             this.identifiers.buttons,
         ];
@@ -24,16 +26,21 @@ var Styles = (function () {
             style.setAttribute('key', identifier);
             this.containerStyle.appendChild(style);
         }
-        this.applyAllStyles("".concat(this.identifiers.video, ", #").concat(this.identifiers.container, ", #").concat(this.identifiers.top, ", #").concat(this.identifiers.middle, ", #").concat(this.identifiers.bottom));
-        this.applyVideoStyles(this.identifiers.video);
-        this.applyContainerStyles("#".concat(this.identifiers.container));
-        this.applyTopStyles("#".concat(this.identifiers.top));
-        this.applyMiddleStyles("#".concat(this.identifiers.middle));
-        this.applyBottomStyles("#".concat(this.identifiers.bottom));
-        this.applyIconsStyles("#".concat(this.identifiers.icons));
-        this.applyButtonStyles(".".concat(this.identifiers.buttons));
+        this.applyAllStyles();
+        this.applyVideoStyles();
+        this.applyContainerStyles();
+        this.applyTopStyles();
+        this.applyMiddleStyles();
+        this.applyBottomStyles();
+        this.applyDurationStyles();
+        this.applyRangerVolumeStyles();
+        this.applyRangerProguessStyles();
+        this.applyRangerProguessPointStyles();
+        this.applyIconsStyles();
+        this.applyButtonStyles();
     };
-    Styles.prototype.applyAllStyles = function (identifierElement) {
+    Styles.prototype.applyAllStyles = function () {
+        var identifierElement = "".concat(this.identifiers.video, ", #").concat(this.identifiers.container, ", #").concat(this.identifiers.top, ", #").concat(this.identifiers.middle, ", #").concat(this.identifiers.bottom);
         var stylesMap = {
             'margin': '0',
             'padding': '0',
@@ -43,7 +50,8 @@ var Styles = (function () {
         };
         this.setStyles(styles.all, this.parseStyles(identifierElement, stylesMap));
     };
-    Styles.prototype.applyVideoStyles = function (identifierElement) {
+    Styles.prototype.applyVideoStyles = function () {
+        var identifierElement = this.identifiers.video;
         var stylesMap = {
             'display': 'block',
             'width': '100%',
@@ -53,7 +61,8 @@ var Styles = (function () {
         };
         this.setStyles(styles.video, this.parseStyles(identifierElement, stylesMap));
     };
-    Styles.prototype.applyContainerStyles = function (identifierElement) {
+    Styles.prototype.applyContainerStyles = function () {
+        var identifierElement = "#".concat(this.identifiers.container);
         var stylesMap = {
             'position': 'relative',
             'display': 'block',
@@ -63,22 +72,24 @@ var Styles = (function () {
         };
         this.setStyles(styles.container, this.parseStyles(identifierElement, stylesMap));
     };
-    Styles.prototype.applyTopStyles = function (identifierElement) {
+    Styles.prototype.applyTopStyles = function () {
+        var identifierElement = "#".concat(this.identifiers.top);
         var stylesMap = {
             'position': 'absolute',
-            'display': 'flex',
+            'display': 'block',
             'width': '100%',
             'height': 'fit-content',
             'right': '0',
             'left': '0',
             'top': '0',
             'z-index': '99',
-            'flex-direction': 'row',
-            'justify-content': 'center',
+            'padding': '1rem',
+            'background': 'linear-gradient(to bottom, black, transparent)',
         };
         this.setStyles(styles.top, this.parseStyles(identifierElement, stylesMap));
     };
-    Styles.prototype.applyMiddleStyles = function (identifierElement) {
+    Styles.prototype.applyMiddleStyles = function () {
+        var identifierElement = "#".concat(this.identifiers.middle);
         var stylesMap = {
             'position': 'absolute',
             'width': '3rem',
@@ -91,8 +102,21 @@ var Styles = (function () {
             'border-radius': '100%',
         };
         this.setStyles(styles.middle, this.parseStyles(identifierElement, stylesMap));
+        this.addStyles(styles.middle, this.parseStyles("".concat(identifierElement), {
+            'height': '2.7rem',
+        }, {
+            before: '@media (max-width: 480px) {',
+            after: '}',
+        }));
+        this.addStyles(styles.middle, this.parseStyles("".concat(identifierElement), {
+            'height': '2.5rem',
+        }, {
+            before: '@media (max-width: 360px) {',
+            after: '}',
+        }));
     };
-    Styles.prototype.applyBottomStyles = function (identifierElement) {
+    Styles.prototype.applyBottomStyles = function () {
+        var identifierElement = "#".concat(this.identifiers.bottom);
         var stylesMap = {
             'position': 'absolute',
             'display': 'flex',
@@ -102,12 +126,118 @@ var Styles = (function () {
             'left': '0',
             'bottom': '0',
             'z-index': '99',
+            'padding': '1rem',
+            'background': 'linear-gradient(to top, black, transparent)',
             'flex-direction': 'row',
-            'justify-content': 'center',
+            'justify-content': 'space-between',
+            'align-items': 'center',
         };
         this.setStyles(styles.bottom, this.parseStyles(identifierElement, stylesMap));
+        this.addStyles(styles.bottom, this.parseStyles("".concat(identifierElement), {
+            'height': '1.7rem',
+        }, {
+            before: '@media (max-width: 480px) {',
+            after: '}',
+        }));
+        this.addStyles(styles.bottom, this.parseStyles("".concat(identifierElement), {
+            'height': '1.5rem',
+        }, {
+            before: '@media (max-width: 360px) {',
+            after: '}',
+        }));
+        this.addStyles(styles.bottom, this.parseStyles("".concat(identifierElement, " button, ").concat(identifierElement, " p"), {
+            'margin-left': '0.3rem',
+            'margin-right': '0.3rem',
+        }));
+        this.addStyles(styles.bottom, this.parseStyles("".concat(identifierElement, " button, ").concat(identifierElement, " p"), {
+            'margin-left': '0.2rem',
+            'margin-right': '0.2rem',
+        }, {
+            before: '@media (max-width: 480px) {',
+            after: '}',
+        }));
+        this.addStyles(styles.bottom, this.parseStyles("".concat(identifierElement, " button, ").concat(identifierElement, " p"), {
+            'margin-left': '0.1rem',
+            'margin-right': '0.1rem',
+        }, {
+            before: '@media (max-width: 360px) {',
+            after: '}',
+        }));
     };
-    Styles.prototype.applyButtonStyles = function (identifierElement) {
+    Styles.prototype.applyDurationStyles = function () {
+        var identifierElement = "#".concat(this.identifiers.duration);
+        var stylesMap = {
+            'font-family': 'inherit',
+            'font-size': '2.5rem',
+            'font-weight': 'bold',
+        };
+        this.setStyles(styles.duration, this.parseStyles(identifierElement, stylesMap));
+    };
+    Styles.prototype.applyRangerVolumeStyles = function () {
+        var identifierElement = "#".concat(this.identifiers.rangerVolume);
+        var stylesMap = {
+            'position': 'relative',
+            'display': 'block',
+            'width': '100%',
+            'height': '0.5rem',
+            'background': '#CBCBCB',
+            'border-radius': '1rem',
+            'cursor': 'pointer',
+            'overflow': 'visible',
+        };
+        this.setStyles(styles.rangerVolume, this.parseStyles(identifierElement, stylesMap));
+        this.addStyles(styles.rangerVolume, this.parseStyles("".concat(identifierElement), {
+            'height': '0.4rem',
+        }, {
+            before: '@media (max-width: 480px) {',
+            after: '}',
+        }));
+        this.addStyles(styles.rangerVolume, this.parseStyles("".concat(identifierElement), {
+            'height': '0.3rem',
+        }, {
+            before: '@media (max-width: 360px) {',
+            after: '}',
+        }));
+    };
+    Styles.prototype.applyRangerProguessStyles = function () {
+        var identifierElement = "#".concat(this.identifiers.rangerProguess);
+        var stylesMap = {
+            'position': 'absolute',
+            'top': '0',
+            'bottom': '0',
+            'left': '0',
+            'display': 'block',
+            'width': '33%',
+            'height': '100%',
+            'border-radius': '1rem',
+            'background': this.options.colorActive,
+            'cursor': 'pointer',
+            'pointer-events': 'none',
+            'transition': 'width 0.1s linear',
+        };
+        this.addStyles(styles.rangerVolume, this.parseStyles(identifierElement, stylesMap));
+    };
+    Styles.prototype.applyRangerProguessPointStyles = function () {
+        var identifierElement = "#".concat(this.identifiers.rangerProguessPoint);
+        var stylesMap = {
+            'position': 'absolute',
+            'display': 'block',
+            'top': '0',
+            'bottom': '0',
+            'transform': 'translate(0%, -25%)',
+            'left': 'calc(33% - 1%)',
+            'width': '1.2rem',
+            'height': '1.2rem',
+            'background': this.options.colorInactive,
+            'border-radius': '100%',
+            'cursor': 'pointer',
+            'pointer-events': 'none',
+            'z-index': '99',
+        };
+        this.addStyles(styles.rangerVolume, this.parseStyles(identifierElement, stylesMap));
+    };
+    Styles.prototype.applyButtonStyles = function () {
+        var identifierElement = ".".concat(this.identifiers.buttons);
         var stylesMap = {
             'display': 'block',
             'color': 'inherit',
@@ -119,24 +249,30 @@ var Styles = (function () {
             'outline': 'inherit',
             'touch-action': 'manipulation',
             'flex-shrink': '0',
+            'background': 'transparent',
         };
         this.setStyles(styles.buttons, this.parseStyles(identifierElement, stylesMap));
     };
-    Styles.prototype.applyIconsStyles = function (identifierElement) {
+    Styles.prototype.applyIconsStyles = function () {
+        var identifierElement = "#".concat(this.identifiers.icons);
         var stylesMap = {
             'display': 'block',
             'margin': 'auto',
             'fill': this.options.colorInactive,
+            'width': '2rem',
+            'height': '2rem',
         };
         this.setStyles(styles.icons, this.parseStyles(identifierElement, stylesMap));
     };
-    Styles.prototype.parseStyles = function (styleId, styleMap, compatibility) {
-        if (compatibility === void 0) { compatibility = true; }
-        var styleString;
-        styleString = "".concat(styleId, " {");
+    Styles.prototype.parseStyles = function (styleId, styleMap, extra) {
+        var styleString = '';
+        if (extra) {
+            styleString += extra.before;
+        }
+        styleString += "".concat(styleId, " {");
         for (var key in styleMap) {
             if (styleMap.hasOwnProperty(key)) {
-                if (compatibility) {
+                if (true) {
                     styleString += "-moz-".concat(key, ": ").concat(styleMap[key], ";");
                     styleString += "-ms-".concat(key, ": ").concat(styleMap[key], ";");
                     styleString += "-o-".concat(key, ": ").concat(styleMap[key], ";");
@@ -145,6 +281,9 @@ var Styles = (function () {
             }
         }
         styleString += '}';
+        if (extra) {
+            styleString += extra.after;
+        }
         return styleString;
     };
     Styles.prototype.setStyles = function (watchStyle, stringStyle) {
