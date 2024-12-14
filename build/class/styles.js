@@ -126,6 +126,7 @@ var Styles = (function () {
                 'font-family': 'inherit',
                 'font-size': '1rem',
                 'font-weight': 'bold',
+                'color': _this.options.colorInactive,
             };
             _this.addStyles(_this.parseStyles("#".concat(_this.actions.durationTime, ", #").concat(_this.actions.currentTime), stylesMap));
         };

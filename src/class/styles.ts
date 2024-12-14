@@ -266,6 +266,7 @@ export default class Styles {
             'font-family': 'inherit',
             'font-size': '1rem',
             'font-weight': 'bold',
+            'color': this.options.colorInactive,
         };
 
         this.addStyles(this.parseStyles(
