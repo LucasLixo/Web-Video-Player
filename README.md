@@ -73,7 +73,7 @@ The WVP (Web Video Player) is a lightweight, independent HTML5 video player that
 
 - `Multiple Video Support`: Can handle multiple video elements on the same page via querySelectorAll.
 
-## Example(example/Index.html)
+## [Example](example/Index.html)
 
 ```js
 <script type="application/javascript" src="../dist/wvp.js"></script>
