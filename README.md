@@ -33,19 +33,18 @@ The WVP (Web Video Player) is a lightweight, independent HTML5 video player that
 
 - `Options` (Optional): You can customize the following options for the video player:
 
-    - backgroundColor: Sets the background color of the player container.
-    - Default: black
-    - colorInactive: Sets the color of the inactive icons.
-    - Default: '' (no color specified)
-    - colorActive: Sets the color of the active progress bar and buttons.
-    - Default: '' (no color specified)
-    - autoplay: If set to true, the video will start automatically when the page loads.
-    - Default: false
-    - muted: If set to true, the video will be muted by default.
-    - Default: false
-    - top: Defines the content displayed at the top of the video player (header).
-    - Default: null (no header)
-    - You can pass any HTML content as the value (e.g., <p>Title</p>). The content will be positioned absolutely at the top of the player.
+    - `backgroundColor`: Sets the background color of the player container.
+    - `Default`: black
+    - `colorInactive`: Sets the color of the inactive icons.
+    - `Default`: '' (no color specified)
+    - `colorActive`: Sets the color of the active progress bar and buttons.
+    - `Default`: '' (no color specified)
+    - `autoplay`: If set to true, the video will start automatically when the page loads.
+    - `Default`: false
+    - `muted`: If set to true, the video will be muted by default.
+    - `Default`: false
+    - `top`: Defines the content displayed at the top of the video player (header).
+    - `Default`: null (no header) You can pass any HTML content as the value (e.g., `<p>Title</p>`). The content will be positioned absolutely at the top of the player.
 
 ## Advantages
 
