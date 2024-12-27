@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Title</title>
+    <link rel="shortcut icon" href="" type="image/x-icon">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui;
+        }
+
+        #title {
+            font-weight: bold;
+            font-size: 1rem;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <br>
+    <br>
+    <div style="display: block; width: 70%; height: auto; margin: auto;">
+        <video id="video" controls>
+            <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+                type="video/mp4">
+        </video>
+    </div>
+
+    <script type="application/javascript" src="./wvp.js">
+    </script>
+    <script type="application/javascript" defer>
+        document.addEventListener('DOMContentLoaded', function () {
+            const webVideoPlayer = new WVP('#video', {
+                backgroundColor: 'black',
+                colorInactive: '',
+                colorActive: '',
+                autoplay: false,
+                muted: false,
+                top: '<p id="title">Title</p>',
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -4,7 +4,7 @@
     "lib": ["es5", "dom"],
     "module": "es2015",
     "outDir": "./build/",
-    "allowImportingTsExtensions": true,
+    // "allowImportingTsExtensions": true,
     "moduleResolution": "bundler",
     // "noEmit": true,
     "noUnusedLocals": false, 
