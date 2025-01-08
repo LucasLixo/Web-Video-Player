@@ -76,6 +76,7 @@ export default class Controls {
         this.elementVideo.controls = false;
         this.elementVideo.currentTime = this.controls.current;
         this.elementVideo.setAttribute('playsinline', '');
+        this.elementVideo.setAttribute('preload', 'auto');
         this.elementVideo.setAttribute('controlslist', 'nodownload noremoteplayback');
         this.elementVideo.addEventListener('contextmenu', (event: MouseEvent) => {
             event.preventDefault();

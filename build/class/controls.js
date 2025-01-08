@@ -8,6 +8,7 @@ var Controls = (function () {
             _this.elementVideo.controls = false;
             _this.elementVideo.currentTime = _this.controls.current;
             _this.elementVideo.setAttribute('playsinline', '');
+            _this.elementVideo.setAttribute('preload', 'auto');
             _this.elementVideo.setAttribute('controlslist', 'nodownload noremoteplayback');
             _this.elementVideo.addEventListener('contextmenu', function (event) {
                 event.preventDefault();

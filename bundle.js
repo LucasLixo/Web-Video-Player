@@ -1,17 +1,6 @@
 const esbuild = require('esbuild');
 
-esbuild.build({
-    entryPoints: ['./build/wvp.js'],
-    outfile: './dist/wvp.js',
-    bundle: true,
-    minify: false,
-    platform: 'browser',
-    target: 'es5',
-    format: 'esm',
-    sourcemap: false,
-    logLevel: 'info',
-});
-
+// Debug
 esbuild.build({
     entryPoints: ['./build/wvp.js'],
     outfile: './debug/wvp.js',
@@ -22,4 +11,19 @@ esbuild.build({
     format: 'esm',
     sourcemap: true,
     logLevel: 'info',
+    legalComments: 'eof',
+});
+
+// Dist
+esbuild.build({
+    entryPoints: ['./build/wvp.js'],
+    outfile: './dist/wvp.js',
+    bundle: true,
+    minify: false,
+    platform: 'browser',
+    target: 'es5',
+    format: 'esm',
+    sourcemap: false,
+    logLevel: 'info',
+    legalComments: 'none',
 });
