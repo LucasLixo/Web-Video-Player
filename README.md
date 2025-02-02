@@ -31,7 +31,7 @@ The WVP (Web Video Player) is a lightweight, independent HTML5 video player that
                 rangerProguess: true,  // Show progress bar
             },
             style: {
-                titleTag: '<p>Title</p>', // Custom title tag
+                titleTag: '<p>Title</p>',  // Custom title tag
                 backgroundColor: 'black',  // Background color
                 colorInactive: 'gray',     // Inactive icon color
                 colorActive: 'blue',       // Active progress bar and button color
