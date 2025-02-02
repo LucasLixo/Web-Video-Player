@@ -1,6 +1,6 @@
 {
-  "name": "video.js",
-  "description": "An HTML5 video player that supports HLS and DASH with a common API and skin.",
+  "name": "web-video-player",
+  "description": "",
   "version": "1.0.0",
   "license": "MIT",
   "keywords": [
