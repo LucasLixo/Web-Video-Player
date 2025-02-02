@@ -7,8 +7,8 @@ var Elements = (function () {
             var elementTop = document.createElement('div');
             elementTop.setAttribute('id', _this.identifiersId.top);
             elementContainer.appendChild(elementTop);
-            if (_this.options.top != null) {
-                elementTop.innerHTML = _this.options.top;
+            if (_this.options.style.titleTag != null) {
+                elementTop.innerHTML = _this.options.style.titleTag;
             }
         };
         this.buildMiddle = function (elementContainer) {
@@ -82,18 +82,23 @@ var Elements = (function () {
         var pCurrent = document.createElement('p');
         pCurrent.setAttribute('id', this.actions.currentTime);
         pCurrent.setAttribute('action', this.actions.currentTime);
+        pCurrent.innerHTML = '00:00';
         elementBottom.appendChild(pCurrent);
     };
     Elements.prototype.buildRangerProguess = function (elementBottom) {
         var divRangerProguessContainer = document.createElement('div');
         divRangerProguessContainer.setAttribute('id', this.actions.rangerProguessContainer);
         elementBottom.appendChild(divRangerProguessContainer);
-        var divRangerProguess = document.createElement('div');
-        divRangerProguess.setAttribute('id', this.actions.rangerProguess);
-        divRangerProguessContainer.appendChild(divRangerProguess);
-        var divRangerProguessPoint = document.createElement('div');
-        divRangerProguessPoint.setAttribute('id', this.actions.rangerProguessPoint);
-        divRangerProguessContainer.appendChild(divRangerProguessPoint);
+        var divRangerProguessInput = document.createElement('input');
+        divRangerProguessInput.setAttribute('id', this.actions.rangerProguessInput);
+        divRangerProguessInput.setAttribute('type', 'range');
+        divRangerProguessInput.setAttribute('value', '0');
+        divRangerProguessInput.setAttribute('min', '0');
+        divRangerProguessInput.setAttribute('max', '100');
+        divRangerProguessContainer.appendChild(divRangerProguessInput);
+        var divRangerProguessProguess = document.createElement('div');
+        divRangerProguessProguess.setAttribute('id', this.actions.rangerProguessProguess);
+        divRangerProguessContainer.appendChild(divRangerProguessProguess);
     };
     Elements.prototype.buildDuration = function (elementBottom) {
         var pDuration = document.createElement('p');

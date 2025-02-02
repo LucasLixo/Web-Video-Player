@@ -24,7 +24,7 @@ var Styles = (function () {
                 'outline': 'inherit',
                 'touch-action': 'manipulation',
                 'flex-shrink': '0',
-                'background': 'transparent',
+                'background-color': 'transparent',
             };
             _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.buttons), stylesMap));
         };
@@ -32,7 +32,7 @@ var Styles = (function () {
             var stylesMap = {
                 'display': 'block',
                 'margin': 'auto',
-                'fill': _this.options.colorInactive,
+                'fill': _this.options.style.colorInactive,
                 'width': '2rem',
                 'height': '2rem',
             };
@@ -44,7 +44,7 @@ var Styles = (function () {
                 'width': '100%',
                 'height': '100%',
                 'z-index': "-".concat(_this.indexStyles),
-                'background-color': _this.options.backgroundColor,
+                'background-color': _this.options.style.backgroundColor,
             };
             _this.addStyles(_this.parseStyles(_this.options.apply, stylesMap));
         };
@@ -70,7 +70,7 @@ var Styles = (function () {
                 'top': '0',
                 'z-index': _this.indexStyles.toString(),
                 'padding': '1rem',
-                'background': 'linear-gradient(to bottom, black, transparent)',
+                'background-image': 'linear-gradient(to bottom, #00000080, transparent)',
             };
             _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.top), stylesMap));
         };
@@ -83,7 +83,7 @@ var Styles = (function () {
                 'left': '50%',
                 'z-index': _this.indexStyles.toString(),
                 'transform': 'translate(-50%, -50%)',
-                'background': _this.options.colorActive,
+                'background-color': _this.options.style.colorActive,
                 'border-radius': '100%',
             };
             _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.middle), stylesMap));
@@ -102,7 +102,7 @@ var Styles = (function () {
                 'bottom': '0',
                 'z-index': _this.indexStyles.toString(),
                 'padding': '1rem',
-                'background': 'linear-gradient(to top, black, transparent)',
+                'background-image': 'linear-gradient(to top, #00000080, transparent)',
                 'flex-direction': 'row',
                 'justify-content': 'space-between',
                 'align-items': 'center',
@@ -126,7 +126,7 @@ var Styles = (function () {
                 'font-family': 'inherit',
                 'font-size': '1rem',
                 'font-weight': 'bold',
-                'color': _this.options.colorInactive,
+                'color': _this.options.style.colorInactive,
             };
             _this.addStyles(_this.parseStyles("#".concat(_this.actions.durationTime, ", #").concat(_this.actions.currentTime), stylesMap));
         };
@@ -135,51 +135,61 @@ var Styles = (function () {
                 'position': 'relative',
                 'display': 'block',
                 'width': '100%',
-                'height': '0.4rem',
-                'background': '#CBCBCB',
-                'border-radius': '1rem',
-                'cursor': 'pointer',
-                'overflow': 'visible',
+                'height': 'auto',
+                'background-color': 'transparent',
             };
             _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessContainer), stylesMap));
             _this.addStyles(_this.parseStylesMedia("#".concat(_this.actions.rangerProguessContainer), [
                 { attribute: 'height', valueMax: '0.3rem', valueMiddle: '0.3rem', valueMin: '0.2rem', },
             ]));
         };
-        this.actionsRangerProguess = function () {
+        this.actionsRangerProguessInput = function () {
             var stylesMap = {
-                'position': 'absolute',
-                'top': '0',
-                'bottom': '0',
-                'left': '0',
-                'display': 'block',
-                'width': '0%',
-                'height': '100%',
-                'border-radius': '1rem',
-                'background': _this.options.colorActive,
+                'appearance': 'none',
+                'border': 'none',
                 'cursor': 'pointer',
-                'pointer-events': 'none',
-                'transition': 'width 0.1s linear',
+                'width': '100%',
+                'height': 'auto',
+                'background-color': 'transparent',
             };
-            _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguess), stylesMap));
+            _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput), stylesMap));
+            var stylesMap = {
+                'appearance': 'none',
+                'border': 'none',
+                'width': '100%',
+                'height': '0.6rem',
+                'background-color': _this.options.style.colorInactive,
+                'border-radius': '0.8rem',
+            };
+            _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput, "::-webkit-slider-runnable-track"), stylesMap));
+            var stylesMap = {
+                'appearance': 'none',
+                'border': 'none',
+                'width': '1rem',
+                'height': '1rem',
+                'background-color': _this.options.style.colorActive,
+                'border-radius': '50%',
+                'margin-top': '-0.2rem',
+            };
+            _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput, "::-webkit-slider-thumb"), stylesMap));
         };
-        this.actionsRangerProguessPoint = function () {
+        this.actionsRangerProguessProguess = function () {
             var stylesMap = {
                 'position': 'absolute',
                 'display': 'block',
                 'top': '0',
-                'bottom': '0',
-                'transform': 'translate(0%, -30%)',
-                'left': '0%',
-                'width': '1.2rem',
-                'height': '1.2rem',
-                'background': _this.options.colorInactive,
-                'border-radius': '100%',
-                'cursor': 'pointer',
+                'left': '0',
+                'width': '0%',
+                'height': '0.6rem',
+                'margin-top': '0.5rem',
+                'border-top-left-radius': '0.8rem',
+                'border-bottom-left-radius': '0.8rem',
+                'border-top-right-radius': '0',
+                'border-bottom-right-radius': '0',
+                'background-color': _this.options.style.colorActive,
                 'pointer-events': 'none',
-                'z-index': _this.indexStyles.toString(),
             };
-            _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessPoint), stylesMap));
+            _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessProguess), stylesMap));
         };
         this.buildFading = function () {
             var stylesMap = {
@@ -239,8 +249,8 @@ var Styles = (function () {
     Styles.prototype.buildActions = function () {
         this.actionsTime();
         this.actionsRangerProguessContainer();
-        this.actionsRangerProguess();
-        this.actionsRangerProguessPoint();
+        this.actionsRangerProguessInput();
+        this.actionsRangerProguessProguess();
     };
     Styles.prototype.parseStyles = function (styleId, styleMap) {
         var styleString = '';

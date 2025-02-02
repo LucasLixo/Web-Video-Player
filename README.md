@@ -13,12 +13,30 @@ The WVP (Web Video Player) is a lightweight, independent HTML5 video player that
 <script type="application/javascript" defer>
     document.addEventListener('DOMContentLoaded', function () {
         const webVideoPlayer = new WVP('#video', {
-            backgroundColor: 'black',    // Custom background color
-            colorInactive: '',           // Inactive icon color
-            colorActive: '',             // Active progress bar and button color
-            autoplay: false,             // Autoplay the video (default: false)
-            muted: false,                // Mute the video (default: false)
-            top: '<p>Title</p>',         // Content to display at the top of the video (can be null for no header)
+            apply: 'default', // Configuration profile
+            settings: {
+                autoplay: false,  // Autoplay the video (default: false)
+                muted: false,     // Mute the video (default: false)
+            },
+            show: {
+                titleTop: true,        // Show title at the top
+                playPause: true,       // Show play/pause button
+                playPauseCenter: true, // Show play/pause at the center
+                fullscreen: true,      // Enable fullscreen mode
+                pictureInPicture: true,// Enable picture-in-picture mode
+                volume: true,          // Show volume control
+                rangerVolume: true,    // Show volume range slider
+                durationTime: true,    // Show total duration
+                currentTime: true,     // Show current time
+                rangerProguess: true,  // Show progress bar
+            },
+            style: {
+                titleTag: '<p>Title</p>', // Custom title tag
+                backgroundColor: 'black',  // Background color
+                colorInactive: 'gray',     // Inactive icon color
+                colorActive: 'blue',       // Active progress bar and button color
+                shadow: true,              // Enable shadow effect
+            }
         });
     });
 </script>
@@ -30,21 +48,35 @@ The WVP (Web Video Player) is a lightweight, independent HTML5 video player that
     - The first argument in the WVP constructor is the selector for the video element (e.g., '#video').
     - The player works with multiple video tags on the same page by using querySelectorAll.
 
-
 - `Options` (Optional): You can customize the following options for the video player:
 
-    - `backgroundColor`: Sets the background color of the player container.
-    - `Default`: black
-    - `colorInactive`: Sets the color of the inactive icons.
-    - `Default`: '' (no color specified)
-    - `colorActive`: Sets the color of the active progress bar and buttons.
-    - `Default`: '' (no color specified)
-    - `autoplay`: If set to true, the video will start automatically when the page loads.
-    - `Default`: false
-    - `muted`: If set to true, the video will be muted by default.
-    - `Default`: false
-    - `top`: Defines the content displayed at the top of the video player (header).
-    - `Default`: null (no header) You can pass any HTML content as the value (e.g., `<p>Title</p>`). The content will be positioned absolutely at the top of the player.
+    - `apply`: Defines a configuration profile.
+      - `Default`: 'default'
+    
+    - `settings`: General video settings.
+      - `autoplay`: If set to true, the video will start automatically when the page loads.
+      - `Default`: false
+      - `muted`: If set to true, the video will be muted by default.
+      - `Default`: false
+    
+    - `show`: Toggles visibility of various UI elements.
+      - `titleTop`: Shows title at the top of the player.
+      - `playPause`: Shows play/pause button.
+      - `playPauseCenter`: Shows play/pause button at the center.
+      - `fullscreen`: Enables fullscreen button.
+      - `pictureInPicture`: Enables picture-in-picture button.
+      - `volume`: Shows volume control button.
+      - `rangerVolume`: Enables volume range slider.
+      - `durationTime`: Displays the total video duration.
+      - `currentTime`: Displays the current playback time.
+      - `rangerProguess`: Displays progress bar.
+    
+    - `style`: Customizable styles for the player.
+      - `titleTag`: Defines a custom title tag (can be null for no title).
+      - `backgroundColor`: Sets the background color of the player container.
+      - `colorInactive`: Sets the color of inactive icons.
+      - `colorActive`: Sets the color of active progress bars and buttons.
+      - `shadow`: Enables or disables shadow effect.
 
 ## Advantages
 
@@ -79,12 +111,30 @@ The WVP (Web Video Player) is a lightweight, independent HTML5 video player that
 <script type="application/javascript" defer>
     document.addEventListener('DOMContentLoaded', function () {
         new WVP('.video' /* Supports multiple videos */, {
-            backgroundColor: 'black',
-            colorInactive: 'gray',
-            colorActive: 'blue',
-            autoplay: true,
-            muted: false,
-            top: '<h2>My Custom Video Header</h2>',
+            apply: 'custom',
+            settings: {
+                autoplay: true,
+                muted: false,
+            },
+            show: {
+                titleTop: true,
+                playPause: true,
+                playPauseCenter: true,
+                fullscreen: true,
+                pictureInPicture: true,
+                volume: true,
+                rangerVolume: true,
+                durationTime: true,
+                currentTime: true,
+                rangerProguess: true,
+            },
+            style: {
+                titleTag: '<h2>My Custom Video Header</h2>',
+                backgroundColor: 'black',
+                colorInactive: 'gray',
+                colorActive: 'blue',
+                shadow: true,
+            }
         });
     });
 </script>

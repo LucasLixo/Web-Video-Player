@@ -28,21 +28,26 @@
     <div style="display: block; width: 70%; height: auto; margin: auto;">
         <video id="video" controls>
             <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
-            type="video/mp4">
+                type="video/mp4">
         </video>
     </div>
-    
+
     <script type="application/javascript" src="./wvp.js">
     </script>
     <script type="application/javascript" defer>
         document.addEventListener('DOMContentLoaded', function () {
             const webVideoPlayer = new WVP('#video', {
-                backgroundColor: 'black',
-                colorInactive: '',
-                colorActive: '',
-                autoplay: false,
-                muted: false,
-                top: '<p id="title">Title</p>',
+                settings: {
+                    autoplay: true,
+                    muted: false,
+                },
+                style: {
+                    titleTag: '<p id="title">Title</p>',
+                    backgroundColor: null,
+                    colorInactive: null,
+                    colorActive: null,
+                    shadow: null,
+                },
             });
         });
     </script>

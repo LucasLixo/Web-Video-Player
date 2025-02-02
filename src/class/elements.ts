@@ -87,8 +87,8 @@ export default class Elements {
         elementTop.setAttribute('id', this.identifiersId.top);
         elementContainer.appendChild(elementTop);
 
-        if (this.options.top != null) {
-            elementTop.innerHTML = this.options.top;
+        if (this.options.style.titleTag != null) {
+            elementTop.innerHTML = this.options.style.titleTag;
         }
     }
 
@@ -136,6 +136,7 @@ export default class Elements {
         const pCurrent: HTMLElement = document.createElement('p');
         pCurrent.setAttribute('id', this.actions.currentTime);
         pCurrent.setAttribute('action', this.actions.currentTime);
+        pCurrent.innerHTML = '00:00';
         elementBottom.appendChild(pCurrent);
     }
 
@@ -145,14 +146,18 @@ export default class Elements {
         const divRangerProguessContainer: HTMLElement = document.createElement('div');
         divRangerProguessContainer.setAttribute('id', this.actions.rangerProguessContainer);
         elementBottom.appendChild(divRangerProguessContainer);
+        
+        const divRangerProguessInput: HTMLElement = document.createElement('input');
+        divRangerProguessInput.setAttribute('id', this.actions.rangerProguessInput);
+        divRangerProguessInput.setAttribute('type', 'range');
+        divRangerProguessInput.setAttribute('value', '0');
+        divRangerProguessInput.setAttribute('min', '0');
+        divRangerProguessInput.setAttribute('max', '100');
+        divRangerProguessContainer.appendChild(divRangerProguessInput);
 
-        const divRangerProguess: HTMLElement = document.createElement('div');
-        divRangerProguess.setAttribute('id', this.actions.rangerProguess);
-        divRangerProguessContainer.appendChild(divRangerProguess);
-
-        const divRangerProguessPoint: HTMLElement = document.createElement('div');
-        divRangerProguessPoint.setAttribute('id', this.actions.rangerProguessPoint);
-        divRangerProguessContainer.appendChild(divRangerProguessPoint);
+        const divRangerProguessProguess: HTMLElement = document.createElement('div');
+        divRangerProguessProguess.setAttribute('id', this.actions.rangerProguessProguess);
+        divRangerProguessContainer.appendChild(divRangerProguessProguess);
     }
 
     // ==================================================

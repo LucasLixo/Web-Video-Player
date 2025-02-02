@@ -4,167 +4,152 @@ var Controls = (function () {
         var _this = this;
         var _a;
         this.buildConfig = function () {
-            _this.elementVideo.removeAttribute('controls');
-            _this.elementVideo.controls = false;
-            _this.elementVideo.currentTime = _this.controls.current;
-            _this.elementVideo.setAttribute('playsinline', '');
-            _this.elementVideo.setAttribute('preload', 'auto');
-            _this.elementVideo.setAttribute('controlslist', 'nodownload noremoteplayback');
-            _this.elementVideo.addEventListener('contextmenu', function (event) {
+            _this.myElements.video.removeAttribute('controls');
+            _this.myElements.video.controls = false;
+            _this.myElements.video.currentTime = _this.controls.current;
+            _this.myElements.video.setAttribute('playsinline', '');
+            _this.myElements.video.setAttribute('preload', 'auto');
+            _this.myElements.video.setAttribute('controlslist', 'nodownload noremoteplayback');
+            _this.myElements.video.addEventListener('contextmenu', function (event) {
                 event.preventDefault();
             });
             if (_this.controls.playing) {
-                _this.elementVideo.setAttribute('autoplay', '');
+                _this.myElements.video.setAttribute('autoplay', '');
             }
             else {
-                _this.elementVideo.removeAttribute('autoplay');
+                _this.myElements.video.removeAttribute('autoplay');
             }
             if (!_this.controls.volume) {
-                _this.elementVideo.setAttribute('muted', '');
+                _this.myElements.video.setAttribute('muted', '');
             }
             else {
-                _this.elementVideo.removeAttribute('muted');
+                _this.myElements.video.removeAttribute('muted');
             }
-            _this.elementVideo.onloadedmetadata = function () {
+            _this.myElements.video.onloadedmetadata = function () {
                 var _a;
-                _this.controls.durationTime = _this.formatTime((_a = _this.elementVideo.duration) !== null && _a !== void 0 ? _a : 0);
-                _this.controls.duration = _this.elementVideo.duration;
+                _this.controls.durationTime = _this.formatTime((_a = _this.myElements.video.duration) !== null && _a !== void 0 ? _a : 0);
+                _this.controls.duration = _this.myElements.video.duration;
             };
         };
         this.buildFading = function () {
             var allContainers = [
-                document.getElementById(_this.identifiersId.top),
-                document.getElementById(_this.identifiersId.middle),
-                document.getElementById(_this.identifiersId.bottom),
+                _this.myElements.id.top,
+                _this.myElements.id.middle,
+                _this.myElements.id.bottom,
             ];
             var hideTimeout = null;
             var hideControls = function () {
-                if (!_this.elementVideo.paused) {
+                if (!_this.myElements.video.paused) {
                     allContainers.forEach(function (container) {
                         container.classList.add(_this.identifiersClass.fading);
-                        _this.elementContainer.classList.add(_this.identifiersClass.cursorHide);
+                        _this.myElements.id.container.classList.add(_this.identifiersClass.cursorHide);
                     });
                 }
             };
             var showControls = function () {
                 allContainers.forEach(function (container) {
                     container.classList.remove(_this.identifiersClass.fading);
-                    _this.elementContainer.classList.remove(_this.identifiersClass.cursorHide);
+                    _this.myElements.id.container.classList.remove(_this.identifiersClass.cursorHide);
                 });
                 if (hideTimeout)
                     clearTimeout(hideTimeout);
                 hideTimeout = setTimeout(hideControls, 2500);
             };
-            _this.elementContainer.addEventListener('mousemove', function () {
+            _this.myElements.id.container.addEventListener('mouseleave', function () {
+                hideControls();
+            });
+            _this.myElements.id.container.addEventListener('mousemove', function () {
                 showControls();
             });
             showControls();
         };
         this.buildPlayPause = function () {
-            var buttonsPlayPause = document.querySelectorAll('button[action="' + "".concat(_this.actions.playPause) + '"]');
-            if (buttonsPlayPause.length === 0) {
+            if (_this.myElements.actions.playPause.length === 0) {
                 new IOError("Is empty Play/Pause.");
                 return;
             }
-            _this.elementVideo.addEventListener('pause', function () {
+            _this.myElements.video.addEventListener('pause', function () {
                 _this.controls.playing = false;
-                buttonsPlayPause.forEach(function (button) {
+                _this.myElements.actions.playPause.forEach(function (button) {
                     var svgPath = button.querySelector('svg > path');
                     if (svgPath) {
                         svgPath.setAttribute('d', _this.iconsPath.play);
                     }
                 });
             });
-            _this.elementVideo.addEventListener('play', function () {
+            _this.myElements.video.addEventListener('play', function () {
                 _this.controls.playing = true;
-                buttonsPlayPause.forEach(function (button) {
+                _this.myElements.actions.playPause.forEach(function (button) {
                     var svgPath = button.querySelector('svg > path');
                     if (svgPath) {
                         svgPath.setAttribute('d', _this.iconsPath.pause);
                     }
                 });
             });
-            _this.elementVideo.addEventListener('click', function () {
+            _this.myElements.video.addEventListener('click', function () {
                 _this.playPauseListener();
             });
-            buttonsPlayPause.forEach(function (button) {
+            _this.myElements.actions.playPause.forEach(function (button) {
                 button.addEventListener('click', function () {
                     _this.playPauseListener();
                 });
             });
         };
         this.buildFullscreen = function () {
-            var buttonFullscreen = document.querySelector('button[action="' + "".concat(_this.actions.fullscreen) + '"]');
-            buttonFullscreen.addEventListener('click', function () {
+            _this.myElements.actions.fullscreen.addEventListener('click', function () {
                 _this.fullscreenListener();
             });
         };
         this.buildPictureInPicture = function () {
-            var buttonPictureInPicture = document.querySelector('button[action="' + "".concat(_this.actions.pictureInPicture) + '"]');
-            buttonPictureInPicture.addEventListener('click', function () {
-                if (_this.elementVideo.requestPictureInPicture) {
-                    _this.elementVideo.requestPictureInPicture();
+            _this.myElements.actions.pictureInPicture.addEventListener('click', function () {
+                if (_this.myElements.video.requestPictureInPicture) {
+                    _this.myElements.video.requestPictureInPicture();
                 }
             });
         };
         this.buildVolume = function () {
-            var buttonVolume = document.querySelector('button[action="' + "".concat(_this.actions.volume) + '"]');
-            buttonVolume.addEventListener('click', function () {
+            _this.myElements.actions.volume.addEventListener('click', function () {
                 _this.volumeListener();
             });
         };
         this.buildRangerVolume = function () { };
         this.buildDurationTime = function () {
-            var durationTime = document.querySelector('p[action="' + "".concat(_this.actions.durationTime) + '"]');
-            _this.elementVideo.addEventListener('loadeddata', function () {
+            _this.myElements.video.addEventListener('loadeddata', function () {
                 var _a, _b;
-                _this.controls.durationTime = _this.formatTime((_a = _this.elementVideo.duration) !== null && _a !== void 0 ? _a : 0);
-                _this.controls.duration = (_b = _this.elementVideo.duration) !== null && _b !== void 0 ? _b : 0;
-                durationTime.innerHTML = _this.controls.durationTime;
+                _this.controls.durationTime = _this.formatTime((_a = _this.myElements.video.duration) !== null && _a !== void 0 ? _a : 0);
+                _this.controls.duration = (_b = _this.myElements.video.duration) !== null && _b !== void 0 ? _b : 0;
+                _this.myElements.actions.durationTime.innerHTML = _this.controls.durationTime;
             });
         };
         this.buildCurrentTime = function () {
-            var currentTime = document.querySelector('p[action="' + "".concat(_this.actions.currentTime) + '"]');
-            _this.elementVideo.addEventListener('timeupdate', function () {
+            _this.myElements.video.addEventListener('timeupdate', function () {
                 var _a, _b;
-                _this.controls.currentTime = _this.formatTime((_a = _this.elementVideo.currentTime) !== null && _a !== void 0 ? _a : 0);
-                _this.controls.current = (_b = _this.elementVideo.currentTime) !== null && _b !== void 0 ? _b : 0;
-                currentTime.innerHTML = _this.controls.currentTime;
+                _this.controls.currentTime = _this.formatTime((_a = _this.myElements.video.currentTime) !== null && _a !== void 0 ? _a : 0);
+                _this.controls.current = (_b = _this.myElements.video.currentTime) !== null && _b !== void 0 ? _b : 0;
+                _this.proguess = (_this.controls.current / _this.controls.duration) * 100;
+                _this.rangerProguessProguessListener();
+                _this.myElements.actions.rangerProguessInput.value = _this.proguess.toString();
+                _this.myElements.actions.currentTime.innerHTML = _this.controls.currentTime;
             });
         };
         this.buildRangerProguess = function () {
-            var rangerProguessContainer = document.getElementById(_this.actions.rangerProguessContainer);
-            var rangerProguess = document.getElementById(_this.actions.rangerProguess);
-            var rangerProguessPoint = document.getElementById(_this.actions.rangerProguessPoint);
-            _this.elementVideo.addEventListener('timeupdate', function () {
-                var currentTime = _this.elementVideo.currentTime;
-                var duration = _this.elementVideo.duration;
-                var progressPercentage = (currentTime / duration) * 100;
-                rangerProguess.setAttribute('style', "width: ".concat(progressPercentage, "%;"));
-                rangerProguessPoint.setAttribute('style', "left: calc(".concat(progressPercentage, "% - 1%);"));
-            });
-            rangerProguessContainer.addEventListener('click', function (event) {
-                var rect = rangerProguessContainer.getBoundingClientRect();
-                var clickX = event.clientX - rect.left;
-                var width = rect.width;
-                var percentage = (clickX / width) * 100;
-                var newTime = (_this.controls.duration * percentage) / 100;
-                _this.elementVideo.currentTime = newTime;
-                _this.controls.currentTime = _this.formatTime(newTime);
-                _this.controls.current = newTime;
-            });
+            _this.myElements.actions.rangerProguessInput.oninput = function () {
+                _this.proguess = parseInt(_this.myElements.actions.rangerProguessInput.value, 10);
+                _this.rangerProguessProguessListener();
+                _this.myElements.video.currentTime = (_this.proguess / 100) * _this.controls.duration;
+            };
         };
         this.buildObserver = function () {
             document.addEventListener('keydown', function (event) {
                 switch (event.key) {
                     case 'ArrowLeft':
-                        _this.elementVideo.currentTime = Math.max(0, Math.min(_this.elementVideo.duration, _this.elementVideo.currentTime - 10));
+                        _this.myElements.video.currentTime = Math.max(0, Math.min(_this.controls.duration, _this.myElements.video.currentTime - 10));
                         break;
                     case ' ':
                         _this.playPauseListener();
                         break;
                     case 'ArrowRight':
-                        _this.elementVideo.currentTime = Math.max(0, Math.min(_this.elementVideo.duration, _this.elementVideo.currentTime + 10));
+                        _this.myElements.video.currentTime = Math.max(0, Math.min(_this.controls.duration, _this.myElements.video.currentTime + 10));
                         break;
                     case 'ArrowDown':
                         break;
@@ -174,8 +159,8 @@ var Controls = (function () {
                         _this.fullscreenListener();
                         break;
                     case 'p':
-                        if (_this.elementVideo.requestPictureInPicture) {
-                            _this.elementVideo.requestPictureInPicture();
+                        if (_this.myElements.video.requestPictureInPicture) {
+                            _this.myElements.video.requestPictureInPicture();
                         }
                         break;
                     case 'm':
@@ -193,28 +178,60 @@ var Controls = (function () {
                     case '9':
                         var percentage = parseInt(event.key) * 10;
                         var newTime = (percentage / 100) * _this.controls.duration;
-                        _this.elementVideo.currentTime = newTime;
+                        _this.myElements.video.currentTime = newTime;
                         _this.controls.currentTime = _this.formatTime(newTime);
                         _this.controls.current = newTime;
                         break;
                 }
             });
         };
-        this.elementContainer = elementContainer;
-        this.elementVideo = elementVideo;
-        this.identifiersId = identifiersId;
+        this.myElements = {
+            video: elementVideo,
+            id: {
+                container: elementContainer,
+                top: document.getElementById(identifiersId.top),
+                middle: document.getElementById(identifiersId.middle),
+                bottom: document.getElementById(identifiersId.bottom),
+            },
+            actions: {
+                playPause: document.querySelectorAll('button[action="' + "".concat(actions.playPause) + '"]'),
+                fullscreen: document.querySelector('button[action="' + "".concat(actions.fullscreen) + '"]'),
+                pictureInPicture: document.querySelector('button[action="' + "".concat(actions.pictureInPicture) + '"]'),
+                volume: document.querySelector('button[action="' + "".concat(actions.volume) + '"]'),
+                rangerVolumeContainer: document.getElementById(actions.rangerVolumeContainer),
+                rangerVolumeInput: document.getElementById(actions.rangerVolumeInput),
+                rangerVolumeProguess: document.getElementById(actions.rangerVolumeProguess),
+                durationTime: document.querySelector('p[action="' + "".concat(actions.durationTime) + '"]'),
+                currentTime: document.querySelector('p[action="' + "".concat(actions.currentTime) + '"]'),
+                rangerProguessContainer: document.getElementById(actions.rangerProguessContainer),
+                rangerProguessInput: document.getElementById(actions.rangerProguessInput),
+                rangerProguessProguess: document.getElementById(actions.rangerProguessProguess),
+            },
+            svg: {
+                fullscreen: null,
+                playPause: null,
+                pictureInPicture: null,
+                volume: null,
+            },
+        };
+        this.myElements.svg = {
+            fullscreen: this.myElements.actions.fullscreen.querySelector('svg > path'),
+            playPause: null,
+            pictureInPicture: null,
+            volume: this.myElements.actions.volume.querySelector('svg > path'),
+        };
+        this.proguess = 0;
         this.identifiersClass = identifiersClass;
-        this.actions = actions;
         this.iconsPath = iconsPath;
         this.controls = {
-            playing: options.autoplay,
+            playing: options.settings.autoplay,
             fullscreen: false,
             pictureInPicture: false,
-            volume: !options.muted,
-            rangerVolume: options.muted ? 0.0 : 1.0,
-            durationTime: this.formatTime((_a = this.elementVideo.duration) !== null && _a !== void 0 ? _a : 0),
+            volume: !options.settings.muted,
+            rangerVolume: options.settings.muted ? 0.0 : 1.0,
+            durationTime: this.formatTime((_a = this.myElements.video.duration) !== null && _a !== void 0 ? _a : 0),
             currentTime: this.formatTime(0),
-            duration: this.elementVideo.duration,
+            duration: this.myElements.video.duration,
             current: 0,
         };
         this.build();
@@ -233,46 +250,52 @@ var Controls = (function () {
         this.buildObserver();
     };
     Controls.prototype.playPauseListener = function () {
-        if (this.elementVideo.paused) {
-            this.elementVideo.play();
+        if (this.myElements.video.paused) {
+            this.myElements.video.play();
         }
         else {
-            this.elementVideo.pause();
+            this.myElements.video.pause();
         }
     };
-    ;
+    Controls.prototype.rangerProguessProguessListener = function () {
+        if (this.proguess < 25) {
+            this.myElements.actions.rangerProguessProguess.setAttribute('style', "width: ".concat(this.proguess + 0.5, "%;"));
+            return;
+        }
+        if (this.proguess > 45) {
+            this.myElements.actions.rangerProguessProguess.setAttribute('style', "width: ".concat(this.proguess - 0.5, "%;"));
+            return;
+        }
+        this.myElements.actions.rangerProguessProguess.setAttribute('style', "width: ".concat(this.proguess, "%;"));
+    };
     Controls.prototype.volumeListener = function () {
-        var buttonVolume = document.querySelector('button[action="' + "".concat(this.actions.volume) + '"]');
-        var svgVolume = buttonVolume.querySelector('svg > path');
-        if (this.elementVideo.muted || this.elementVideo.volume === 0) {
-            svgVolume.setAttribute('d', this.iconsPath.volumeOn);
-            this.elementVideo.muted = false;
-            this.elementVideo.volume = 1.0;
+        if (this.myElements.video.muted || this.myElements.video.volume === 0) {
+            this.myElements.svg.volume.setAttribute('d', this.iconsPath.volumeOn);
+            this.myElements.video.muted = false;
+            this.myElements.video.volume = 1.0;
         }
         else {
-            svgVolume.setAttribute('d', this.iconsPath.volumeOff);
-            this.elementVideo.muted = true;
-            this.elementVideo.volume = 0.0;
+            this.myElements.svg.volume.setAttribute('d', this.iconsPath.volumeOff);
+            this.myElements.video.muted = true;
+            this.myElements.video.volume = 0.0;
         }
     };
     Controls.prototype.fullscreenListener = function () {
-        var buttonFullscreen = document.querySelector('button[action="' + "".concat(this.actions.fullscreen) + '"]');
-        var svgFullscreen = buttonFullscreen.querySelector('svg > path');
         if (!this.controls.fullscreen) {
             this.controls.fullscreen = true;
-            if (this.elementContainer.requestFullscreen) {
-                this.elementContainer.requestFullscreen();
+            if (this.myElements.id.container.requestFullscreen) {
+                this.myElements.id.container.requestFullscreen();
             }
-            else if (this.elementContainer.mozRequestFullScreen) {
-                this.elementContainer.mozRequestFullScreen();
+            else if (this.myElements.id.container.mozRequestFullScreen) {
+                this.myElements.id.container.mozRequestFullScreen();
             }
-            else if (this.elementContainer.webkitRequestFullScreen) {
-                this.elementContainer.webkitRequestFullScreen();
+            else if (this.myElements.id.container.webkitRequestFullScreen) {
+                this.myElements.id.container.webkitRequestFullScreen();
             }
-            else if (this.elementContainer.msRequestFullscreen) {
-                this.elementContainer.msRequestFullscreen();
+            else if (this.myElements.id.container.msRequestFullscreen) {
+                this.myElements.id.container.msRequestFullscreen();
             }
-            svgFullscreen.setAttribute('d', this.iconsPath.fullscreenOn);
+            this.myElements.svg.fullscreen.setAttribute('d', this.iconsPath.fullscreenOn);
         }
         else {
             this.controls.fullscreen = false;
@@ -288,7 +311,7 @@ var Controls = (function () {
             else if (document.msExitFullscreen) {
                 document.msExitFullscreen();
             }
-            svgFullscreen.setAttribute('d', this.iconsPath.fullscreenOff);
+            this.myElements.svg.fullscreen.setAttribute('d', this.iconsPath.fullscreenOff);
         }
     };
     Controls.prototype.formatTime = function (seconds) {

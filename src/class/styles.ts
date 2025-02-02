@@ -65,8 +65,8 @@ export default class Styles {
         // Actions
         this.actionsTime();
         this.actionsRangerProguessContainer();
-        this.actionsRangerProguess();
-        this.actionsRangerProguessPoint();
+        this.actionsRangerProguessInput();
+        this.actionsRangerProguessProguess();
     }
 
     // ==================================================
@@ -99,7 +99,7 @@ export default class Styles {
             'outline': 'inherit',
             'touch-action': 'manipulation',
             'flex-shrink': '0',
-            'background': 'transparent',
+            'background-color': 'transparent',
         };
 
         this.addStyles(this.parseStyles(
@@ -113,7 +113,7 @@ export default class Styles {
         const stylesMap: Record<string, string> = {
             'display': 'block',
             'margin': 'auto',
-            'fill': this.options.colorInactive,
+            'fill': this.options.style.colorInactive,
             'width': '2rem',
             'height': '2rem',
         };
@@ -132,7 +132,7 @@ export default class Styles {
             'width': '100%',
             'height': '100%',
             'z-index': `-${this.indexStyles}`,
-            'background-color': this.options.backgroundColor,
+            'background-color': this.options.style.backgroundColor,
         };
 
         this.addStyles(this.parseStyles(
@@ -171,7 +171,7 @@ export default class Styles {
             'top': '0',
             'z-index': this.indexStyles.toString(),
             'padding': '1rem',
-            'background': 'linear-gradient(to bottom, black, transparent)',
+            'background-image': 'linear-gradient(to bottom, #00000080, transparent)',
         };
 
         this.addStyles(this.parseStyles(
@@ -190,7 +190,7 @@ export default class Styles {
             'left': '50%',
             'z-index': this.indexStyles.toString(),
             'transform': 'translate(-50%, -50%)',
-            'background': this.options.colorActive,
+            'background-color': this.options.style.colorActive,
             'border-radius': '100%',
         };
 
@@ -219,7 +219,7 @@ export default class Styles {
             'bottom': '0',
             'z-index': this.indexStyles.toString(),
             'padding': '1rem',
-            'background': 'linear-gradient(to top, black, transparent)',
+            'background-image': 'linear-gradient(to top, #00000080, transparent)',
             'flex-direction': 'row',
             'justify-content': 'space-between',
             'align-items': 'center',
@@ -266,7 +266,7 @@ export default class Styles {
             'font-family': 'inherit',
             'font-size': '1rem',
             'font-weight': 'bold',
-            'color': this.options.colorInactive,
+            'color': this.options.style.colorInactive,
         };
 
         this.addStyles(this.parseStyles(
@@ -281,11 +281,8 @@ export default class Styles {
             'position': 'relative',
             'display': 'block',
             'width': '100%',
-            'height': '0.4rem',
-            'background': '#CBCBCB',
-            'border-radius': '1rem',
-            'cursor': 'pointer',
-            'overflow': 'visible',
+            'height': 'auto',
+            'background-color': 'transparent',
         };
 
         this.addStyles(this.parseStyles(
@@ -302,52 +299,75 @@ export default class Styles {
     }
 
     // ==================================================
-    private actionsRangerProguess: Function = (): void => {
-        const stylesMap: Record<string, string> = {
-            'position': 'absolute',
-            'top': '0',
-            'bottom': '0',
-            'left': '0',
-            'display': 'block',
-            'width': '0%',
-            'height': '100%',
-            'border-radius': '1rem',
-            'background': this.options.colorActive,
+    private actionsRangerProguessInput: Function = (): void => {
+        var stylesMap: Record<string, string> = {
+            'appearance': 'none',
+            'border': 'none',
             'cursor': 'pointer',
-            'pointer-events': 'none',
-            'transition': 'width 0.1s linear',
+            'width': '100%',
+            'height': 'auto',
+            'background-color': 'transparent',
         };
-        
+
         this.addStyles(this.parseStyles(
-            `#${this.actions.rangerProguess}`,
+            `#${this.actions.rangerProguessInput}`,
+            stylesMap,
+        ));
+
+        var stylesMap: Record<string, string> = {
+            'appearance': 'none',
+            'border': 'none',
+            'width': '100%',
+            'height': '0.6rem',
+            'background-color': this.options.style.colorInactive,
+            'border-radius': '0.8rem',
+        };
+
+        this.addStyles(this.parseStyles(
+            `#${this.actions.rangerProguessInput}::-webkit-slider-runnable-track`,
+            stylesMap,
+        ));
+
+        var stylesMap: Record<string, string> = {
+            'appearance': 'none',
+            'border': 'none',
+            'width': '1rem',
+            'height': '1rem',
+            'background-color': this.options.style.colorActive,
+            'border-radius': '50%',
+            'margin-top': '-0.2rem',
+        };
+
+        this.addStyles(this.parseStyles(
+            `#${this.actions.rangerProguessInput}::-webkit-slider-thumb`,
             stylesMap,
         ));
     }
 
     // ==================================================
-    private actionsRangerProguessPoint: Function = (): void => {
+    private actionsRangerProguessProguess: Function = (): void => {
         const stylesMap: Record<string, string> = {
             'position': 'absolute',
             'display': 'block',
             'top': '0',
-            'bottom': '0',
-            'transform': 'translate(0%, -30%)',
-            'left': '0%',
-            'width': '1.2rem',
-            'height': '1.2rem',
-            'background': this.options.colorInactive,
-            'border-radius': '100%',
-            'cursor': 'pointer',
+            'left': '0',
+            'width': '0%',
+            'height': '0.6rem',
+            'margin-top': '0.5rem',
+            'border-top-left-radius': '0.8rem',
+            'border-bottom-left-radius': '0.8rem',
+            'border-top-right-radius': '0',
+            'border-bottom-right-radius': '0',
+            'background-color': this.options.style.colorActive,
             'pointer-events': 'none',
-            'z-index': this.indexStyles.toString(),
         };
 
         this.addStyles(this.parseStyles(
-            `#${this.actions.rangerProguessPoint}`,
+            `#${this.actions.rangerProguessProguess}`,
             stylesMap,
         ));
     }
-    
+
     // ==================================================
     // Fading
     private buildFading: Function = (): void => {
@@ -357,22 +377,22 @@ export default class Styles {
             'visibility': 'visible',
             'overflow': 'visible',
         };
-        
+
         this.addStyles(this.parseStyles(
             `#${this.identifiersId.top}, #${this.identifiersId.middle}, #${this.identifiersId.bottom}`,
             stylesMap,
         ));
-        
+
         this.addStyles(this.parseStyles(
             `.${this.identifiersClass.fading}`,
-            { 
+            {
                 'opacity': '0 !important',
                 'visibility': 'hidden !important',
                 'overflow': 'hidden !important',
             },
         ));
     }
-    
+
     // ==================================================
     private buildCursorHide: Function = (): void => {
         const stylesMap: Record<string, string> = {

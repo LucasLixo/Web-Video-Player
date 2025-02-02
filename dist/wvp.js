@@ -36,166 +36,151 @@ var Controls = function() {
     var _this = this;
     var _a;
     this.buildConfig = function() {
-      _this.elementVideo.removeAttribute("controls");
-      _this.elementVideo.controls = false;
-      _this.elementVideo.currentTime = _this.controls.current;
-      _this.elementVideo.setAttribute("playsinline", "");
-      _this.elementVideo.setAttribute("preload", "auto");
-      _this.elementVideo.setAttribute("controlslist", "nodownload noremoteplayback");
-      _this.elementVideo.addEventListener("contextmenu", function(event) {
+      _this.myElements.video.removeAttribute("controls");
+      _this.myElements.video.controls = false;
+      _this.myElements.video.currentTime = _this.controls.current;
+      _this.myElements.video.setAttribute("playsinline", "");
+      _this.myElements.video.setAttribute("preload", "auto");
+      _this.myElements.video.setAttribute("controlslist", "nodownload noremoteplayback");
+      _this.myElements.video.addEventListener("contextmenu", function(event) {
         event.preventDefault();
       });
       if (_this.controls.playing) {
-        _this.elementVideo.setAttribute("autoplay", "");
+        _this.myElements.video.setAttribute("autoplay", "");
       } else {
-        _this.elementVideo.removeAttribute("autoplay");
+        _this.myElements.video.removeAttribute("autoplay");
       }
       if (!_this.controls.volume) {
-        _this.elementVideo.setAttribute("muted", "");
+        _this.myElements.video.setAttribute("muted", "");
       } else {
-        _this.elementVideo.removeAttribute("muted");
+        _this.myElements.video.removeAttribute("muted");
       }
-      _this.elementVideo.onloadedmetadata = function() {
+      _this.myElements.video.onloadedmetadata = function() {
         var _a2;
-        _this.controls.durationTime = _this.formatTime((_a2 = _this.elementVideo.duration) !== null && _a2 !== void 0 ? _a2 : 0);
-        _this.controls.duration = _this.elementVideo.duration;
+        _this.controls.durationTime = _this.formatTime((_a2 = _this.myElements.video.duration) !== null && _a2 !== void 0 ? _a2 : 0);
+        _this.controls.duration = _this.myElements.video.duration;
       };
     };
     this.buildFading = function() {
       var allContainers = [
-        document.getElementById(_this.identifiersId.top),
-        document.getElementById(_this.identifiersId.middle),
-        document.getElementById(_this.identifiersId.bottom)
+        _this.myElements.id.top,
+        _this.myElements.id.middle,
+        _this.myElements.id.bottom
       ];
       var hideTimeout = null;
       var hideControls = function() {
-        if (!_this.elementVideo.paused) {
+        if (!_this.myElements.video.paused) {
           allContainers.forEach(function(container) {
             container.classList.add(_this.identifiersClass.fading);
-            _this.elementContainer.classList.add(_this.identifiersClass.cursorHide);
+            _this.myElements.id.container.classList.add(_this.identifiersClass.cursorHide);
           });
         }
       };
       var showControls = function() {
         allContainers.forEach(function(container) {
           container.classList.remove(_this.identifiersClass.fading);
-          _this.elementContainer.classList.remove(_this.identifiersClass.cursorHide);
+          _this.myElements.id.container.classList.remove(_this.identifiersClass.cursorHide);
         });
         if (hideTimeout)
           clearTimeout(hideTimeout);
         hideTimeout = setTimeout(hideControls, 2500);
       };
-      _this.elementContainer.addEventListener("mousemove", function() {
+      _this.myElements.id.container.addEventListener("mouseleave", function() {
+        hideControls();
+      });
+      _this.myElements.id.container.addEventListener("mousemove", function() {
         showControls();
       });
       showControls();
     };
     this.buildPlayPause = function() {
-      var buttonsPlayPause = document.querySelectorAll('button[action="' + "".concat(_this.actions.playPause) + '"]');
-      if (buttonsPlayPause.length === 0) {
+      if (_this.myElements.actions.playPause.length === 0) {
         new io_error_default("Is empty Play/Pause.");
         return;
       }
-      _this.elementVideo.addEventListener("pause", function() {
+      _this.myElements.video.addEventListener("pause", function() {
         _this.controls.playing = false;
-        buttonsPlayPause.forEach(function(button) {
+        _this.myElements.actions.playPause.forEach(function(button) {
           var svgPath = button.querySelector("svg > path");
           if (svgPath) {
             svgPath.setAttribute("d", _this.iconsPath.play);
           }
         });
       });
-      _this.elementVideo.addEventListener("play", function() {
+      _this.myElements.video.addEventListener("play", function() {
         _this.controls.playing = true;
-        buttonsPlayPause.forEach(function(button) {
+        _this.myElements.actions.playPause.forEach(function(button) {
           var svgPath = button.querySelector("svg > path");
           if (svgPath) {
             svgPath.setAttribute("d", _this.iconsPath.pause);
           }
         });
       });
-      _this.elementVideo.addEventListener("click", function() {
+      _this.myElements.video.addEventListener("click", function() {
         _this.playPauseListener();
       });
-      buttonsPlayPause.forEach(function(button) {
+      _this.myElements.actions.playPause.forEach(function(button) {
         button.addEventListener("click", function() {
           _this.playPauseListener();
         });
       });
     };
     this.buildFullscreen = function() {
-      var buttonFullscreen = document.querySelector('button[action="' + "".concat(_this.actions.fullscreen) + '"]');
-      buttonFullscreen.addEventListener("click", function() {
+      _this.myElements.actions.fullscreen.addEventListener("click", function() {
         _this.fullscreenListener();
       });
     };
     this.buildPictureInPicture = function() {
-      var buttonPictureInPicture = document.querySelector('button[action="' + "".concat(_this.actions.pictureInPicture) + '"]');
-      buttonPictureInPicture.addEventListener("click", function() {
-        if (_this.elementVideo.requestPictureInPicture) {
-          _this.elementVideo.requestPictureInPicture();
+      _this.myElements.actions.pictureInPicture.addEventListener("click", function() {
+        if (_this.myElements.video.requestPictureInPicture) {
+          _this.myElements.video.requestPictureInPicture();
         }
       });
     };
     this.buildVolume = function() {
-      var buttonVolume = document.querySelector('button[action="' + "".concat(_this.actions.volume) + '"]');
-      buttonVolume.addEventListener("click", function() {
+      _this.myElements.actions.volume.addEventListener("click", function() {
         _this.volumeListener();
       });
     };
     this.buildRangerVolume = function() {
     };
     this.buildDurationTime = function() {
-      var durationTime = document.querySelector('p[action="' + "".concat(_this.actions.durationTime) + '"]');
-      _this.elementVideo.addEventListener("loadeddata", function() {
+      _this.myElements.video.addEventListener("loadeddata", function() {
         var _a2, _b;
-        _this.controls.durationTime = _this.formatTime((_a2 = _this.elementVideo.duration) !== null && _a2 !== void 0 ? _a2 : 0);
-        _this.controls.duration = (_b = _this.elementVideo.duration) !== null && _b !== void 0 ? _b : 0;
-        durationTime.innerHTML = _this.controls.durationTime;
+        _this.controls.durationTime = _this.formatTime((_a2 = _this.myElements.video.duration) !== null && _a2 !== void 0 ? _a2 : 0);
+        _this.controls.duration = (_b = _this.myElements.video.duration) !== null && _b !== void 0 ? _b : 0;
+        _this.myElements.actions.durationTime.innerHTML = _this.controls.durationTime;
       });
     };
     this.buildCurrentTime = function() {
-      var currentTime = document.querySelector('p[action="' + "".concat(_this.actions.currentTime) + '"]');
-      _this.elementVideo.addEventListener("timeupdate", function() {
+      _this.myElements.video.addEventListener("timeupdate", function() {
         var _a2, _b;
-        _this.controls.currentTime = _this.formatTime((_a2 = _this.elementVideo.currentTime) !== null && _a2 !== void 0 ? _a2 : 0);
-        _this.controls.current = (_b = _this.elementVideo.currentTime) !== null && _b !== void 0 ? _b : 0;
-        currentTime.innerHTML = _this.controls.currentTime;
+        _this.controls.currentTime = _this.formatTime((_a2 = _this.myElements.video.currentTime) !== null && _a2 !== void 0 ? _a2 : 0);
+        _this.controls.current = (_b = _this.myElements.video.currentTime) !== null && _b !== void 0 ? _b : 0;
+        _this.proguess = _this.controls.current / _this.controls.duration * 100;
+        _this.rangerProguessProguessListener();
+        _this.myElements.actions.rangerProguessInput.value = _this.proguess.toString();
+        _this.myElements.actions.currentTime.innerHTML = _this.controls.currentTime;
       });
     };
     this.buildRangerProguess = function() {
-      var rangerProguessContainer = document.getElementById(_this.actions.rangerProguessContainer);
-      var rangerProguess = document.getElementById(_this.actions.rangerProguess);
-      var rangerProguessPoint = document.getElementById(_this.actions.rangerProguessPoint);
-      _this.elementVideo.addEventListener("timeupdate", function() {
-        var currentTime = _this.elementVideo.currentTime;
-        var duration = _this.elementVideo.duration;
-        var progressPercentage = currentTime / duration * 100;
-        rangerProguess.setAttribute("style", "width: ".concat(progressPercentage, "%;"));
-        rangerProguessPoint.setAttribute("style", "left: calc(".concat(progressPercentage, "% - 1%);"));
-      });
-      rangerProguessContainer.addEventListener("click", function(event) {
-        var rect = rangerProguessContainer.getBoundingClientRect();
-        var clickX = event.clientX - rect.left;
-        var width = rect.width;
-        var percentage = clickX / width * 100;
-        var newTime = _this.controls.duration * percentage / 100;
-        _this.elementVideo.currentTime = newTime;
-        _this.controls.currentTime = _this.formatTime(newTime);
-        _this.controls.current = newTime;
-      });
+      _this.myElements.actions.rangerProguessInput.oninput = function() {
+        _this.proguess = parseInt(_this.myElements.actions.rangerProguessInput.value, 10);
+        _this.rangerProguessProguessListener();
+        _this.myElements.video.currentTime = _this.proguess / 100 * _this.controls.duration;
+      };
     };
     this.buildObserver = function() {
       document.addEventListener("keydown", function(event) {
         switch (event.key) {
           case "ArrowLeft":
-            _this.elementVideo.currentTime = Math.max(0, Math.min(_this.elementVideo.duration, _this.elementVideo.currentTime - 10));
+            _this.myElements.video.currentTime = Math.max(0, Math.min(_this.controls.duration, _this.myElements.video.currentTime - 10));
             break;
           case " ":
             _this.playPauseListener();
             break;
           case "ArrowRight":
-            _this.elementVideo.currentTime = Math.max(0, Math.min(_this.elementVideo.duration, _this.elementVideo.currentTime + 10));
+            _this.myElements.video.currentTime = Math.max(0, Math.min(_this.controls.duration, _this.myElements.video.currentTime + 10));
             break;
           case "ArrowDown":
             break;
@@ -205,8 +190,8 @@ var Controls = function() {
             _this.fullscreenListener();
             break;
           case "p":
-            if (_this.elementVideo.requestPictureInPicture) {
-              _this.elementVideo.requestPictureInPicture();
+            if (_this.myElements.video.requestPictureInPicture) {
+              _this.myElements.video.requestPictureInPicture();
             }
             break;
           case "m":
@@ -224,28 +209,60 @@ var Controls = function() {
           case "9":
             var percentage = parseInt(event.key) * 10;
             var newTime = percentage / 100 * _this.controls.duration;
-            _this.elementVideo.currentTime = newTime;
+            _this.myElements.video.currentTime = newTime;
             _this.controls.currentTime = _this.formatTime(newTime);
             _this.controls.current = newTime;
             break;
         }
       });
     };
-    this.elementContainer = elementContainer;
-    this.elementVideo = elementVideo;
-    this.identifiersId = identifiersId;
+    this.myElements = {
+      video: elementVideo,
+      id: {
+        container: elementContainer,
+        top: document.getElementById(identifiersId.top),
+        middle: document.getElementById(identifiersId.middle),
+        bottom: document.getElementById(identifiersId.bottom)
+      },
+      actions: {
+        playPause: document.querySelectorAll('button[action="' + "".concat(actions.playPause) + '"]'),
+        fullscreen: document.querySelector('button[action="' + "".concat(actions.fullscreen) + '"]'),
+        pictureInPicture: document.querySelector('button[action="' + "".concat(actions.pictureInPicture) + '"]'),
+        volume: document.querySelector('button[action="' + "".concat(actions.volume) + '"]'),
+        rangerVolumeContainer: document.getElementById(actions.rangerVolumeContainer),
+        rangerVolumeInput: document.getElementById(actions.rangerVolumeInput),
+        rangerVolumeProguess: document.getElementById(actions.rangerVolumeProguess),
+        durationTime: document.querySelector('p[action="' + "".concat(actions.durationTime) + '"]'),
+        currentTime: document.querySelector('p[action="' + "".concat(actions.currentTime) + '"]'),
+        rangerProguessContainer: document.getElementById(actions.rangerProguessContainer),
+        rangerProguessInput: document.getElementById(actions.rangerProguessInput),
+        rangerProguessProguess: document.getElementById(actions.rangerProguessProguess)
+      },
+      svg: {
+        fullscreen: null,
+        playPause: null,
+        pictureInPicture: null,
+        volume: null
+      }
+    };
+    this.myElements.svg = {
+      fullscreen: this.myElements.actions.fullscreen.querySelector("svg > path"),
+      playPause: null,
+      pictureInPicture: null,
+      volume: this.myElements.actions.volume.querySelector("svg > path")
+    };
+    this.proguess = 0;
     this.identifiersClass = identifiersClass;
-    this.actions = actions;
     this.iconsPath = iconsPath;
     this.controls = {
-      playing: options.autoplay,
+      playing: options.settings.autoplay,
       fullscreen: false,
       pictureInPicture: false,
-      volume: !options.muted,
-      rangerVolume: options.muted ? 0 : 1,
-      durationTime: this.formatTime((_a = this.elementVideo.duration) !== null && _a !== void 0 ? _a : 0),
+      volume: !options.settings.muted,
+      rangerVolume: options.settings.muted ? 0 : 1,
+      durationTime: this.formatTime((_a = this.myElements.video.duration) !== null && _a !== void 0 ? _a : 0),
       currentTime: this.formatTime(0),
-      duration: this.elementVideo.duration,
+      duration: this.myElements.video.duration,
       current: 0
     };
     this.build();
@@ -264,41 +281,47 @@ var Controls = function() {
     this.buildObserver();
   };
   Controls2.prototype.playPauseListener = function() {
-    if (this.elementVideo.paused) {
-      this.elementVideo.play();
+    if (this.myElements.video.paused) {
+      this.myElements.video.play();
     } else {
-      this.elementVideo.pause();
+      this.myElements.video.pause();
     }
   };
-  ;
+  Controls2.prototype.rangerProguessProguessListener = function() {
+    if (this.proguess < 25) {
+      this.myElements.actions.rangerProguessProguess.setAttribute("style", "width: ".concat(this.proguess + 0.5, "%;"));
+      return;
+    }
+    if (this.proguess > 45) {
+      this.myElements.actions.rangerProguessProguess.setAttribute("style", "width: ".concat(this.proguess - 0.5, "%;"));
+      return;
+    }
+    this.myElements.actions.rangerProguessProguess.setAttribute("style", "width: ".concat(this.proguess, "%;"));
+  };
   Controls2.prototype.volumeListener = function() {
-    var buttonVolume = document.querySelector('button[action="' + "".concat(this.actions.volume) + '"]');
-    var svgVolume = buttonVolume.querySelector("svg > path");
-    if (this.elementVideo.muted || this.elementVideo.volume === 0) {
-      svgVolume.setAttribute("d", this.iconsPath.volumeOn);
-      this.elementVideo.muted = false;
-      this.elementVideo.volume = 1;
+    if (this.myElements.video.muted || this.myElements.video.volume === 0) {
+      this.myElements.svg.volume.setAttribute("d", this.iconsPath.volumeOn);
+      this.myElements.video.muted = false;
+      this.myElements.video.volume = 1;
     } else {
-      svgVolume.setAttribute("d", this.iconsPath.volumeOff);
-      this.elementVideo.muted = true;
-      this.elementVideo.volume = 0;
+      this.myElements.svg.volume.setAttribute("d", this.iconsPath.volumeOff);
+      this.myElements.video.muted = true;
+      this.myElements.video.volume = 0;
     }
   };
   Controls2.prototype.fullscreenListener = function() {
-    var buttonFullscreen = document.querySelector('button[action="' + "".concat(this.actions.fullscreen) + '"]');
-    var svgFullscreen = buttonFullscreen.querySelector("svg > path");
     if (!this.controls.fullscreen) {
       this.controls.fullscreen = true;
-      if (this.elementContainer.requestFullscreen) {
-        this.elementContainer.requestFullscreen();
-      } else if (this.elementContainer.mozRequestFullScreen) {
-        this.elementContainer.mozRequestFullScreen();
-      } else if (this.elementContainer.webkitRequestFullScreen) {
-        this.elementContainer.webkitRequestFullScreen();
-      } else if (this.elementContainer.msRequestFullscreen) {
-        this.elementContainer.msRequestFullscreen();
+      if (this.myElements.id.container.requestFullscreen) {
+        this.myElements.id.container.requestFullscreen();
+      } else if (this.myElements.id.container.mozRequestFullScreen) {
+        this.myElements.id.container.mozRequestFullScreen();
+      } else if (this.myElements.id.container.webkitRequestFullScreen) {
+        this.myElements.id.container.webkitRequestFullScreen();
+      } else if (this.myElements.id.container.msRequestFullscreen) {
+        this.myElements.id.container.msRequestFullscreen();
       }
-      svgFullscreen.setAttribute("d", this.iconsPath.fullscreenOn);
+      this.myElements.svg.fullscreen.setAttribute("d", this.iconsPath.fullscreenOn);
     } else {
       this.controls.fullscreen = false;
       if (document.exitFullscreen) {
@@ -310,7 +333,7 @@ var Controls = function() {
       } else if (document.msExitFullscreen) {
         document.msExitFullscreen();
       }
-      svgFullscreen.setAttribute("d", this.iconsPath.fullscreenOff);
+      this.myElements.svg.fullscreen.setAttribute("d", this.iconsPath.fullscreenOff);
     }
   };
   Controls2.prototype.formatTime = function(seconds) {
@@ -337,8 +360,8 @@ var Elements = function() {
       var elementTop = document.createElement("div");
       elementTop.setAttribute("id", _this.identifiersId.top);
       elementContainer.appendChild(elementTop);
-      if (_this.options.top != null) {
-        elementTop.innerHTML = _this.options.top;
+      if (_this.options.style.titleTag != null) {
+        elementTop.innerHTML = _this.options.style.titleTag;
       }
     };
     this.buildMiddle = function(elementContainer) {
@@ -411,18 +434,23 @@ var Elements = function() {
     var pCurrent = document.createElement("p");
     pCurrent.setAttribute("id", this.actions.currentTime);
     pCurrent.setAttribute("action", this.actions.currentTime);
+    pCurrent.innerHTML = "00:00";
     elementBottom.appendChild(pCurrent);
   };
   Elements2.prototype.buildRangerProguess = function(elementBottom) {
     var divRangerProguessContainer = document.createElement("div");
     divRangerProguessContainer.setAttribute("id", this.actions.rangerProguessContainer);
     elementBottom.appendChild(divRangerProguessContainer);
-    var divRangerProguess = document.createElement("div");
-    divRangerProguess.setAttribute("id", this.actions.rangerProguess);
-    divRangerProguessContainer.appendChild(divRangerProguess);
-    var divRangerProguessPoint = document.createElement("div");
-    divRangerProguessPoint.setAttribute("id", this.actions.rangerProguessPoint);
-    divRangerProguessContainer.appendChild(divRangerProguessPoint);
+    var divRangerProguessInput = document.createElement("input");
+    divRangerProguessInput.setAttribute("id", this.actions.rangerProguessInput);
+    divRangerProguessInput.setAttribute("type", "range");
+    divRangerProguessInput.setAttribute("value", "0");
+    divRangerProguessInput.setAttribute("min", "0");
+    divRangerProguessInput.setAttribute("max", "100");
+    divRangerProguessContainer.appendChild(divRangerProguessInput);
+    var divRangerProguessProguess = document.createElement("div");
+    divRangerProguessProguess.setAttribute("id", this.actions.rangerProguessProguess);
+    divRangerProguessContainer.appendChild(divRangerProguessProguess);
   };
   Elements2.prototype.buildDuration = function(elementBottom) {
     var pDuration = document.createElement("p");
@@ -488,7 +516,7 @@ var Styles = function() {
         "outline": "inherit",
         "touch-action": "manipulation",
         "flex-shrink": "0",
-        "background": "transparent"
+        "background-color": "transparent"
       };
       _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.buttons), stylesMap));
     };
@@ -496,7 +524,7 @@ var Styles = function() {
       var stylesMap = {
         "display": "block",
         "margin": "auto",
-        "fill": _this.options.colorInactive,
+        "fill": _this.options.style.colorInactive,
         "width": "2rem",
         "height": "2rem"
       };
@@ -508,7 +536,7 @@ var Styles = function() {
         "width": "100%",
         "height": "100%",
         "z-index": "-".concat(_this.indexStyles),
-        "background-color": _this.options.backgroundColor
+        "background-color": _this.options.style.backgroundColor
       };
       _this.addStyles(_this.parseStyles(_this.options.apply, stylesMap));
     };
@@ -534,7 +562,7 @@ var Styles = function() {
         "top": "0",
         "z-index": _this.indexStyles.toString(),
         "padding": "1rem",
-        "background": "linear-gradient(to bottom, black, transparent)"
+        "background-image": "linear-gradient(to bottom, #00000080, transparent)"
       };
       _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.top), stylesMap));
     };
@@ -547,7 +575,7 @@ var Styles = function() {
         "left": "50%",
         "z-index": _this.indexStyles.toString(),
         "transform": "translate(-50%, -50%)",
-        "background": _this.options.colorActive,
+        "background-color": _this.options.style.colorActive,
         "border-radius": "100%"
       };
       _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.middle), stylesMap));
@@ -566,7 +594,7 @@ var Styles = function() {
         "bottom": "0",
         "z-index": _this.indexStyles.toString(),
         "padding": "1rem",
-        "background": "linear-gradient(to top, black, transparent)",
+        "background-image": "linear-gradient(to top, #00000080, transparent)",
         "flex-direction": "row",
         "justify-content": "space-between",
         "align-items": "center"
@@ -590,7 +618,7 @@ var Styles = function() {
         "font-family": "inherit",
         "font-size": "1rem",
         "font-weight": "bold",
-        "color": _this.options.colorInactive
+        "color": _this.options.style.colorInactive
       };
       _this.addStyles(_this.parseStyles("#".concat(_this.actions.durationTime, ", #").concat(_this.actions.currentTime), stylesMap));
     };
@@ -599,51 +627,61 @@ var Styles = function() {
         "position": "relative",
         "display": "block",
         "width": "100%",
-        "height": "0.4rem",
-        "background": "#CBCBCB",
-        "border-radius": "1rem",
-        "cursor": "pointer",
-        "overflow": "visible"
+        "height": "auto",
+        "background-color": "transparent"
       };
       _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessContainer), stylesMap));
       _this.addStyles(_this.parseStylesMedia("#".concat(_this.actions.rangerProguessContainer), [
         { attribute: "height", valueMax: "0.3rem", valueMiddle: "0.3rem", valueMin: "0.2rem" }
       ]));
     };
-    this.actionsRangerProguess = function() {
+    this.actionsRangerProguessInput = function() {
       var stylesMap = {
-        "position": "absolute",
-        "top": "0",
-        "bottom": "0",
-        "left": "0",
-        "display": "block",
-        "width": "0%",
-        "height": "100%",
-        "border-radius": "1rem",
-        "background": _this.options.colorActive,
+        "appearance": "none",
+        "border": "none",
         "cursor": "pointer",
-        "pointer-events": "none",
-        "transition": "width 0.1s linear"
+        "width": "100%",
+        "height": "auto",
+        "background-color": "transparent"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguess), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput), stylesMap));
+      var stylesMap = {
+        "appearance": "none",
+        "border": "none",
+        "width": "100%",
+        "height": "0.6rem",
+        "background-color": _this.options.style.colorInactive,
+        "border-radius": "0.8rem"
+      };
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput, "::-webkit-slider-runnable-track"), stylesMap));
+      var stylesMap = {
+        "appearance": "none",
+        "border": "none",
+        "width": "1rem",
+        "height": "1rem",
+        "background-color": _this.options.style.colorActive,
+        "border-radius": "50%",
+        "margin-top": "-0.2rem"
+      };
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput, "::-webkit-slider-thumb"), stylesMap));
     };
-    this.actionsRangerProguessPoint = function() {
+    this.actionsRangerProguessProguess = function() {
       var stylesMap = {
         "position": "absolute",
         "display": "block",
         "top": "0",
-        "bottom": "0",
-        "transform": "translate(0%, -30%)",
-        "left": "0%",
-        "width": "1.2rem",
-        "height": "1.2rem",
-        "background": _this.options.colorInactive,
-        "border-radius": "100%",
-        "cursor": "pointer",
-        "pointer-events": "none",
-        "z-index": _this.indexStyles.toString()
+        "left": "0",
+        "width": "0%",
+        "height": "0.6rem",
+        "margin-top": "0.5rem",
+        "border-top-left-radius": "0.8rem",
+        "border-bottom-left-radius": "0.8rem",
+        "border-top-right-radius": "0",
+        "border-bottom-right-radius": "0",
+        "background-color": _this.options.style.colorActive,
+        "pointer-events": "none"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessPoint), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessProguess), stylesMap));
     };
     this.buildFading = function() {
       var stylesMap = {
@@ -703,8 +741,8 @@ var Styles = function() {
   Styles2.prototype.buildActions = function() {
     this.actionsTime();
     this.actionsRangerProguessContainer();
-    this.actionsRangerProguess();
-    this.actionsRangerProguessPoint();
+    this.actionsRangerProguessInput();
+    this.actionsRangerProguessProguess();
   };
   Styles2.prototype.parseStyles = function(styleId, styleMap) {
     var styleString = "";
@@ -749,9 +787,16 @@ var styles_default = Styles;
 // build/wvp.js
 var WVP = function() {
   function WVP2(apply, options) {
-    var _a, _b, _c, _d, _e, _f;
-    var optionsClear = {};
-    if (options != void 0) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9;
+    var optionsClear = {
+      settings: {},
+      show: {},
+      style: {}
+    };
+    if (!apply) {
+      new io_error_default("Error apply(); not defined!");
+    }
+    if (options) {
       Object.keys(options).forEach(function(key) {
         var value = options[key];
         if (value !== null && value !== "") {
@@ -761,12 +806,29 @@ var WVP = function() {
     }
     this.options = {
       apply: apply,
-      backgroundColor: (_a = optionsClear["backgroundColor"]) !== null && _a !== void 0 ? _a : "transparent",
-      colorInactive: (_b = optionsClear["colorInactive"]) !== null && _b !== void 0 ? _b : "#FFFFFF",
-      colorActive: (_c = optionsClear["colorActive"]) !== null && _c !== void 0 ? _c : "#007AFF",
-      autoplay: (_d = optionsClear["autoplay"]) !== null && _d !== void 0 ? _d : true,
-      muted: (_e = optionsClear["muted"]) !== null && _e !== void 0 ? _e : false,
-      top: (_f = optionsClear["top"]) !== null && _f !== void 0 ? _f : null
+      settings: {
+        autoplay: (_b = (_a = optionsClear.settings) === null || _a === void 0 ? void 0 : _a.autoplay) !== null && _b !== void 0 ? _b : true,
+        muted: (_d = (_c = optionsClear.settings) === null || _c === void 0 ? void 0 : _c.muted) !== null && _d !== void 0 ? _d : false
+      },
+      show: {
+        titleTop: (_f = (_e = optionsClear.show) === null || _e === void 0 ? void 0 : _e.titleTop) !== null && _f !== void 0 ? _f : false,
+        playPause: (_h = (_g = optionsClear.show) === null || _g === void 0 ? void 0 : _g.playPause) !== null && _h !== void 0 ? _h : true,
+        playPauseCenter: (_k = (_j = optionsClear.show) === null || _j === void 0 ? void 0 : _j.playPauseCenter) !== null && _k !== void 0 ? _k : true,
+        fullscreen: (_m = (_l = optionsClear.show) === null || _l === void 0 ? void 0 : _l.fullscreen) !== null && _m !== void 0 ? _m : true,
+        pictureInPicture: (_p = (_o = optionsClear.show) === null || _o === void 0 ? void 0 : _o.pictureInPicture) !== null && _p !== void 0 ? _p : true,
+        volume: (_r = (_q = optionsClear.show) === null || _q === void 0 ? void 0 : _q.volume) !== null && _r !== void 0 ? _r : true,
+        rangerVolume: (_t = (_s = optionsClear.show) === null || _s === void 0 ? void 0 : _s.rangerVolume) !== null && _t !== void 0 ? _t : true,
+        durationTime: (_v = (_u = optionsClear.show) === null || _u === void 0 ? void 0 : _u.durationTime) !== null && _v !== void 0 ? _v : true,
+        currentTime: (_x = (_w = optionsClear.show) === null || _w === void 0 ? void 0 : _w.currentTime) !== null && _x !== void 0 ? _x : true,
+        rangerProguess: (_z = (_y = optionsClear.show) === null || _y === void 0 ? void 0 : _y.rangerProguess) !== null && _z !== void 0 ? _z : true
+      },
+      style: {
+        titleTag: (_1 = (_0 = optionsClear.style) === null || _0 === void 0 ? void 0 : _0.titleTag) !== null && _1 !== void 0 ? _1 : null,
+        backgroundColor: (_3 = (_2 = optionsClear.style) === null || _2 === void 0 ? void 0 : _2.backgroundColor) !== null && _3 !== void 0 ? _3 : "#000000",
+        colorInactive: (_5 = (_4 = optionsClear.style) === null || _4 === void 0 ? void 0 : _4.colorInactive) !== null && _5 !== void 0 ? _5 : "#FFFFFF",
+        colorActive: (_7 = (_6 = optionsClear.style) === null || _6 === void 0 ? void 0 : _6.colorActive) !== null && _7 !== void 0 ? _7 : "#007AFF",
+        shadow: (_9 = (_8 = optionsClear.style) === null || _8 === void 0 ? void 0 : _8.shadow) !== null && _9 !== void 0 ? _9 : true
+      }
     };
     this.identifiersId = {
       container: "wvp__container",
@@ -787,57 +849,18 @@ var WVP = function() {
       pictureInPicture: "wvp__button__picture_in_picture",
       volume: "wvp__button__volume",
       rangerVolumeContainer: "wvp__button__ranger_volume_container",
-      rangerVolume: "wvp__button__ranger_volume",
-      rangerVolumePoint: "wvp__button__ranger_volume_point",
+      rangerVolumeInput: "wvp__button__ranger_volume_input",
+      rangerVolumeProguess: "wvp__button__ranger_volume_background",
       durationTime: "wvp__button__duration_time",
       currentTime: "wvp__button__current_time",
       rangerProguessContainer: "wvp__button__ranger_proguess_container",
-      rangerProguess: "wvp__button__ranger_proguess",
-      rangerProguessPoint: "wvp__button__ranger_proguess_point"
+      rangerProguessInput: "wvp__button__ranger_proguess_input",
+      rangerProguessProguess: "wvp__button__ranger_proguess_background"
     };
     this.elements = new elements_default(this.options, this.identifiersId, this.identifiersClass, this.actions);
     this.styles = new styles_default(this.options, this.identifiersId, this.identifiersClass, this.actions);
     this.init();
   }
-  Object.defineProperty(WVP2.prototype, "backgroundColor", {
-    get: function() {
-      return this.options.backgroundColor;
-    },
-    set: function(value) {
-      if (this.options.backgroundColor == value)
-        return;
-      this.options.backgroundColor = value;
-      new io_error_default("Error backgroundColor(); not suport!");
-    },
-    enumerable: false,
-    configurable: true
-  });
-  Object.defineProperty(WVP2.prototype, "colorInactive", {
-    get: function() {
-      return this.options.colorInactive;
-    },
-    set: function(value) {
-      if (this.options.colorInactive == value)
-        return;
-      this.options.colorInactive = value;
-      new io_error_default("Error colorInactive(); not suport!");
-    },
-    enumerable: false,
-    configurable: true
-  });
-  Object.defineProperty(WVP2.prototype, "colorActive", {
-    get: function() {
-      return this.options.colorActive;
-    },
-    set: function(value) {
-      if (this.options.colorActive == value)
-        return;
-      this.options.colorActive = value;
-      new io_error_default("Error colorActive(); not suport!");
-    },
-    enumerable: false,
-    configurable: true
-  });
   WVP2.prototype.init = function() {
     this.elements.build();
     this.styles.build();
