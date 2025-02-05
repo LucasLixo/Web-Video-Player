@@ -6,3 +6,7 @@
 
     - Add new options
     - Fix bugs
+
+# 1.0.2
+
+    - Fix bugs

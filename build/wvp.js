@@ -66,12 +66,12 @@ var WVP = (function () {
             volume: 'wvp__button__volume',
             rangerVolumeContainer: 'wvp__button__ranger_volume_container',
             rangerVolumeInput: 'wvp__button__ranger_volume_input',
-            rangerVolumeProguess: 'wvp__button__ranger_volume_background',
+            rangerVolumeProguess: 'wvp__button__ranger_volume_proguess',
             durationTime: 'wvp__button__duration_time',
             currentTime: 'wvp__button__current_time',
             rangerProguessContainer: 'wvp__button__ranger_proguess_container',
             rangerProguessInput: 'wvp__button__ranger_proguess_input',
-            rangerProguessProguess: 'wvp__button__ranger_proguess_background',
+            rangerProguessProguess: 'wvp__button__ranger_proguess_proguess',
         };
         this.elements = new Elements(this.options, this.identifiersId, this.identifiersClass, this.actions);
         this.styles = new Styles(this.options, this.identifiersId, this.identifiersClass, this.actions);

@@ -1,7 +1,7 @@
 {
   "name": "web-video-player",
   "description": "",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "keywords": [
     "html5",
@@ -16,7 +16,7 @@
     "watch:ts": "npx tsc --watch",
     "dev": "npm run watch:ts",
     "build:ts": "npx tsc --target es5 || echo 0_0",
-    "build:js": "node bundle.js || echo 0_0",
+    "build:js": "node esbuild.js || echo 0_0",
     "build:ts:err": "npx tsc --target es5",
     "build:js:err": "node bundle.js",
     "build": "npm run build:ts && npm run build:js",

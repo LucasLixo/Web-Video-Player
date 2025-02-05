@@ -11,6 +11,7 @@ export default class Styles {
     // ==================================================
     private allStyles: string = '';
     private indexStyles: number = 99;
+    private stylesTemp: Record<string, string> = {};
 
     // ==================================================
     private options: intOptions;
@@ -72,7 +73,7 @@ export default class Styles {
     // ==================================================
     // Class
     private classAll: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'margin': '0',
             'padding': '0',
             'box-sizing': 'inherit',
@@ -82,13 +83,13 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `.${this.identifiersClass.all}`,
-            stylesMap,
+            this.stylesTemp,
         ));
     }
 
     // ==================================================
     private classButtons: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'display': 'block',
             'color': 'inherit',
             'border': 'none',
@@ -104,13 +105,13 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `.${this.identifiersClass.buttons}`,
-            stylesMap,
+            this.stylesTemp,
         ));
     }
 
     // ==================================================
     private classIcons: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'display': 'block',
             'margin': 'auto',
             'fill': this.options.style.colorInactive,
@@ -120,14 +121,14 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `.${this.identifiersClass.icons}`,
-            stylesMap,
+            this.stylesTemp,
         ));
     }
 
     // ==================================================
     // apply Video
     private applyVideo: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'display': 'block',
             'width': '100%',
             'height': '100%',
@@ -137,14 +138,14 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             this.options.apply,
-            stylesMap,
+            this.stylesTemp,
         ));
     }
 
     // ==================================================
     // Id
     private idContainer: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'position': 'relative',
             'display': 'block',
             'max-width': '100%',
@@ -155,13 +156,13 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `#${this.identifiersId.container}`,
-            stylesMap,
+            this.stylesTemp,
         ));
     }
 
     // ==================================================
     private idTop: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'position': 'absolute',
             'display': 'block',
             'width': '100%',
@@ -176,13 +177,13 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `#${this.identifiersId.top}`,
-            stylesMap,
+            this.stylesTemp,
         ));
     }
 
     // ==================================================
     private idMiddle: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'position': 'absolute',
             'width': '3rem',
             'height': '3rem',
@@ -196,7 +197,7 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `#${this.identifiersId.middle}`,
-            stylesMap,
+            this.stylesTemp,
         ));
 
         this.addStyles(this.parseStylesMedia(
@@ -209,7 +210,7 @@ export default class Styles {
 
     // ==================================================
     private idBottom: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'position': 'absolute',
             'display': 'flex',
             'width': '100%',
@@ -227,7 +228,7 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `#${this.identifiersId.bottom}`,
-            stylesMap,
+            this.stylesTemp,
         ));
 
         this.addStyles(this.parseStyles(
@@ -262,7 +263,7 @@ export default class Styles {
     // ==================================================
     // Actions
     private actionsTime: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'font-family': 'inherit',
             'font-size': '1rem',
             'font-weight': 'bold',
@@ -271,13 +272,13 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `#${this.actions.durationTime}, #${this.actions.currentTime}`,
-            stylesMap,
+            this.stylesTemp,
         ));
     }
 
     // ==================================================
     private actionsRangerProguessContainer: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'position': 'relative',
             'display': 'block',
             'width': '100%',
@@ -287,7 +288,7 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `#${this.actions.rangerProguessContainer}`,
-            stylesMap,
+            this.stylesTemp,
         ));
 
         this.addStyles(this.parseStylesMedia(
@@ -300,7 +301,7 @@ export default class Styles {
 
     // ==================================================
     private actionsRangerProguessInput: Function = (): void => {
-        var stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'appearance': 'none',
             'border': 'none',
             'cursor': 'pointer',
@@ -311,28 +312,28 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `#${this.actions.rangerProguessInput}`,
-            stylesMap,
+            this.stylesTemp,
         ));
 
-        var stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'appearance': 'none',
             'border': 'none',
             'width': '100%',
-            'height': '0.6rem',
+            'height': '0.5rem',
             'background-color': this.options.style.colorInactive,
             'border-radius': '0.8rem',
         };
 
         this.addStyles(this.parseStyles(
             `#${this.actions.rangerProguessInput}::-webkit-slider-runnable-track`,
-            stylesMap,
+            this.stylesTemp,
         ));
 
-        var stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'appearance': 'none',
             'border': 'none',
-            'width': '1rem',
-            'height': '1rem',
+            'width': '0.9rem',
+            'height': '0.9rem',
             'background-color': this.options.style.colorActive,
             'border-radius': '50%',
             'margin-top': '-0.2rem',
@@ -340,20 +341,20 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `#${this.actions.rangerProguessInput}::-webkit-slider-thumb`,
-            stylesMap,
+            this.stylesTemp,
         ));
     }
 
     // ==================================================
     private actionsRangerProguessProguess: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'position': 'absolute',
             'display': 'block',
             'top': '0',
             'left': '0',
             'width': '0%',
-            'height': '0.6rem',
-            'margin-top': '0.5rem',
+            'height': '0.5rem',
+            'margin-top': '0.6rem',
             'border-top-left-radius': '0.8rem',
             'border-bottom-left-radius': '0.8rem',
             'border-top-right-radius': '0',
@@ -364,14 +365,14 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `#${this.actions.rangerProguessProguess}`,
-            stylesMap,
+            this.stylesTemp,
         ));
     }
 
     // ==================================================
     // Fading
     private buildFading: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'transition': 'opacity 0.3s ease, visibility 0.3s ease',
             'opacity': '1',
             'visibility': 'visible',
@@ -380,7 +381,7 @@ export default class Styles {
 
         this.addStyles(this.parseStyles(
             `#${this.identifiersId.top}, #${this.identifiersId.middle}, #${this.identifiersId.bottom}`,
-            stylesMap,
+            this.stylesTemp,
         ));
 
         this.addStyles(this.parseStyles(
@@ -395,13 +396,13 @@ export default class Styles {
 
     // ==================================================
     private buildCursorHide: Function = (): void => {
-        const stylesMap: Record<string, string> = {
+        this.stylesTemp = {
             'cursor': 'none !important',
         };
 
         this.addStyles(this.parseStyles(
             `.${this.identifiersClass.cursorHide}`,
-            stylesMap,
+            this.stylesTemp,
         ));
     }
 

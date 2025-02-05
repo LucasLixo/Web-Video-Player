@@ -495,17 +495,18 @@ var Styles = function() {
     var _this = this;
     this.allStyles = "";
     this.indexStyles = 99;
+    this.stylesTemp = {};
     this.classAll = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "margin": "0",
         "padding": "0",
         "box-sizing": "inherit",
         "text-shadow": "none"
       };
-      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.all), stylesMap));
+      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.all), _this.stylesTemp));
     };
     this.classButtons = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "display": "block",
         "color": "inherit",
         "border": "none",
@@ -518,30 +519,30 @@ var Styles = function() {
         "flex-shrink": "0",
         "background-color": "transparent"
       };
-      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.buttons), stylesMap));
+      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.buttons), _this.stylesTemp));
     };
     this.classIcons = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "display": "block",
         "margin": "auto",
         "fill": _this.options.style.colorInactive,
         "width": "2rem",
         "height": "2rem"
       };
-      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.icons), stylesMap));
+      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.icons), _this.stylesTemp));
     };
     this.applyVideo = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "display": "block",
         "width": "100%",
         "height": "100%",
         "z-index": "-".concat(_this.indexStyles),
         "background-color": _this.options.style.backgroundColor
       };
-      _this.addStyles(_this.parseStyles(_this.options.apply, stylesMap));
+      _this.addStyles(_this.parseStyles(_this.options.apply, _this.stylesTemp));
     };
     this.idContainer = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "position": "relative",
         "display": "block",
         "max-width": "100%",
@@ -549,10 +550,10 @@ var Styles = function() {
         "height": "fit-content",
         "cursor": "default"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.container), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.container), _this.stylesTemp));
     };
     this.idTop = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "position": "absolute",
         "display": "block",
         "width": "100%",
@@ -564,10 +565,10 @@ var Styles = function() {
         "padding": "1rem",
         "background-image": "linear-gradient(to bottom, #00000080, transparent)"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.top), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.top), _this.stylesTemp));
     };
     this.idMiddle = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "position": "absolute",
         "width": "3rem",
         "height": "3rem",
@@ -578,13 +579,13 @@ var Styles = function() {
         "background-color": _this.options.style.colorActive,
         "border-radius": "100%"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.middle), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.middle), _this.stylesTemp));
       _this.addStyles(_this.parseStylesMedia("#".concat(_this.identifiersId.middle), [
         { attribute: "height", valueMax: "2.7rem", valueMiddle: "2.5rem", valueMin: "2.3rem" }
       ]));
     };
     this.idBottom = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "position": "absolute",
         "display": "flex",
         "width": "100%",
@@ -599,7 +600,7 @@ var Styles = function() {
         "justify-content": "space-between",
         "align-items": "center"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.bottom), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.bottom), _this.stylesTemp));
       _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.bottom, " button"), {
         "margin": "0 0.2rem 0 0.2rem"
       }));
@@ -614,29 +615,29 @@ var Styles = function() {
       ]));
     };
     this.actionsTime = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "font-family": "inherit",
         "font-size": "1rem",
         "font-weight": "bold",
         "color": _this.options.style.colorInactive
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.actions.durationTime, ", #").concat(_this.actions.currentTime), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.durationTime, ", #").concat(_this.actions.currentTime), _this.stylesTemp));
     };
     this.actionsRangerProguessContainer = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "position": "relative",
         "display": "block",
         "width": "100%",
         "height": "auto",
         "background-color": "transparent"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessContainer), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessContainer), _this.stylesTemp));
       _this.addStyles(_this.parseStylesMedia("#".concat(_this.actions.rangerProguessContainer), [
         { attribute: "height", valueMax: "0.3rem", valueMiddle: "0.3rem", valueMin: "0.2rem" }
       ]));
     };
     this.actionsRangerProguessInput = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "appearance": "none",
         "border": "none",
         "cursor": "pointer",
@@ -644,36 +645,36 @@ var Styles = function() {
         "height": "auto",
         "background-color": "transparent"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput), stylesMap));
-      var stylesMap = {
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput), _this.stylesTemp));
+      _this.stylesTemp = {
         "appearance": "none",
         "border": "none",
         "width": "100%",
-        "height": "0.6rem",
+        "height": "0.5rem",
         "background-color": _this.options.style.colorInactive,
         "border-radius": "0.8rem"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput, "::-webkit-slider-runnable-track"), stylesMap));
-      var stylesMap = {
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput, "::-webkit-slider-runnable-track"), _this.stylesTemp));
+      _this.stylesTemp = {
         "appearance": "none",
         "border": "none",
-        "width": "1rem",
-        "height": "1rem",
+        "width": "0.9rem",
+        "height": "0.9rem",
         "background-color": _this.options.style.colorActive,
         "border-radius": "50%",
         "margin-top": "-0.2rem"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput, "::-webkit-slider-thumb"), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessInput, "::-webkit-slider-thumb"), _this.stylesTemp));
     };
     this.actionsRangerProguessProguess = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "position": "absolute",
         "display": "block",
         "top": "0",
         "left": "0",
         "width": "0%",
-        "height": "0.6rem",
-        "margin-top": "0.5rem",
+        "height": "0.5rem",
+        "margin-top": "0.6rem",
         "border-top-left-radius": "0.8rem",
         "border-bottom-left-radius": "0.8rem",
         "border-top-right-radius": "0",
@@ -681,16 +682,16 @@ var Styles = function() {
         "background-color": _this.options.style.colorActive,
         "pointer-events": "none"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessProguess), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.actions.rangerProguessProguess), _this.stylesTemp));
     };
     this.buildFading = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "transition": "opacity 0.3s ease, visibility 0.3s ease",
         "opacity": "1",
         "visibility": "visible",
         "overflow": "visible"
       };
-      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.top, ", #").concat(_this.identifiersId.middle, ", #").concat(_this.identifiersId.bottom), stylesMap));
+      _this.addStyles(_this.parseStyles("#".concat(_this.identifiersId.top, ", #").concat(_this.identifiersId.middle, ", #").concat(_this.identifiersId.bottom), _this.stylesTemp));
       _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.fading), {
         "opacity": "0 !important",
         "visibility": "hidden !important",
@@ -698,10 +699,10 @@ var Styles = function() {
       }));
     };
     this.buildCursorHide = function() {
-      var stylesMap = {
+      _this.stylesTemp = {
         "cursor": "none !important"
       };
-      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.cursorHide), stylesMap));
+      _this.addStyles(_this.parseStyles(".".concat(_this.identifiersClass.cursorHide), _this.stylesTemp));
     };
     this.buildStylesCompatibility = function(attribute, value) {
       var styleString = "";
@@ -805,7 +806,7 @@ var WVP = function() {
       });
     }
     this.options = {
-      apply: apply,
+      apply,
       settings: {
         autoplay: (_b = (_a = optionsClear.settings) === null || _a === void 0 ? void 0 : _a.autoplay) !== null && _b !== void 0 ? _b : true,
         muted: (_d = (_c = optionsClear.settings) === null || _c === void 0 ? void 0 : _c.muted) !== null && _d !== void 0 ? _d : false
@@ -850,12 +851,12 @@ var WVP = function() {
       volume: "wvp__button__volume",
       rangerVolumeContainer: "wvp__button__ranger_volume_container",
       rangerVolumeInput: "wvp__button__ranger_volume_input",
-      rangerVolumeProguess: "wvp__button__ranger_volume_background",
+      rangerVolumeProguess: "wvp__button__ranger_volume_proguess",
       durationTime: "wvp__button__duration_time",
       currentTime: "wvp__button__current_time",
       rangerProguessContainer: "wvp__button__ranger_proguess_container",
       rangerProguessInput: "wvp__button__ranger_proguess_input",
-      rangerProguessProguess: "wvp__button__ranger_proguess_background"
+      rangerProguessProguess: "wvp__button__ranger_proguess_proguess"
     };
     this.elements = new elements_default(this.options, this.identifiersId, this.identifiersClass, this.actions);
     this.styles = new styles_default(this.options, this.identifiersId, this.identifiersClass, this.actions);
