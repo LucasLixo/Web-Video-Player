@@ -2,57 +2,143 @@ import IOError from "./io_error";
 import identifiersClass from "../interfaces/indentifers_class";
 import identifiersId from "../interfaces/indentifers_id";
 import options from "../interfaces/options";
+import identifiersActions from "../interfaces/indentifers_actions";
+import IndentifersIcons from "../interfaces/indentifers_icons";
 
 export default class IOElements {
     private options: options;
     private identifiersClass: identifiersClass;
     private identifiersId: identifiersId;
-
-    private tagVideo: HTMLVideoElement;
-    private tagContainter: HTMLDivElement;
-
-    // ==================================================
-    private iconsPath = {
-        fullscreenOn: 'M333-200v-133H200v-60h193v193h-60Zm234 0v-193h193v60H627v133h-60ZM200-567v-60h133v-133h60v193H200Zm367 0v-193h60v133h133v60H567Z',
-        fullscreenOff: 'M200-200v-193h60v133h133v60H200Zm0-367v-193h193v60H260v133h-60Zm367 367v-60h133v-133h60v193H567Zm133-367v-133H567v-60h193v193h-60Z',
-        // forward10: 'M360 746V534h-54v-49h104v261h-50Zm147 0q-18.7 0-31.35-12.65Q463 720.7 463 702V529q0-18.7 12.65-31.35Q488.3 485 507 485h83q18.7 0 31.35 12.65Q634 510.3 634 529v173q0 18.7-12.65 31.35Q608.7 746 590 746h-83Zm6-50h71V534h-71v162Zm-33 280q-75 0-140.5-28T225 871q-49-49-77-114.5T120 616q0-75 28-140.5T225 361q49-49 114.5-77T480 256h21l-78-78 41-41 147 147-147 147-41-41 74-74h-17q-125.357 0-212.679 87.321Q180 490.643 180 616t87.321 212.679Q354.643 916 480 916t212.679-87.321Q780 741.357 780 616h60q0 75-28 140.5T735 871q-49 49-114.5 77T480 976Z',
-        // forward30: 'M281 746v-50h121v-56h-82v-49h82v-57H281v-49h127q18.7 0 31.35 12.65Q452 510.3 452 529v173q0 18.7-12.65 31.35Q426.7 746 408 746H281Zm272 0q-18.7 0-31.35-12.65Q509 720.7 509 702V529q0-18.7 12.65-31.35Q534.3 485 553 485h83q18.7 0 31.35 12.65Q680 510.3 680 529v173q0 18.7-12.65 31.35Q654.7 746 636 746h-83Zm6-50h71V534h-71v162Zm-79 280q-75 0-140.5-28T225 871q-49-49-77-114.5T120 616q0-75 28-140.5T225 361q49-49 114.5-77T480 256h21l-78-78 41-41 147 147-147 147-41-41 74-74h-17q-125.357 0-212.679 87.321Q180 490.643 180 616t87.321 212.679Q354.643 916 480 916t212.679-87.321Q780 741.357 780 616h60q0 75-28 140.5T735 871q-49 49-114.5 77T480 976Z',
-        // replay10: 'M480 976q-75 0-140.5-28T225 871q-49-49-77-114.5T120 616h60q0 125 87.321 212.5Q354.643 916 480 916t212.679-87.321Q780 741.357 780 616t-85-212.679Q610 316 485 316h-22l73 73-42 42-147-147 147-147 41 41-78 78h23q75 0 140.5 28T735 361q49 49 77 114.5T840 616q0 75-28 140.5T735 871q-49 49-114.5 77T480 976ZM360 746V534h-54v-49h104v261h-50Zm147 0q-18.7 0-31.35-12.65Q463 720.7 463 702V529q0-18.7 12.65-31.35Q488.3 485 507 485h83q18.7 0 31.35 12.65Q634 510.3 634 529v173q0 18.7-12.65 31.35Q608.7 746 590 746h-83Zm6-50h71V534h-71v162Z',
-        // replay30: 'M480 976q-75 0-140.5-28T225 871q-49-49-77-114.5T120 616h60q0 125 87.321 212.5Q354.643 916 480 916t212.679-87.321Q780 741.357 780 616t-85-212.679Q610 316 485 316h-22l73 73-42 42-147-147 147-147 41 41-78 78h23q75 0 140.5 28T735 361q49 49 77 114.5T840 616q0 75-28 140.5T735 871q-49 49-114.5 77T480 976ZM281 746v-50h121v-55h-82v-50h82v-56H281v-50h127q18.7 0 31.35 12.65Q452 510.3 452 529v173q0 18.7-12.65 31.35Q426.7 746 408 746H281Zm272 0q-18.7 0-31.35-12.65Q509 720.7 509 702V529q0-18.7 12.65-31.35Q534.3 485 553 485h83q18.7 0 31.35 12.65Q680 510.3 680 529v173q0 18.7-12.65 31.35Q654.7 746 636 746h-83Zm6-50h71V535h-71v161Z',
-        pause: 'M560-200v-560h160v560H560Zm-320 0v-560h160v560H240Z',
-        play: 'M320-200v-560l440 280-440 280Z',
-        pictureInPicture: 'M405-274h361v-258H405v258ZM140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm0-60h680v-520H140v520Zm0 0v-520 520Z',
-        volumeOn: 'M560-131v-62q97-28 158.5-107.5T780-481q0-101-61-181T560-769v-62q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm420 48v-337q55 17 87.5 64T660-480q0 57-33 104t-87 64ZM420-648 307-540H180v120h127l113 109v-337Zm-94 168Z',
-        volumeOff: 'M813-56 681-188q-28 20-60.5 34.5T553-131v-62q23-7 44.5-15.5T638-231L473-397v237L273-360H113v-240h156L49-820l43-43 764 763-43 44Zm-36-232-43-43q20-34 29.5-71.923T773-481q0-103.322-60-184.661T553-769v-62q124 28 202 125.5T833-481q0 51-14 100t-42 93ZM643-422l-90-90v-130q47 22 73.5 66t26.5 96q0 15-2.5 29.5T643-422ZM473-592 369-696l104-104v208Zm-60 286v-150l-84-84H173v120h126l114 114Zm-42-192Z',
-    };
+    private identifiersActions: identifiersActions;
+    private identifiersIcons: IndentifersIcons;
 
     // ==================================================
-    constructor(options: options, identifiersClass: identifiersClass, identifiersId: identifiersId, tagVideo: HTMLVideoElement) {
+    private elementVideo: HTMLVideoElement;
+    private elementContainter: HTMLDivElement = document.createElement('div');
+
+    // ==================================================
+    constructor(
+        options: options,
+        identifiersClass: identifiersClass,
+        identifiersId: identifiersId,
+        identifiersActions: identifiersActions,
+        identifiersIcons: IndentifersIcons,
+        elementVideo: HTMLVideoElement) {
         this.options = options;
         this.identifiersClass = identifiersClass;
         this.identifiersId = identifiersId;
-        this.tagVideo = tagVideo;
-        this.tagContainter = document.createElement('div');
+        this.identifiersActions = identifiersActions;
+        this.identifiersIcons = identifiersIcons;
+        //
+        this.elementVideo = elementVideo;
 
         this.build();
     }
-    
+
     // ==================================================
-    private build() {
-        this.tagContainter.setAttribute('id', this.identifiersId.container);
-        
-        if (this.tagVideo.parentElement == null) {
-            new IOError('this.tagVideo.parentElement is null');
+    private build(): void {
+        // Container
+        this.elementContainter.setAttribute('id', this.identifiersId.container);
+
+        if (this.elementVideo.parentElement == null) {
+            new IOError('this.elementVideo.parentElement is null');
         }
-        
-        this.tagVideo.parentElement!.insertBefore(this.tagContainter, this.tagVideo);
-        
-        this.tagContainter.appendChild(this.tagVideo);
+
+        this.elementVideo.parentElement!.insertBefore(this.elementContainter, this.elementVideo);
+        this.elementContainter.appendChild(this.elementVideo);
+
+        // Elements
+        this.buildTop();
+        this.buildMiddle();
+        this.buildBottom();
     }
-    
+
     // ==================================================
     // Build elements
-    private name() {
+    private buildTop(): void {
+        const elementTop: HTMLElement = document.createElement('div');
+        elementTop.setAttribute('id', this.identifiersId.top);
+        this.elementContainter.appendChild(elementTop);
+
+        if (true) {
+            elementTop.innerHTML = '';
+        }
+    }
+
+    private buildMiddle(): void {
+        const elementMiddle: HTMLElement = document.createElement('button');
+        elementMiddle.setAttribute('id', this.identifiersId.middle);
+        elementMiddle.setAttribute('class', this.identifiersClass.buttons);
+        elementMiddle.setAttribute('action', this.identifiersActions.playPause);
+        this.elementContainter.appendChild(elementMiddle);
+
+        elementMiddle.innerHTML = this.buildIcon(this.identifiersIcons.play);
+    }
+
+    private buildBottom(): void {
+        const elementBottom: HTMLElement = document.createElement('div');
+        elementBottom.setAttribute('id', this.identifiersId.bottom);
+        this.elementContainter.appendChild(elementBottom);
+
+        // Button PlayPause
+        const buttonPlayPause: HTMLElement = document.createElement('button');
+        buttonPlayPause.setAttribute('class', this.identifiersClass.buttons);
+        buttonPlayPause.setAttribute('action', this.identifiersActions.playPause);
+        buttonPlayPause.innerHTML = this.buildIcon(this.identifiersIcons.play);
+        elementBottom.appendChild(buttonPlayPause);
+
+        // Button Current
+        const pCurrent: HTMLElement = document.createElement('p');
+        pCurrent.setAttribute('action', this.identifiersActions.currentTime);
+        elementBottom.appendChild(pCurrent);
+
+        // Button Ranger Proguess
+        const divRangerProguessContainer: HTMLElement = document.createElement('div');
+        divRangerProguessContainer.setAttribute('action', this.identifiersActions.rangerProguessContainer);
+        elementBottom.appendChild(divRangerProguessContainer);
         
+        const divRangerProguessInput: HTMLElement = document.createElement('input');
+        divRangerProguessInput.setAttribute('action', this.identifiersActions.rangerProguessInput);
+        divRangerProguessInput.setAttribute('type', 'range');
+        divRangerProguessInput.setAttribute('value', '0');
+        divRangerProguessInput.setAttribute('min', '0');
+        divRangerProguessInput.setAttribute('max', '100');
+        divRangerProguessContainer.appendChild(divRangerProguessInput);
+
+        const divRangerProguessDiv: HTMLElement = document.createElement('div');
+        divRangerProguessDiv.setAttribute('action', this.identifiersActions.rangerProguessDiv);
+        divRangerProguessContainer.appendChild(divRangerProguessDiv);
+
+        // Button Duration
+        const pDuration: HTMLElement = document.createElement('p');
+        pDuration.setAttribute('action', this.identifiersActions.durationTime);
+        elementBottom.appendChild(pDuration);
+
+        // Button Volume
+        const buttonVolume: HTMLElement = document.createElement('button');
+        buttonVolume.setAttribute('class', this.identifiersClass.buttons);
+        buttonVolume.setAttribute('action', this.identifiersActions.volume);
+        buttonVolume.innerHTML = this.buildIcon(this.identifiersIcons.volumeOn);
+        elementBottom.appendChild(buttonVolume);
+
+        // Button PictureInPicture
+        const buttonPictureInPicture: HTMLElement = document.createElement('button');
+        buttonPictureInPicture.setAttribute('class', this.identifiersClass.buttons);
+        buttonPictureInPicture.setAttribute('action', this.identifiersActions.pictureInPicture);
+        buttonPictureInPicture.innerHTML = this.buildIcon(this.identifiersIcons.pictureInPicture);
+        elementBottom.appendChild(buttonPictureInPicture);
+
+        // Button Fullscren  
+        const buttonFullscreen: HTMLElement = document.createElement('button');
+        buttonFullscreen.setAttribute('class', this.identifiersClass.buttons);
+        buttonFullscreen.setAttribute('action', this.identifiersActions.fullscreen);
+        buttonFullscreen.innerHTML = this.buildIcon(this.identifiersIcons.fullscreenOff);
+        elementBottom.appendChild(buttonFullscreen);
+    }
+
+    // ==================================================
+    // Icons
+    private buildIcon(pathIcon: string): string {
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="${this.identifiersClass.icons}"><path d="${pathIcon}" /></svg>`;
     }
 }

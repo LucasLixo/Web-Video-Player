@@ -1,9 +1,7 @@
 // ==================================================
-export default interface iptions {
-    settings: {
-        autoplay: boolean,
-    },
-    video: {
-        volume: number,
-    }
+export default interface options {
+    autoplay: boolean,
+    volume: number,
+
+    currentTime: number,
 }
