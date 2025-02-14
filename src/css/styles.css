@@ -1,0 +1,120 @@
+:root {
+    --background-color: #000000;
+    --background-opacity-color: #00000080;
+    --inactive-color: #FFFFFF;
+    --active-color: #007AFF;
+    --index: 99;
+}
+
+/* Class */
+.svp_all {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+    text-shadow: none
+}
+
+.svp__buttons {
+    display: block;
+    color: inherit;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    touch-action: manipulation;
+    flex-shrink: 0;
+    background-color: transparent;
+}
+
+.svp__icons {
+    display: block;
+    margin: auto;
+    fill: var(--inactive-color);
+    width: 2rem;
+    height: 2rem;
+}
+
+.svp__fading {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
+}
+
+.svp__hide {
+    cursor: none !important;
+}
+
+/* Id */
+#svp__container {
+    position: relative;
+    display: block;
+    max-width: 100%;
+    min-width: 240px;
+    height: fit-content;
+    cursor: default;
+}
+
+#svp__top {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: fit-content;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: var(--index);
+    padding: 1rem;
+    background-image: linear-gradient(to bottom, var(--background-opacity-color), transparent);
+}
+
+#svp__middle {
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    top: 50%;
+    left: 50%;
+    z-index: var(--index);
+    transform: translate(-50%, -50%);
+    background-color: var(--active-color);
+    border-radius: 100%;
+}
+
+#svp__bottom {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: var(--index);
+    padding: 1rem;
+    background-image: linear-gradient(to top, var(--background-opacity-color), transparent);
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#svp__top,
+#svp__middle,
+#svp__bottom {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+    overflow: visible;
+}
+
+#svg__bottom button {
+    margin: 0 0.2rem 0 0.2rem,
+}
+
+/* Video */
+#svp {
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: -99;
+    background-color: var(--background-color);
+}

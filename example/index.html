@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Video Player</title>
+    <link rel="shortcut icon" href="" type="image/x-icon">
+    <meta property="og:title" content="Simple Video Player">
+    <meta property="og:description" content="Simple Video Player.">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="">
+    <style type="text/css">
+        /* Your CSS */
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <link rel="stylesheet" href="../dist/svp.css" type="text/css">
+</head>
+
+<body>
+    <br>
+    <br>
+    <div style="display: block; width: 70%; height: auto; margin: auto;">
+        <video id="svp" width="" height="" controls>
+            <source src="../fastlane/video/Free Stock Footage 1080p.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <script src="../dist/svp.js" type="application/javascript"></script>
+    <script type="application/javascript" defer>
+        document.addEventListener('DOMContentLoaded', function () {
+            const webVideoPlayer = new SVP('#svp', {
+            });
+        });
+    </script>
+</body>
+
+</html>

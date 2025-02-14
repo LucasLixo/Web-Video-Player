@@ -1,0 +1,35 @@
+{
+  "name": "simple-video-player",
+  "description": "",
+  "version": "1.0.0",
+  "license": "MIT",
+  "keywords": [
+    "html5",
+    "player",
+    "video",
+    "videojs"
+  ],
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.6",
+    "postcss": "^8.5.2",
+    "postcss-cli": "^11.0.0",
+    "typescript": "^5.7.3"
+  },
+  "scripts": {
+    "watch:ts": "npx tsc --watch",
+    "dev": "npm run watch:ts",
+    
+    "build:ts": "npx tsc --target es5 || echo Error",
+    "build:js": "node esbuild.js || echo Error",
+    "build:css": "npx postcss src/css/styles.css -o dist/svp.css || echo Error",
+    "build": "npm run build:ts && npm run build:js && npm run build:css",
+
+    "build:ts:err": "npx tsc --target es5",
+    "build:js:err": "node bundle.js",
+    "build:err": "npm run build:ts:err && npm run build:js:err"
+  },
+  "dependencies": {
+    "esbuild": "^0.24.0"
+  }
+}
