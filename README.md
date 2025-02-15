@@ -1,6 +1,6 @@
 <div align="center">
 
-<img width="" src="fastlane/Icon.png" width=160 height=160 align="center">
+<!-- <img width="" src="fastlane/Icon.png" width=160 height=160 align="center"> -->
 
 # Web Video Player
 
@@ -12,9 +12,9 @@
 [![Telegram Channel](https://img.shields.io/badge/Telegram-LucasLixo-blue?style=flat&logo=telegram)](https://t.me/LukasAngo)
 
 &nbsp;&nbsp;| &nbsp;&nbsp;
-<a href="https://raw.githubusercontent.com/LucasLixo/Web-Video-Player/refs/heads/main/dist/svp.css">"CDN" => css</a>
+<a href="https://raw.githubusercontent.com/LucasLixo/Web-Video-Player/refs/heads/main/dist/svp.css">wvp.css</a>
 &nbsp;&nbsp;| &nbsp;&nbsp;
-<a href="https://raw.githubusercontent.com/LucasLixo/Web-Video-Player/refs/heads/main/dist/svp.js">"CDN" => js</a>
+<a href="https://raw.githubusercontent.com/LucasLixo/Web-Video-Player/refs/heads/main/dist/svp.js">wvp.js</a>
 &nbsp;&nbsp;| &nbsp;&nbsp;
 
 </div>
