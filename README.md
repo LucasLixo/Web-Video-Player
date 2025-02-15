@@ -12,9 +12,9 @@
 [![Telegram Channel](https://img.shields.io/badge/Telegram-LucasLixo-blue?style=flat&logo=telegram)](https://t.me/LukasAngo)
 
 &nbsp;&nbsp;| &nbsp;&nbsp;
-<a href="https://raw.githubusercontent.com/LucasLixo/Web-Video-Player/refs/heads/main/dist/svp.css">wvp.css</a>
+<a href="https://raw.githubusercontent.com/LucasLixo/Web-Video-Player/refs/heads/main/dist/wvp.css">wvp.css</a>
 &nbsp;&nbsp;| &nbsp;&nbsp;
-<a href="https://raw.githubusercontent.com/LucasLixo/Web-Video-Player/refs/heads/main/dist/svp.js">wvp.js</a>
+<a href="https://raw.githubusercontent.com/LucasLixo/Web-Video-Player/refs/heads/main/dist/wvp.js">wvp.js</a>
 &nbsp;&nbsp;| &nbsp;&nbsp;
 
 </div>
