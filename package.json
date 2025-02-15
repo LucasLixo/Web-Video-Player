@@ -1,7 +1,7 @@
 {
   "name": "simple-video-player",
   "description": "",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "keywords": [
     "html5",
@@ -12,27 +12,22 @@
   "devDependencies": {
     "autoprefixer": "^10.4.20",
     "cssnano": "^7.0.6",
+    "esbuild": "^0.24.0",
     "postcss": "^8.5.2",
     "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.1.0",
     "typescript": "^5.7.3"
   },
   "scripts": {
     "watch:ts": "npx tsc --watch",
     "dev": "npm run watch:ts",
-    
     "build:ts": "npx tsc --target es5 || echo Error in build ts",
     "build:js": "node esbuild.js || echo Error in build js",
-    
     "build:css:debug": "npx postcss src/css/styles.css -o debug/svp.css || echo Error in build css debug",
     "build:css:dist": "npx postcss src/css/styles.css -o dist/svp.css || echo Error in build css dist",
-    
     "build": "npm run build:ts && npm run build:js && npm run build:css:debug && npm run build:css:dist",
-
     "build:ts:err": "npx tsc --target es5",
     "build:js:err": "node bundle.js",
     "build:err": "npm run build:ts:err && npm run build:js:err"
-  },
-  "dependencies": {
-    "esbuild": "^0.24.0"
   }
 }

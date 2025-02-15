@@ -1,12 +1,12 @@
 import IOError from "./io_error";
 import identifiersClass from "../interfaces/indentifers_class";
 import identifiersId from "../interfaces/indentifers_id";
-import options from "../interfaces/options";
+import indentifersOptions from "../interfaces/options";
 import identifiersActions from "../interfaces/indentifers_actions";
 import IndentifersIcons from "../interfaces/indentifers_icons";
 
 export default class IOElements {
-    private options: options;
+    private indentifersOptions: indentifersOptions;
     private identifiersClass: identifiersClass;
     private identifiersId: identifiersId;
     private identifiersActions: identifiersActions;
@@ -18,13 +18,13 @@ export default class IOElements {
 
     // ==================================================
     constructor(
-        options: options,
+        indentifersOptions: indentifersOptions,
         identifiersClass: identifiersClass,
         identifiersId: identifiersId,
         identifiersActions: identifiersActions,
         identifiersIcons: IndentifersIcons,
         elementVideo: HTMLVideoElement) {
-        this.options = options;
+        this.indentifersOptions = indentifersOptions;
         this.identifiersClass = identifiersClass;
         this.identifiersId = identifiersId;
         this.identifiersActions = identifiersActions;

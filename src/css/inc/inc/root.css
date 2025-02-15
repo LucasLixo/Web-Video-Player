@@ -1,0 +1,8 @@
+:root {
+    --background-color: #000000;
+    --background-opacity-color: #00000080;
+    --inactive-color: #FFFFFF;
+    --active-color: #007AFF;
+    --down-index: -99;
+    --up-index: 99;
+}

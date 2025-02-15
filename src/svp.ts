@@ -2,7 +2,7 @@ import IOError from "./class/io_error";
 import IOElements from "./class/io_elements";
 import identifiersClass from "./interfaces/indentifers_class";
 import identifiersId from "./interfaces/indentifers_id";
-import options from "./interfaces/options";
+import indentifersOptions from "./interfaces/options";
 import identifiersActions from "./interfaces/indentifers_actions";
 import IOControllers from "./class/io_controllers";
 import IndentifersIcons from "./interfaces/indentifers_icons";
@@ -10,12 +10,12 @@ import IndentifersIcons from "./interfaces/indentifers_icons";
 // Simple Video Player
 class SVP {
     // Consts
-    private optionsDefault: options = {
+    private optionsDefault: indentifersOptions = {
         autoplay: false,
         volume: 70,
         currentTime: 0,
     };
-    private options?: options;
+    private options?: indentifersOptions;
     // Indentifers
     private identifiersClass: identifiersClass = {
         all: 'svp__all',
@@ -31,15 +31,15 @@ class SVP {
         bottom: 'svp__bottom',
     };
     private identifiersActions: identifiersActions = {
-        playPause: 'svp__action__playPause',
+        playPause: 'svp__action__play__pause',
         fullscreen: 'svp__action__fullscreen',
         volume: 'svp__action__volume',
-        durationTime: 'svp__action__durationTime',
-        currentTime: 'svp__action__currentTime',
-        pictureInPicture: 'svp__action__pictureInPicture',
-        rangerProguessContainer: 'wvp__action__rangerProguessContainer',
-        rangerProguessInput: 'wvp__action__rangerProguessInput',
-        rangerProguessDiv: 'wvp__action__rangerProguessDiv',
+        durationTime: 'svp__action__duration__time',
+        currentTime: 'svp__action__current__time',
+        pictureInPicture: 'svp__action__picture__in__picture',
+        rangerProguessContainer: 'wvp__action__ranger__proguess__container',
+        rangerProguessInput: 'wvp__action__ranger__proguess__input',
+        rangerProguessDiv: 'wvp__action__ranger__proguess__div',
     };
     private indentifersIcons: IndentifersIcons = {
         fullscreenOn: 'M333-200v-133H200v-60h193v193h-60Zm234 0v-193h193v60H627v133h-60ZM200-567v-60h133v-133h60v193H200Zm367 0v-193h60v133h133v60H567Z',

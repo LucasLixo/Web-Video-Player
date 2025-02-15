@@ -1,0 +1,100 @@
+@import './inc/root.css';
+
+/* Id */
+/* Div Container */
+#svp__container {
+    position: relative;
+    display: block;
+    max-width: 100%;
+    min-width: 240px;
+    height: fit-content;
+    cursor: default;
+}
+
+/* Div Container Top */
+#svp__top {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: fit-content;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: var(--up-index);
+    padding: 1rem;
+    background-image: linear-gradient(to bottom, var(--background-opacity-color), transparent);
+}
+
+/* Div Container Middle */
+#svp__middle {
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    top: 50%;
+    left: 50%;
+    z-index: var(--up-index);
+    transform: translate(-50%, -50%);
+    background-color: var(--active-color);
+    border-radius: 100%;
+}
+
+/* Div Container Bottom */
+#svp__bottom {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: var(--up-index);
+    padding: 1rem;
+    background-image: linear-gradient(to top, var(--background-opacity-color), transparent);
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#svg__bottom button {
+    margin: 0 0.2rem 0 0.2rem;
+}
+
+/* All */
+#svp__top,
+#svp__middle,
+#svp__bottom {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+    overflow: visible;
+}
+
+@media (max-width: 480px) {
+    #svp__middle {
+        height: 2.7rem;
+    }
+
+    #svg__bottom button {
+        margin: 0 0.2rem 0 0.2rem,
+    }
+}
+
+@media (max-width: 360px) {
+    #svp__middle {
+        height: 2.5rem;
+    }
+
+    #svg__bottom button {
+        margin: 0 0.1rem 0 0.1rem;
+    }
+}
+
+@media (max-width: 240px) {
+    #svp__middle {
+        height: 2.3rem;
+    }
+
+    #svg__bottom button {
+        margin: 0 0.1rem 0 0.1rem;
+    }
+}

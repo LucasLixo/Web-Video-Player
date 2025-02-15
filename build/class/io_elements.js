@@ -1,8 +1,8 @@
 import IOError from "./io_error";
 var IOElements = (function () {
-    function IOElements(options, identifiersClass, identifiersId, identifiersActions, identifiersIcons, elementVideo) {
+    function IOElements(indentifersOptions, identifiersClass, identifiersId, identifiersActions, identifiersIcons, elementVideo) {
         this.elementContainter = document.createElement('div');
-        this.options = options;
+        this.indentifersOptions = indentifersOptions;
         this.identifiersClass = identifiersClass;
         this.identifiersId = identifiersId;
         this.identifiersActions = identifiersActions;
