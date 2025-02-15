@@ -118,7 +118,11 @@ export default class IOElements {
         const buttonVolume: HTMLElement = document.createElement('button');
         buttonVolume.setAttribute('class', this.identifiersClass.buttons);
         buttonVolume.setAttribute('action', this.identifiersActions.volume);
-        buttonVolume.innerHTML = this.buildIcon(this.identifiersIcons.volumeOn);
+        if (this.indentifersOptions.volume == 0.0) {
+            buttonVolume.innerHTML = this.buildIcon(this.identifiersIcons.volumeOff);
+        } else {
+            buttonVolume.innerHTML = this.buildIcon(this.identifiersIcons.volumeOn);
+        }
         elementBottom.appendChild(buttonVolume);
 
         // Button PictureInPicture

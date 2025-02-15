@@ -6,3 +6,7 @@
     - Add new scripts build
     - Addons debug
     - Bug fixes
+
+# 1.0.2
+    - Project refactoring
+    - Bug fixes

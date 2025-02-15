@@ -4,7 +4,7 @@
 @import './inc/actions.css';
 
 /* Video */
-video[plugin=svp] {
+video[plugin=wvp] {
     display: block;
     width: 100%;
     height: 100%;

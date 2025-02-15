@@ -1,14 +1,14 @@
 @import './inc/root.css';
 
 /* Class */
-.svp__all {
+.wvp__all {
     margin: 0;
     padding: 0;
     box-sizing: inherit;
     text-shadow: none;
 }
 
-.svp__buttons {
+.wvp__buttons {
     display: block;
     color: inherit;
     border: none;
@@ -22,7 +22,7 @@
     background-color: transparent;
 }
 
-.svp__icons {
+.wvp__icons {
     display: block;
     margin: auto;
     fill: var(--inactive-color);
@@ -30,12 +30,12 @@
     height: 2rem;
 }
 
-.svp__fading {
+.wvp__fading {
     opacity: 0 !important;
     visibility: hidden !important;
     overflow: hidden !important;
 }
 
-.svp__hide {
+.wvp__hide {
     cursor: none !important;
 }

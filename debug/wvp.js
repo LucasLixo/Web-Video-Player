@@ -100,7 +100,11 @@ var IOElements = function() {
     var buttonVolume = document.createElement("button");
     buttonVolume.setAttribute("class", this.identifiersClass.buttons);
     buttonVolume.setAttribute("action", this.identifiersActions.volume);
-    buttonVolume.innerHTML = this.buildIcon(this.identifiersIcons.volumeOn);
+    if (this.indentifersOptions.volume == 0) {
+      buttonVolume.innerHTML = this.buildIcon(this.identifiersIcons.volumeOff);
+    } else {
+      buttonVolume.innerHTML = this.buildIcon(this.identifiersIcons.volumeOn);
+    }
     elementBottom.appendChild(buttonVolume);
     var buttonPictureInPicture = document.createElement("button");
     buttonPictureInPicture.setAttribute("class", this.identifiersClass.buttons);
@@ -186,6 +190,7 @@ var IOControllers = function() {
     });
   };
   IOControllers2.prototype.buildPrepareVideo = function() {
+    var _this = this;
     this.elementVideo.removeAttribute("controls");
     this.elementVideo.removeAttribute("height");
     this.elementVideo.removeAttribute("width");
@@ -201,6 +206,15 @@ var IOControllers = function() {
     } else {
       this.elementVideo.removeAttribute("autoplay");
     }
+    this.elementVideo.currentTime = this.indentifersOptions.currentTime;
+    this.elementVideo.volume = this.indentifersOptions.volume;
+    this.elementVideo.addEventListener("loadedmetadata", function() {
+      if (_this.indentifersOptions.autoplay) {
+        _this.elementVideo.play();
+      } else {
+        _this.elementVideo.pause();
+      }
+    });
   };
   IOControllers2.prototype.buildFading = function() {
     var _this = this;
@@ -297,7 +311,7 @@ var IOControllers = function() {
   };
   IOControllers2.prototype.buildDurationTime = function() {
     var _this = this;
-    this.elementVideo.addEventListener("loadeddata", function() {
+    this.elementVideo.addEventListener("loadedmetadata", function() {
       var _a, _b;
       _this.controlsValue.duration = _this.formatTime((_a = _this.elementVideo.duration) !== null && _a !== void 0 ? _a : 0);
       _this.controlsValue.durationTime = (_b = _this.elementVideo.duration) !== null && _b !== void 0 ? _b : 0;
@@ -402,7 +416,7 @@ var IOControllers = function() {
     }
   };
   IOControllers2.prototype.volumeListener = function() {
-    if (this.elementVideo.muted || this.elementVideo.volume === 0) {
+    if (this.elementVideo.muted || this.elementVideo.volume == 0) {
       this.controlsElements.volume.querySelector("svg > path").setAttribute("d", this.identifiersIcons.volumeOn);
       this.elementVideo.muted = false;
       this.elementVideo.volume = 1;
@@ -440,35 +454,35 @@ var IOControllers = function() {
 }();
 var io_controllers_default = IOControllers;
 
-// build/svp.js
-var SVP = function() {
-  function SVP2(options) {
+// build/wvp.js
+var WVP = function() {
+  function WVP2(options) {
     var _a, _b, _c;
     this.optionsDefault = {
       autoplay: false,
-      volume: 70,
+      volume: 1,
       currentTime: 0
     };
     this.identifiersClass = {
-      all: "svp__all",
-      buttons: "svp__buttons",
-      icons: "svp__icons",
-      fading: "svp__fading",
-      hide: "svp__hide"
+      all: "wvp__all",
+      buttons: "wvp__buttons",
+      icons: "wvp__icons",
+      fading: "wvp__fading",
+      hide: "wvp__hide"
     };
     this.identifiersId = {
-      container: "svp__container",
-      top: "svp__top",
-      middle: "svp__middle",
-      bottom: "svp__bottom"
+      container: "wvp__container",
+      top: "wvp__top",
+      middle: "wvp__middle",
+      bottom: "wvp__bottom"
     };
     this.identifiersActions = {
-      playPause: "svp__action__play__pause",
-      fullscreen: "svp__action__fullscreen",
-      volume: "svp__action__volume",
-      durationTime: "svp__action__duration__time",
-      currentTime: "svp__action__current__time",
-      pictureInPicture: "svp__action__picture__in__picture",
+      playPause: "wvp__action__play__pause",
+      fullscreen: "wvp__action__fullscreen",
+      volume: "wvp__action__volume",
+      durationTime: "wvp__action__duration__time",
+      currentTime: "wvp__action__current__time",
+      pictureInPicture: "wvp__action__picture__in__picture",
       rangerProguessContainer: "wvp__action__ranger__proguess__container",
       rangerProguessInput: "wvp__action__ranger__proguess__input",
       rangerProguessDiv: "wvp__action__ranger__proguess__div"
@@ -490,19 +504,19 @@ var SVP = function() {
     if (this.options == void 0) {
       new io_error_default("Options undefinded");
     }
-    this.tagVideos = document.querySelectorAll('video[plugin="svp"]');
+    this.tagVideos = document.querySelectorAll('video[plugin="wvp"]');
     if (this.tagVideos == void 0) {
       new io_error_default("Tag Video undefinded");
     }
     this.build();
   }
-  SVP2.prototype.build = function() {
+  WVP2.prototype.build = function() {
     var _this = this;
     this.tagVideos.forEach(function(elementVideo) {
       new io_elements_default(_this.options, _this.identifiersClass, _this.identifiersId, _this.identifiersActions, _this.indentifersIcons, elementVideo);
       new io_controllers_default(_this.options, _this.identifiersClass, _this.identifiersId, _this.identifiersActions, _this.indentifersIcons, elementVideo);
     });
   };
-  return SVP2;
+  return WVP2;
 }();
-//# sourceMappingURL=svp.js.map
+//# sourceMappingURL=wvp.js.map

@@ -1,34 +1,34 @@
 import IOError from "./class/io_error";
 import IOElements from "./class/io_elements";
 import IOControllers from "./class/io_controllers";
-var SVP = (function () {
-    function SVP(options) {
+var WVP = (function () {
+    function WVP(options) {
         var _a, _b, _c;
         this.optionsDefault = {
             autoplay: false,
-            volume: 70,
+            volume: 1.0,
             currentTime: 0,
         };
         this.identifiersClass = {
-            all: 'svp__all',
-            buttons: 'svp__buttons',
-            icons: 'svp__icons',
-            fading: 'svp__fading',
-            hide: 'svp__hide',
+            all: 'wvp__all',
+            buttons: 'wvp__buttons',
+            icons: 'wvp__icons',
+            fading: 'wvp__fading',
+            hide: 'wvp__hide',
         };
         this.identifiersId = {
-            container: 'svp__container',
-            top: 'svp__top',
-            middle: 'svp__middle',
-            bottom: 'svp__bottom',
+            container: 'wvp__container',
+            top: 'wvp__top',
+            middle: 'wvp__middle',
+            bottom: 'wvp__bottom',
         };
         this.identifiersActions = {
-            playPause: 'svp__action__play__pause',
-            fullscreen: 'svp__action__fullscreen',
-            volume: 'svp__action__volume',
-            durationTime: 'svp__action__duration__time',
-            currentTime: 'svp__action__current__time',
-            pictureInPicture: 'svp__action__picture__in__picture',
+            playPause: 'wvp__action__play__pause',
+            fullscreen: 'wvp__action__fullscreen',
+            volume: 'wvp__action__volume',
+            durationTime: 'wvp__action__duration__time',
+            currentTime: 'wvp__action__current__time',
+            pictureInPicture: 'wvp__action__picture__in__picture',
             rangerProguessContainer: 'wvp__action__ranger__proguess__container',
             rangerProguessInput: 'wvp__action__ranger__proguess__input',
             rangerProguessDiv: 'wvp__action__ranger__proguess__div',
@@ -50,18 +50,18 @@ var SVP = (function () {
         if (this.options == undefined) {
             new IOError("Options undefinded");
         }
-        this.tagVideos = document.querySelectorAll("video[plugin=\"svp\"]");
+        this.tagVideos = document.querySelectorAll("video[plugin=\"wvp\"]");
         if (this.tagVideos == undefined) {
             new IOError("Tag Video undefinded");
         }
         this.build();
     }
-    SVP.prototype.build = function () {
+    WVP.prototype.build = function () {
         var _this = this;
         this.tagVideos.forEach(function (elementVideo) {
             new IOElements(_this.options, _this.identifiersClass, _this.identifiersId, _this.identifiersActions, _this.indentifersIcons, elementVideo);
             new IOControllers(_this.options, _this.identifiersClass, _this.identifiersId, _this.identifiersActions, _this.indentifersIcons, elementVideo);
         });
     };
-    return SVP;
+    return WVP;
 }());

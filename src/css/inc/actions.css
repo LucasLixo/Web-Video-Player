@@ -1,7 +1,7 @@
 /* Actions */
 /* Times */
-p[action=svp__action__duration__time],
-p[action=svp__action__current__time] {
+p[action=wvp__action__duration__time],
+p[action=wvp__action__current__time] {
     font-family: inherit;
     font-size: 1rem;
     font-weight: bold;
@@ -83,16 +83,16 @@ div[action=wvp__action__ranger__proguess__div] {
 
 /* All */
 div[action=wvp__action__ranger__proguess__container],
-p[action=svp__action__duration__time],
-p[action=svp__action__current__time] {
+p[action=wvp__action__duration__time],
+p[action=wvp__action__current__time] {
     margin: 0 0.3rem 0 0.3rem;
 }
 
 @media (max-width: 480px) {
 
     div[action=wvp__action__ranger__proguess__container],
-    p[action=svp__action__duration__time],
-    p[action=svp__action__current__time] {
+    p[action=wvp__action__duration__time],
+    p[action=wvp__action__current__time] {
         margin: 0 0.1rem 0 0.1rem;
     }
 }
@@ -100,8 +100,8 @@ p[action=svp__action__current__time] {
 @media (max-width: 360px) {
 
     div[action=wvp__action__ranger__proguess__container],
-    p[action=svp__action__duration__time],
-    p[action=svp__action__current__time] {
+    p[action=wvp__action__duration__time],
+    p[action=wvp__action__current__time] {
         margin: 0 0.1rem 0 0.1rem;
     }
 }
@@ -109,8 +109,8 @@ p[action=svp__action__current__time] {
 @media (max-width: 240px) {
 
     div[action=wvp__action__ranger__proguess__container],
-    p[action=svp__action__duration__time],
-    p[action=svp__action__current__time] {
+    p[action=wvp__action__duration__time],
+    p[action=wvp__action__current__time] {
         margin: 0 0.1rem 0 0.1rem;
     }
 }

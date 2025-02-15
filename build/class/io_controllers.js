@@ -64,6 +64,7 @@ var IOControllers = (function () {
         });
     };
     IOControllers.prototype.buildPrepareVideo = function () {
+        var _this = this;
         this.elementVideo.removeAttribute('controls');
         this.elementVideo.removeAttribute('height');
         this.elementVideo.removeAttribute('width');
@@ -80,6 +81,16 @@ var IOControllers = (function () {
         else {
             this.elementVideo.removeAttribute('autoplay');
         }
+        this.elementVideo.currentTime = this.indentifersOptions.currentTime;
+        this.elementVideo.volume = this.indentifersOptions.volume;
+        this.elementVideo.addEventListener('loadedmetadata', function () {
+            if (_this.indentifersOptions.autoplay) {
+                _this.elementVideo.play();
+            }
+            else {
+                _this.elementVideo.pause();
+            }
+        });
     };
     IOControllers.prototype.buildFading = function () {
         var _this = this;
@@ -178,7 +189,7 @@ var IOControllers = (function () {
     };
     IOControllers.prototype.buildDurationTime = function () {
         var _this = this;
-        this.elementVideo.addEventListener('loadeddata', function () {
+        this.elementVideo.addEventListener('loadedmetadata', function () {
             var _a, _b;
             _this.controlsValue.duration = _this.formatTime((_a = _this.elementVideo.duration) !== null && _a !== void 0 ? _a : 0);
             _this.controlsValue.durationTime = (_b = _this.elementVideo.duration) !== null && _b !== void 0 ? _b : 0;
@@ -290,7 +301,7 @@ var IOControllers = (function () {
         }
     };
     IOControllers.prototype.volumeListener = function () {
-        if (this.elementVideo.muted || this.elementVideo.volume === 0) {
+        if (this.elementVideo.muted || this.elementVideo.volume == 0.0) {
             this.controlsElements.volume.querySelector('svg > path').setAttribute('d', this.identifiersIcons.volumeOn);
             this.elementVideo.muted = false;
             this.elementVideo.volume = 1.0;

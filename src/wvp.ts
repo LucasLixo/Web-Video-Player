@@ -7,36 +7,36 @@ import identifiersActions from "./interfaces/indentifers_actions";
 import IOControllers from "./class/io_controllers";
 import IndentifersIcons from "./interfaces/indentifers_icons";
 
-// Simple Video Player
-class SVP {
+// Web Video Player
+class WVP {
     // Consts
     private optionsDefault: indentifersOptions = {
         autoplay: false,
-        volume: 70,
+        volume: 1.0,
         currentTime: 0,
     };
     private options?: indentifersOptions;
     // Indentifers
     private identifiersClass: identifiersClass = {
-        all: 'svp__all',
-        buttons: 'svp__buttons',
-        icons: 'svp__icons',
-        fading: 'svp__fading',
-        hide: 'svp__hide',
+        all: 'wvp__all',
+        buttons: 'wvp__buttons',
+        icons: 'wvp__icons',
+        fading: 'wvp__fading',
+        hide: 'wvp__hide',
     };
     private identifiersId: identifiersId = {
-        container: 'svp__container',
-        top: 'svp__top',
-        middle: 'svp__middle',
-        bottom: 'svp__bottom',
+        container: 'wvp__container',
+        top: 'wvp__top',
+        middle: 'wvp__middle',
+        bottom: 'wvp__bottom',
     };
     private identifiersActions: identifiersActions = {
-        playPause: 'svp__action__play__pause',
-        fullscreen: 'svp__action__fullscreen',
-        volume: 'svp__action__volume',
-        durationTime: 'svp__action__duration__time',
-        currentTime: 'svp__action__current__time',
-        pictureInPicture: 'svp__action__picture__in__picture',
+        playPause: 'wvp__action__play__pause',
+        fullscreen: 'wvp__action__fullscreen',
+        volume: 'wvp__action__volume',
+        durationTime: 'wvp__action__duration__time',
+        currentTime: 'wvp__action__current__time',
+        pictureInPicture: 'wvp__action__picture__in__picture',
         rangerProguessContainer: 'wvp__action__ranger__proguess__container',
         rangerProguessInput: 'wvp__action__ranger__proguess__input',
         rangerProguessDiv: 'wvp__action__ranger__proguess__div',
@@ -72,7 +72,7 @@ class SVP {
         }
 
         // Select tag videos
-        this.tagVideos = document.querySelectorAll(`video[plugin="svp"]`) as NodeListOf<HTMLVideoElement> | undefined;
+        this.tagVideos = document.querySelectorAll(`video[plugin="wvp"]`) as NodeListOf<HTMLVideoElement> | undefined;
 
         if (this.tagVideos == undefined) {
             new IOError("Tag Video undefinded");

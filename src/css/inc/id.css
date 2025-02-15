@@ -2,7 +2,7 @@
 
 /* Id */
 /* Div Container */
-#svp__container {
+#wvp__container {
     position: relative;
     display: block;
     max-width: 100%;
@@ -12,7 +12,7 @@
 }
 
 /* Div Container Top */
-#svp__top {
+#wvp__top {
     position: absolute;
     display: block;
     width: 100%;
@@ -26,7 +26,7 @@
 }
 
 /* Div Container Middle */
-#svp__middle {
+#wvp__middle {
     position: absolute;
     width: 3rem;
     height: 3rem;
@@ -39,7 +39,7 @@
 }
 
 /* Div Container Bottom */
-#svp__bottom {
+#wvp__bottom {
     position: absolute;
     display: flex;
     width: 100%;
@@ -60,9 +60,9 @@
 }
 
 /* All */
-#svp__top,
-#svp__middle,
-#svp__bottom {
+#wvp__top,
+#wvp__middle,
+#wvp__bottom {
     transition: opacity 0.3s ease, visibility 0.3s ease;
     opacity: 1;
     visibility: visible;
@@ -70,7 +70,7 @@
 }
 
 @media (max-width: 480px) {
-    #svp__middle {
+    #wvp__middle {
         height: 2.7rem;
     }
 
@@ -80,7 +80,7 @@
 }
 
 @media (max-width: 360px) {
-    #svp__middle {
+    #wvp__middle {
         height: 2.5rem;
     }
 
@@ -90,7 +90,7 @@
 }
 
 @media (max-width: 240px) {
-    #svp__middle {
+    #wvp__middle {
         height: 2.3rem;
     }
 

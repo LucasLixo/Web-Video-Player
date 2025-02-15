@@ -141,11 +141,21 @@ export default class IOControllers {
         // this.elementVideo.setAttribute('disablepictureinpicture', '');
         this.elementVideo.setAttribute('disableremoteplayback', '');
         this.elementVideo.setAttribute('disabledownload', '');
+        // Options
         if (this.indentifersOptions.autoplay) {
             this.elementVideo.setAttribute('autoplay', '');
         } else {
             this.elementVideo.removeAttribute('autoplay');
         }
+        this.elementVideo.currentTime = this.indentifersOptions.currentTime;
+        this.elementVideo.volume = this.indentifersOptions.volume;
+        this.elementVideo.addEventListener('loadedmetadata', (): void => {
+            if (this.indentifersOptions.autoplay) {
+                this.elementVideo.play();
+            } else {
+                this.elementVideo.pause();
+            }
+        });
     }
 
     // ==================================================
@@ -256,7 +266,7 @@ export default class IOControllers {
 
     // ==================================================
     private buildDurationTime(): void {
-        this.elementVideo.addEventListener('loadeddata', (): void => {
+        this.elementVideo.addEventListener('loadedmetadata', (): void => {
             this.controlsValue.duration = this.formatTime(this.elementVideo.duration ?? 0);
             this.controlsValue.durationTime = this.elementVideo.duration ?? 0;
 
@@ -374,7 +384,7 @@ export default class IOControllers {
 
     // ==================================================
     private volumeListener(): void {
-        if (this.elementVideo.muted || this.elementVideo.volume === 0) {
+        if (this.elementVideo.muted || this.elementVideo.volume == 0.0) {
             this.controlsElements.volume.querySelector('svg > path')!.setAttribute('d', this.identifiersIcons.volumeOn);
             this.elementVideo.muted = false;
             this.elementVideo.volume = 1.0;

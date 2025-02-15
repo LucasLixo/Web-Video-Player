@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Video Player</title>
+    <title>Web Video Player</title>
     <style type="text/css">
         /* Your CSS */
         * {
@@ -15,23 +15,26 @@
         }
     </style>
     <!-- Include -->
-    <link rel="stylesheet" href="../dist/svp.css" type="text/css">
+    <link rel="stylesheet" href="../dist/wvp.css" type="text/css">
 </head>
 
 <body>
     <br>
     <br>
     <div style="display: block; width: 70%; height: auto; margin: auto;">
-        <video plugin="svp" width="" height="" controls>
+        <video plugin="wvp" width="" height="" controls>
             <source src="../fastlane/video/Free Stock Footage 1080p.mp4" type="video/mp4">
         </video>
     </div>
-    
+
     <!-- Include -->
-    <script src="../dist/svp.js" type="application/javascript"></script>
+    <script src="../dist/wvp.js" type="application/javascript"></script>
     <script type="application/javascript" defer>
         document.addEventListener('DOMContentLoaded', function () {
-            const simpleVideoPlayer = new SVP({
+            const simpleVideoPlayer = new WVP({
+                autoplay: false,
+                volume: 1.0,
+                currentTime: 0,
             });
         });
     </script>

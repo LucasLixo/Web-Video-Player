@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Video Player</title>
+    <title>Web Video Player</title>
     <link rel="shortcut icon" href="" type="image/x-icon">
-    <meta property="og:title" content="Simple Video Player">
-    <meta property="og:description" content="Simple Video Player.">
+    <meta property="og:title" content="Web Video Player">
+    <meta property="og:description" content="Web Video Player.">
     <meta property="og:image" content="">
     <meta property="og:url" content="">
     <style type="text/css">
@@ -22,22 +22,22 @@
             font-family: system-ui;
         }
     </style>
-    <link rel="stylesheet" href="./svp.css" type="text/css">
+    <link rel="stylesheet" href="./wvp.css" type="text/css">
 </head>
 
 <body>
     <br>
     <br>
     <div style="display: block; width: 70%; height: auto; margin: auto;">
-        <video plugin="svp" width="" height="" controls>
+        <video plugin="wvp" width="" height="" controls>
             <source src="../fastlane/video/Free Stock Footage 1080p.mp4" type="video/mp4">
         </video>
     </div>
 
-    <script src="./svp.js" type="application/javascript"></script>
+    <script src="./wvp.js" type="application/javascript"></script>
     <script type="application/javascript" defer>
         document.addEventListener('DOMContentLoaded', function () {
-            const simpleVideoPlayer = new SVP({
+            const simpleVideoPlayer = new WVP({
                 autoplay: true,
             });
         });
