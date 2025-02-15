@@ -230,8 +230,6 @@ export default class IOControllers {
 
             this.rangerProguessDivListener();
             this.elementVideo.currentTime = (this.controlsValue.proguess / 100) * this.controlsValue.durationTime;
-
-            console.log(`buildRangerProguess(): $proguess: ${this.controlsValue.proguess};`);
         };
     }
 
@@ -269,16 +267,14 @@ export default class IOControllers {
     // ==================================================
     private buildCurrentTime(): void {
         this.elementVideo.addEventListener('timeupdate', (): void => {
+            this.controlsValue.current = this.formatTime(this.elementVideo.currentTime ?? 0);
+            this.controlsValue.currentTime = this.elementVideo.currentTime ?? 0;
+
             this.controlsValue.proguess = (this.controlsValue.currentTime / this.controlsValue.durationTime) * 100;
 
             this.rangerProguessDivListener();
-
-            this.controlsElements.rangerProguessInput.setAttribute('value', this.controlsValue.proguess.toString());
-
-            this.controlsValue.currentTime = this.elementVideo.currentTime ?? 0;
-            this.controlsElements.currentTime.innerHTML = this.controlsValue.current = this.formatTime(this.elementVideo.currentTime ?? 0);
-
-            console.log(`buildCurrentTime(): $proguess: ${this.controlsValue.proguess};`);
+            this.controlsElements.rangerProguessInput.value = this.controlsValue.proguess.toString();
+            this.controlsElements.currentTime.innerHTML = this.controlsValue.current;
         });
     }
 

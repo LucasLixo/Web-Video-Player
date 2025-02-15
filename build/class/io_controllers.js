@@ -156,7 +156,6 @@ var IOControllers = (function () {
             _this.controlsValue.proguess = parseInt(_this.controlsElements.rangerProguessInput.value, 10);
             _this.rangerProguessDivListener();
             _this.elementVideo.currentTime = (_this.controlsValue.proguess / 100) * _this.controlsValue.durationTime;
-            console.log("buildRangerProguess(): $proguess: ".concat(_this.controlsValue.proguess, ";"));
         };
     };
     IOControllers.prototype.buildFullscreen = function () {
@@ -190,12 +189,12 @@ var IOControllers = (function () {
         var _this = this;
         this.elementVideo.addEventListener('timeupdate', function () {
             var _a, _b;
+            _this.controlsValue.current = _this.formatTime((_a = _this.elementVideo.currentTime) !== null && _a !== void 0 ? _a : 0);
+            _this.controlsValue.currentTime = (_b = _this.elementVideo.currentTime) !== null && _b !== void 0 ? _b : 0;
             _this.controlsValue.proguess = (_this.controlsValue.currentTime / _this.controlsValue.durationTime) * 100;
             _this.rangerProguessDivListener();
-            _this.controlsElements.rangerProguessInput.setAttribute('value', _this.controlsValue.proguess.toString());
-            _this.controlsValue.currentTime = (_a = _this.elementVideo.currentTime) !== null && _a !== void 0 ? _a : 0;
-            _this.controlsElements.currentTime.innerHTML = _this.controlsValue.current = _this.formatTime((_b = _this.elementVideo.currentTime) !== null && _b !== void 0 ? _b : 0);
-            console.log("buildCurrentTime(): $proguess: ".concat(_this.controlsValue.proguess, ";"));
+            _this.controlsElements.rangerProguessInput.value = _this.controlsValue.proguess.toString();
+            _this.controlsElements.currentTime.innerHTML = _this.controlsValue.current;
         });
     };
     IOControllers.prototype.buildObserver = function () {
